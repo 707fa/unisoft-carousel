@@ -27,37 +27,37 @@ params:
   - name: ext_id
     type: string
     required: true
-    desc: "Noyob tashqi operatsiya identifikatori."
+    desc: "Unique external operation identifier."
   - name: currency
     type: string
     required: true
-    desc: "Valyuta kodi."
+    desc: "Currency code."
   - name: service_code
     type: string
     required: true
-    desc: "Xizmat kodi."
+    desc: "Service code."
   - name: service_id
     type: integer
     required: true
-    desc: "paynet.services javobidan olingan xizmat identifikatori."
+    desc: "Service identifier from the paynet.services response."
   - name: sender_id
     type: integer
     required: true
-    desc: "sender.create'dan olingan jo'natuvchi identifikatori."
+    desc: "Sender identifier obtained from sender.create."
   - name: fields
     type: object
     required: true
-    desc: "Xizmatga xos maydonlar — amount maydoni tiyin emas, oddiy summa sifatida yuboriladi."
+    desc: "Service-specific fields — the amount field is sent as a plain sum, not in tiyins."
 ---
 
-Paynet guruhida to'lovni yaratish uchun ham `transfer.create` metodi
-ishlatiladi — farqi shundaki, bu yerda qo'shimcha `service_id`
-parametri talab qilinadi.
+The `transfer.create` method is also used to create a payment in the
+Paynet group — the difference is that an additional `service_id`
+parameter is required here.
 
-> ⚠️ `fields.amount` bu yerda **tiyin emas** — oddiy summa sifatida
-> yuboriladi (izohga qarang: `// Not tiyins`).
+> ⚠️ `fields.amount` here is **not in tiyins** — it is sent as a plain
+> sum (see comment: `// Not tiyins`).
 
-## Namuna javob
+## Sample Response
 
 ```json
 {
@@ -87,5 +87,5 @@ parametri talab qilinadi.
 }
 ```
 
-`state: 0` qaytgach, to'lovni yakunlash uchun
-[Confirm](/docs/payments-confirm) metodini chaqiring.
+Once `state: 0` is returned, call the [Confirm](/docs/payments-confirm)
+method to finalize the payment.

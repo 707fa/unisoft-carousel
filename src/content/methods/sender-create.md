@@ -40,65 +40,62 @@ codeExamples:
       }),
     });
     const { result } = await response.json();
-    // result.sender_id — keyingi so'rovlarda ishlatiladi
+    // result.sender_id — used in subsequent requests
 params:
   - name: phone
     type: string
     required: true
-    desc: "Jo'natuvchining telefon raqami (xalqaro formatda, masalan +998901234567)."
+    desc: "Sender's phone number (in international format, e.g. +998901234567)."
   - name: series
     type: string
     required: true
-    desc: "Jo'natuvchining pasport seriyasi va raqami (masalan, AB1234567)."
+    desc: "Sender's passport series and number (e.g. AB1234567)."
   - name: address
     type: string
     required: true
-    desc: "Jo'natuvchining doimiy ro'yxatdan o'tgan manzili."
+    desc: "Sender's registered residential address."
   - name: last_name
     type: string
     required: true
-    desc: "Jo'natuvchining familiyasi (pasportdagidek)."
+    desc: "Sender's last name (as shown in passport)."
   - name: first_name
     type: string
     required: true
-    desc: "Jo'natuvchining ismi (pasportdagidek)."
+    desc: "Sender's first name (as shown in passport)."
   - name: birth_date
     type: string
     required: true
-    desc: "Tug'ilgan sana (YYYY-MM-DD formatida)."
+    desc: "Date of birth (in YYYY-MM-DD format)."
   - name: birth_place
     type: string
     required: true
-    desc: "Tug'ilgan joyi (pasportda ko'rsatilganidek)."
+    desc: "Place of birth (as stated in passport)."
   - name: expire_date
     type: string
     required: true
-    desc: "Pasport amal qilish muddati tugash sanasi (YYYY-MM-DD)."
+    desc: "Passport expiry date (YYYY-MM-DD)."
   - name: issuing_date
     type: string
     required: true
-    desc: "Pasport berilgan sana (YYYY-MM-DD)."
+    desc: "Passport issue date (YYYY-MM-DD)."
 ---
 
-`sender.create` shaxsiy va pasport ma'lumotlarini (telefon, pasport
-seriyasi, manzil, to'liq ism, tug'ilgan sana/joy, pasport berilgan
-va tugash sanalari) yuborish orqali tizimda yangi jo'natuvchini
-ro'yxatdan o'tkazadi.
+`sender.create` registers a new sender in the system by submitting personal
+and passport details (phone number, passport series, address, full name,
+date and place of birth, passport issue and expiry dates).
 
-Muvaffaqiyatli ro'yxatdan o'tkazilgandan so'ng, server noyob
-**`sender_id`** qaytaradi — bu keyingi metodlarda (masalan,
-`transfer.create`) jo'natuvchining shaxsiy ma'lumotlarini har safar
-qayta yubormasdan, shu identifikator orqali murojaat qilish uchun
-ishlatiladi.
+Upon successful registration, the server returns a unique **`sender_id`** —
+this identifier is used in subsequent methods (e.g., `transfer.create`) to
+reference the sender without re-submitting their personal data each time.
 
-## Javob maydonlari
+## Response fields
 
-| Maydon | Turi | Tavsif |
+| Field | Type | Description |
 |---|---|---|
-| `message` | string | Server qaytargan holat xabari (masalan, `"success"`) |
-| `sender_id` | integer | Yangi yaratilgan jo'natuvchining noyob identifikatori |
+| `message` | string | Status message returned by the server (e.g., `"success"`) |
+| `sender_id` | integer | Unique identifier of the newly created sender |
 
-## Namuna javob
+## Sample response
 
 ```json
 {

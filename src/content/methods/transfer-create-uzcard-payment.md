@@ -28,25 +28,25 @@ params:
   - name: fields.card_number
     type: string
     required: true
-    desc: "Kartaning raqami."
+    desc: "Card number."
   - name: fields.expire
     type: string
     required: true
-    desc: "Karta amal qilish muddati (MMYY formatida)."
+    desc: "Card expiry date (in MMYY format)."
   - name: fields.receiver_id
     type: string
     required: true
-    desc: "Qabul qiluvchining identifikatori (masalan, telefon raqami)."
+    desc: "Recipient identifier (e.g., phone number)."
 ---
 
-**Uzcard** kartasidan OTP tasdiqlash orqali pul yechish (debit)
-operatsiyasi. Bu xizmat kartaning amal qilish muddatini (`expire`)
-ham talab qiladi — bu 3-D Secure yoki OTP tekshiruvi uchun kerak.
+A debit operation on an **Uzcard** card confirmed via OTP. This service
+also requires the card expiry date (`expire`) — needed for 3-D Secure
+or OTP verification.
 
-Umumiy so'rov parametrlari [Transfer create](/docs/transfer-create)
-sahifasida tavsiflangan.
+Common request parameters are described on the [Transfer create](/docs/transfer-create)
+page.
 
-## Namuna javob
+## Sample response
 
 ```json
 {
@@ -77,6 +77,6 @@ sahifasida tavsiflangan.
 }
 ```
 
-> Bu namunada `state: 33` — xatolik holati (`transaction error`,
-> masalan mablag' yetarli emasligi). Barcha holat kodlari
-> [Transfer State](/docs/transfer-state) sahifasida keltirilgan.
+> In this example `state: 33` indicates an error state (`transaction error`,
+> e.g., insufficient funds). All state codes are listed on the
+> [Transfer State](/docs/transfer-state) page.

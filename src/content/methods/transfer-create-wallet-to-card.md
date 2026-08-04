@@ -27,20 +27,19 @@ params:
   - name: fields.wallet_id
     type: string
     required: true
-    desc: "Qabul qiluvchining hamyon (wallet) identifikatori."
+    desc: "Recipient's wallet identifier."
   - name: fields.debit_ext_id
     type: string
     required: true
-    desc: "Debit operatsiyasining tashqi identifikatori."
+    desc: "External identifier of the debit operation."
 ---
 
-Elektron hamyondan (**Ucoin wallet**) kartaga pul o'tkazish uchun
-ishlatiladi.
+Used to transfer funds from an electronic wallet (**Ucoin wallet**) to a card.
 
-Umumiy so'rov parametrlari [Transfer create](/docs/transfer-create)
-sahifasida tavsiflangan.
+Common request parameters are described on the [Transfer create](/docs/transfer-create)
+page.
 
-## Namuna javob
+## Sample response
 
 ```json
 {

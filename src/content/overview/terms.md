@@ -1,35 +1,35 @@
 ---
-title: Atamalar va tushunchalar
+title: Terms and Concepts
 order: 2
 ---
 
-| Atama | Ta'rif |
+| Term | Definition |
 |---|---|
-| Client | Unisoft Gate'dan foydalanishga ruxsat berilgan hamkor |
-| User | Hamkorning mijozi (Unisoft uchun "User" deb ataladi) |
-| Request | Ma'lumot uchun so'rov |
-| Response | So'rovga javob |
-| Registry | Har bir maxfiy ma'lumotni ro'yxatga oluvchi xizmat |
+| Client | A partner authorized to use Unisoft Gate |
+| User | A partner's customer (referred to as "User" within Unisoft) |
+| Request | A request for data |
+| Response | A reply to a request |
+| Registry | A service that logs every confidential data entry |
 | Uzcard | Uzcard Online (Svgate) |
-| Humo | O'zbekiston Markaziy banki tegishli protsessing markazi |
-| Visa | Visa protsessing markazi |
-| Transfer | Peer-to-peer operatsiya (pul o'tkazmasi) |
-| Payment | Xizmatlar uchun to'lov yoki debit operatsiyasi |
-| Exchange Conversion | Valyutani Universalbank JSC kursi bo'yicha konvertatsiya qilish |
-| CBU | O'zbekiston Markaziy banki |
-| Sender | Jo'natuvchi (debit) |
-| Receiver | Qabul qiluvchi (kredit) |
-| Cheque | Qabul qiluvchini kutayotgan to'lov cheki |
-| EPOS | `merchant_id`/`terminal_id` saqlovchi elektron POS terminal |
+| Humo | Processing center affiliated with the Central Bank of Uzbekistan |
+| Visa | Visa processing center |
+| Transfer | Peer-to-peer operation (money transfer) |
+| Payment | Payment for services or a debit operation |
+| Exchange Conversion | Currency conversion at the Universalbank JSC exchange rate |
+| CBU | Central Bank of Uzbekistan |
+| Sender | The sending party (debit) |
+| Receiver | The receiving party (credit) |
+| Cheque | A payment receipt awaiting the receiver |
+| EPOS | Electronic POS terminal that stores `merchant_id`/`terminal_id` |
 
-## Ma'lumot turlari
+## Data Types
 
-| Nomi | Turi | Tavsif |
+| Name | Type | Description |
 |---|---|---|
-| `number` | string | Karta raqami, 16 ta belgi |
-| `amount` | integer | Summa — kasr yoki o'nlik nuqtasiz bo'lishi kerak |
-| `message` | object/string | Xabar matni |
-| `host` | object | Host haqida ma'lumot |
-| `error` | object | Xatolik obyekti |
-| `result` | object | Natija obyekti |
-| `code` | integer | Xatolik kodi |
+| `number` | string | Card number, 16 digits |
+| `amount` | integer | Amount — must be provided without decimals or a decimal point |
+| `message` | object/string | Message text |
+| `host` | object | Host information |
+| `error` | object | Error object |
+| `result` | object | Result object |
+| `code` | integer | Error code |

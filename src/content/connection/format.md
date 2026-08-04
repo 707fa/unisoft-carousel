@@ -1,16 +1,14 @@
 ---
-title: Ulanish
+title: Connection
 order: 1
 codeExamples:
   curl: |
     POST https://{{host}}/api/v1/jsonrpc
 ---
 
-Barcha so'rovlar **bitta endpoint**ga yuboriladi. Qaysi amal
-bajarilishi so'rov tanasidagi `method` maydoni orqali belgilanadi —
-bu **JSON-RPC 2.0** protokoli.
+All requests are sent to a **single endpoint**. The operation to perform is determined by the `method` field in the request body — this follows the **JSON-RPC 2.0** protocol.
 
-## So'rov formati
+## Request Format
 
 ```json
 {
@@ -23,14 +21,14 @@ bu **JSON-RPC 2.0** protokoli.
 }
 ```
 
-| Maydon | Turi | Tavsif |
+| Field | Type | Description |
 |---|---|---|
-| `jsonrpc` | string | Har doim `"2.0"` |
-| `id` | string/integer | So'rov identifikatori (uuid yoki `kompaniya_vaqt` tavsiya etiladi) |
-| `method` | string | Chaqirilayotgan metod nomi |
-| `params` | object | Metodga tegishli parametrlar |
+| `jsonrpc` | string | Always `"2.0"` |
+| `id` | string/integer | Request identifier (uuid or `company_timestamp` recommended) |
+| `method` | string | Name of the method being called |
+| `params` | object | Parameters specific to the method |
 
-## Muvaffaqiyatli javob
+## Successful Response
 
 ```json
 {
@@ -46,7 +44,7 @@ bu **JSON-RPC 2.0** protokoli.
 }
 ```
 
-## Xatolik javobi
+## Error Response
 
 ```json
 {
@@ -61,6 +59,4 @@ bu **JSON-RPC 2.0** protokoli.
 }
 ```
 
-`status: false` bo'lganda javobda `error.code` va `error.message`
-maydonlari bo'ladi — `message` odatda `uz`, `ru`, `en` tillarida
-qaytadi.
+When `status: false`, the response includes `error.code` and `error.message` fields — `message` is typically returned in `uz`, `ru`, and `en` languages.

@@ -7,9 +7,9 @@ import CodeBlock from "./CodeBlock";
 import ResponseBlock from "./ResponseBlock";
 import ParamsTable from "./ParamsTable";
 
-// Bitta hujjat (sahifa) — bir nechtasi ustma-ust joylashib, uzluksiz
-// (cheksiz) skroll hosil qiladi. `first` — oqimdagi birinchi sahifa
-// (uning tepasida ajratuvchi chiziq bo'lmaydi).
+// A single document (page) — multiple instances stack vertically to form
+// a continuous (infinite) scroll. `first` marks the first page in the stream
+// (no divider line is rendered above it).
 const DocArticle = forwardRef(function DocArticle({ doc, first }, ref) {
   const section = getNavSections().find((s) =>
     s.items.some((i) => i.slug === doc.slug)
@@ -36,7 +36,7 @@ const DocArticle = forwardRef(function DocArticle({ doc, first }, ref) {
           hasAside ? "lg:grid-cols-[minmax(0,1fr)_420px]" : ""
         }`}
       >
-        {/* Matn ustuni */}
+        {/* Text column */}
         <div>
           <h1 className="text-[28px] font-bold tracking-tight mb-3">
             {doc.title}
@@ -68,13 +68,13 @@ const DocArticle = forwardRef(function DocArticle({ doc, first }, ref) {
 
           {doc.params && (
             <>
-              <h2 className="text-[19px] font-semibold mt-8 mb-3">Parametrlar</h2>
+              <h2 className="text-[19px] font-semibold mt-8 mb-3">Parameters</h2>
               <ParamsTable params={doc.params} />
             </>
           )}
         </div>
 
-        {/* O'ng ustun — so'rov (tepada) va javob (ostida) ustma-ust */}
+        {/* Right column — request (top) and response (bottom) stacked */}
         {hasAside && (
           <div className="lg:sticky lg:top-20 self-start space-y-4">
             {hasCode && <CodeBlock codeExamples={doc.codeExamples} />}

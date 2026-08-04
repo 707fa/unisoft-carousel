@@ -1,4 +1,4 @@
-// params — markdown frontmatter'dan keladigan massiv:
+// params — array coming from markdown frontmatter:
 // [{ name, type, required, desc }, ...]
 export default function ParamsTable({ params }) {
   if (!params?.length) return null;
@@ -19,11 +19,11 @@ export default function ParamsTable({ params }) {
             <span className="text-xs text-gray-400 font-mono">{p.type}</span>
             {p.required ? (
               <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-red-50 text-red-500">
-                majburiy
+                required
               </span>
             ) : (
               <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-500">
-                ixtiyoriy
+                optional
               </span>
             )}
           </div>

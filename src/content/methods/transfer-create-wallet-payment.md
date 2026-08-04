@@ -26,16 +26,15 @@ params:
   - name: fields.wallet_id
     type: string
     required: true
-    desc: "To'lov qilinadigan hamyon (wallet) identifikatori."
+    desc: "Identifier of the wallet to charge."
 ---
 
-Elektron hamyondan (**Ucoin wallet**) mablag' yechish/to'lov
-operatsiyasi.
+A payment/withdrawal operation from an electronic wallet (**Ucoin wallet**).
 
-Umumiy so'rov parametrlari [Transfer create](/docs/transfer-create)
-sahifasida tavsiflangan.
+Common request parameters are described on the [Transfer create](/docs/transfer-create)
+page.
 
-## Namuna javob
+## Sample response
 
 ```json
 {

@@ -34,50 +34,47 @@ params:
   - name: jsonrpc
     type: string
     required: true
-    desc: "JSON-RPC protokol versiyasi."
+    desc: "JSON-RPC protocol version."
   - name: id
     type: "string | integer"
     required: true
-    desc: "So'rov identifikatori."
+    desc: "Request identifier."
   - name: method
     type: string
     required: true
-    desc: "Metod nomi — bu holda \"services\"."
+    desc: "Method name — in this case \"services\"."
   - name: provider_id
     type: integer
     required: true
-    desc: "Xizmatlari so'ralayotgan provayderning identifikatori."
+    desc: "Identifier of the provider whose services are being requested."
 ---
 
-`services` metodi tanlangan provayder uchun mavjud xizmatlar
-ro'yxatini qaytaradi. Har bir xizmat — shu provayder uchun
-bajarilishi mumkin bo'lgan aniq operatsiya: karta orqali pul yechish,
-o'tkazma yoki to'lov.
+The `services` method returns a list of available services for the selected provider. Each service represents a specific operation supported by that provider: card withdrawal, transfer, or payment.
 
-## Bu metod nima uchun kerak
+## Why This Method Is Needed
 
-- Provayder tanlangandan keyin mavjud xizmatlarni ko'rsatish
-- Xizmat nomi va tavsifini bir nechta tilda ko'rsatish
-- Summa chegaralari va valyutani tekshirish
-- Kerakli maydonlar asosida input formani dinamik qurish
-- 3-D Secure talab qilinishini aniqlash
+- Displaying available services after a provider is selected
+- Showing service names and descriptions in multiple languages
+- Checking amount limits and currency
+- Dynamically building the input form based on required fields
+- Determining whether 3-D Secure is required
 
-## Javob maydonlari
+## Response Fields
 
-| Maydon | Turi | Tavsif |
+| Field | Type | Description |
 |---|---|---|
-| `id` | integer | Xizmatning noyob identifikatori |
-| `name_uz` / `name_en` / `name_ru` | string | Xizmat nomi tillar bo'yicha |
-| `type` | string | Xizmat turi (`debit`, `credit`, `payment`) |
-| `description` | string | Xizmat tavsifi |
-| `min_amount` / `max_amount` | integer | Ruxsat etilgan minimal/maksimal summa (tiyin/kopek birligida) |
-| `currency` | string | ISO 4217 valyuta kodi |
-| `code` | string | Ichki xizmat kodi |
-| `is_3ds` | boolean | 3-D Secure talab qilinishini bildiradi |
-| `fields` | array | So'rov uchun talab qilinadigan input maydonlar ro'yxati |
-| `response_fields` | array | Xizmat javobida qaytadigan maydonlar |
+| `id` | integer | Unique identifier of the service |
+| `name_uz` / `name_en` / `name_ru` | string | Service name by language |
+| `type` | string | Service type (`debit`, `credit`, `payment`) |
+| `description` | string | Service description |
+| `min_amount` / `max_amount` | integer | Allowed minimum/maximum amount (in tiyin/kopek) |
+| `currency` | string | ISO 4217 currency code |
+| `code` | string | Internal service code |
+| `is_3ds` | boolean | Indicates whether 3-D Secure is required |
+| `fields` | array | List of input fields required for the request |
+| `response_fields` | array | Fields returned in the service response |
 
-## Namuna javob
+## Sample Response
 
 ```json
 {
@@ -118,6 +115,4 @@ o'tkazma yoki to'lov.
 }
 ```
 
-`fields` massividagi har bir maydon `name`, `type`, `is_required` va
-kerak bo'lsa `regex` orqali qanday input yaratish kerakligini
-belgilaydi — bu orqali frontendda forma avtomatik quriladi.
+Each field in the `fields` array defines how to build an input using `name`, `type`, `is_required`, and optionally `regex` — allowing the frontend to construct the form dynamically.

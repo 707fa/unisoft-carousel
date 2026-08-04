@@ -1,5 +1,5 @@
 ---
-title: Autentifikatsiya va Digest
+title: Authentication and Digest
 order: 2
 codeExamples:
   curl: |
@@ -30,30 +30,25 @@ codeExamples:
       .update(body)
       .digest('base64');
 
-    // So'rov headerlariga qo'shiladi:
+    // Added to request headers:
     // Header-Sign: {digest}
     // Authorization: Bearer {access_token}
 ---
 
-## Sarlavhalar (headers)
+## Headers
 
-| Header | Qiymat | Izoh |
+| Header | Value | Description |
 |---|---|---|
-| `Authorization` | `Bearer {access_token}` | `login` metodidan qaytgan token |
-| `Content-Type` | `application/json` | Gate faqat JSON so'rovlarga xizmat qiladi |
-| `Accept` | `application/json` | Javob ham JSON formatida bo'ladi |
-| `Header-Sign` | HMAC digest | Har bir so'rov uchun quyida tushuntirilgan tartibda hisoblanadi |
+| `Authorization` | `Bearer {access_token}` | Token returned by the `login` method |
+| `Content-Type` | `application/json` | The gateway only accepts JSON requests |
+| `Accept` | `application/json` | The response is also in JSON format |
+| `Header-Sign` | HMAC digest | Computed for each request as described below |
 
-## Digest hisoblash tartibi
+## Digest Calculation Steps
 
-1. **Maxfiy kalit** — HMAC hisoblash uchun ishlatiladigan `secret`ni
-   xavfsiz saqlang, hech kimga oshkor qilmang.
-2. **HMAC hisoblash** — `secret` va so'rov tanasi (`request.body`)
-   asosida SHA-256 orqali digest hisoblanadi.
-3. **Base64 kodlash** — hisoblangan digest Base64 formatga o'tkaziladi.
-4. **Header'ga qo'shish** — natija `Header-Sign` sarlavhasiga
-   joylashtiriladi.
+1. **Secret Key** — Keep the `secret` used for HMAC computation secure and do not share it with anyone.
+2. **HMAC Computation** — A digest is computed using SHA-256 with the `secret` and the request body (`request.body`).
+3. **Base64 Encoding** — The computed digest is encoded in Base64 format.
+4. **Adding to Header** — The result is placed in the `Header-Sign` header.
 
-Digest noto'g'ri hisoblansa, so'rov autentifikatsiyadan o'tmaydi —
-shuning uchun so'rov tanasi (`body`) digest hisoblangandan keyin
-o'zgartirilmasligi kerak.
+If the digest is computed incorrectly, the request will fail authentication — therefore the request body (`body`) must not be modified after the digest has been computed.

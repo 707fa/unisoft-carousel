@@ -1,27 +1,22 @@
 ---
-title: Loyiha haqida
+title: About the Project
 order: 1
 ---
 
-**Unisoft Carousel** — O'zbekiston, Rossiya, Tojikiston, Qirg'iziston va
-boshqa mamlakatlar uchun pul o'tkazmalari va to'lovlar API'si.
+**Unisoft Carousel** — A money transfer and payments API for Uzbekistan, Russia, Tajikistan, Kyrgyzstan, and other countries.
 
-## Test qilishdan oldin
+## Before Testing
 
-- **NDA** — maxfiylik shartnomasi imzolangan bo'lishi kerak
-- **IP ruxsati** — sizning IP manzilingiz email orqali whitelist'ga
-  qo'shilishi kerak
+- **NDA** — A non-disclosure agreement must be signed
+- **IP Allowlist** — Your IP address must be whitelisted via email
 
-## Test muhitini sozlash
+## Setting Up the Test Environment
 
-1. **Credentials** — parol bilan himoyalangan `.zip` papkasi orqali test
-   ma'lumotlari beriladi
-2. **Digest tayyorlash** — maxfiy kalit yordamida so'rov uchun digest
-   yaratiladi ([Ulanish](/docs/auth) sahifasida batafsil)
-3. **Token olish** — `login` metodi orqali autentifikatsiya qilinadi
-4. **Xizmatni sinash** — token va digest bilan test so'rovi yuboriladi
+1. **Credentials** — Test credentials are provided via a password-protected `.zip` archive
+2. **Digest Preparation** — A digest is generated for each request using a secret key (see the [Connection](/docs/auth) page for details)
+3. **Obtaining a Token** — Authentication is performed via the `login` method
+4. **Testing a Service** — A test request is sent using the token and digest
 
-## Muhim eslatma
+## Important Note
 
-Test hisobidagi barcha summalar avtomatik ravishda 100 (1 so'm) gacha
-kamaytiriladi. Productionda API va Registry'da haqiqiy summa ko'rinadi.
+All amounts in the test account are automatically reduced to 100 (1 UZS). In production, the actual amount is visible in the API and Registry.

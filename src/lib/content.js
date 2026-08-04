@@ -1,19 +1,19 @@
 import yaml from "js-yaml";
 
-// Vite'ning import.meta.glob funksiyasi build vaqtida barcha .md
-// fayllarni topib, ularning matnini (raw holda) import qiladi.
-// eager:true — hammasi darhol yuklanadi (kod bo'lib splitlanmaydi).
+// Vite's import.meta.glob function finds all .md files at build time
+// and imports their content as raw text.
+// eager:true — all files are loaded immediately (not code-split).
 const files = import.meta.glob("../content/**/*.md", {
   query: "?raw",
   import: "default",
   eager: true,
 });
 
-// Har bir .md fayl boshida frontmatter bo'ladi:
+// Each .md file begins with frontmatter:
 // ---
 // title: ...
 // ---
-// Qolgan matn tanasi
+// Followed by the body text
 function parseFrontmatter(raw) {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
   if (!match) return { data: {}, body: raw };
@@ -22,13 +22,13 @@ function parseFrontmatter(raw) {
 }
 
 function slugFromPath(path) {
-  // "../content/api/create-payment.md" -> "create-payment"
+  // "../content/api/create-payment.md" → "create-payment"
   const parts = path.split("/");
   return parts[parts.length - 1].replace(/\.md$/, "");
 }
 
 function categoryFromPath(path) {
-  // "../content/api/create-payment.md" -> "api"
+  // "../content/api/create-payment.md" → "api"
   const parts = path.split("/");
   return parts[parts.length - 2];
 }
@@ -40,25 +40,25 @@ export const allDocs = Object.entries(files)
       slug: slugFromPath(path),
       category: categoryFromPath(path),
       body,
-      ...data, // title, order, method, endpoint, codeExamples, params
+      ...data, // title, order, method, endpoint, codeExamples, params (spread from frontmatter)
     };
   })
   .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
 export const CATEGORY_LABELS = {
-  guide: "Boshlash",
+  guide: "Getting Started",
   api: "API Reference",
-  overview: "Umumiy ma'lumot",
-  connection: "Ulanish",
-  methods: "Metodlar",
-  payments: "Paynet to'lovlari",
+  overview: "Overview",
+  connection: "Connection",
+  methods: "Methods",
+  payments: "Paynet Payments",
 };
 
 export function getDocBySlug(slug) {
   return allDocs.find((d) => d.slug === slug);
 }
 
-// Sidebar uchun kategoriya bo'yicha guruhlangan ro'yxat
+// Grouped list by category for the Sidebar
 export function getNavSections() {
   const grouped = {};
   for (const doc of allDocs) {

@@ -34,27 +34,26 @@ params:
   - name: ext_id
     type: string
     required: true
-    desc: "Holati tekshirilayotgan operatsiyaning tashqi identifikatori."
+    desc: "External identifier of the operation whose status is being checked."
 ---
 
-`transfer.state` o'tkazmaning yakuniy holatini oladi. Bu hamkor
-tizimga tranzaksiya muvaffaqiyatli yakunlangan, muvaffaqiyatsiz
-bo'lgan, bekor qilingan yoki hali jarayonda ekanini tekshirish
-imkonini beradi.
+`transfer.state` retrieves the final status of a transfer. It allows a
+partner system to check whether a transaction has completed successfully,
+failed, been cancelled, or is still in progress.
 
-Bu metod ayniqsa o'tkazma `form_url` orqali qayta ishlanganda va
-yakuniy natija darhol mavjud bo'lmaganda foydalidir.
+This method is especially useful when a transfer is processed via `form_url`
+and the final result is not immediately available.
 
-## Qachon ishlatiladi
+## When to use
 
-`transfer.state`ni quyidagi holatlarda ishlating:
+Use `transfer.state` in the following situations:
 
-- O'tkazma `transfer.create` orqali yaratilgan bo'lsa
-- Javobda `form_url` qaytgan bo'lsa
-- Yakuniy holat callback orqali kelmagan bo'lsa
-- Hamkor tranzaksiya holatini so'rov (poll) qilishi kerak bo'lsa
+- A transfer was created via `transfer.create`
+- The response included a `form_url`
+- The final state has not arrived via callback
+- The partner needs to poll for the transaction status
 
-## Namuna javob
+## Sample response
 
 ```json
 {
@@ -88,14 +87,14 @@ yakuniy natija darhol mavjud bo'lmaganda foydalidir.
 }
 ```
 
-## Operatsiya holatlari (`state`)
+## Operation states (`state`)
 
-| Holat | Tavsif |
+| State | Description |
 |---|---|
-| `-98` | Yaratilmagan |
-| `0` | Yaratilgan (Created) |
-| `4` | Muvaffaqiyatli (Success) |
-| `21` | Bekor qilingan (Cancel) |
-| `22` | Chek muddati tugagan |
-| `29`, `30` | Jarayonda (In progress) |
-| `33` | Tranzaksiya xatoligi |
+| `-98` | Not created |
+| `0` | Created |
+| `4` | Success |
+| `21` | Cancelled |
+| `22` | Check expired |
+| `29`, `30` | In progress |
+| `33` | Transaction error |

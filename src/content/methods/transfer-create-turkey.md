@@ -34,50 +34,49 @@ params:
   - name: fields.nationality
     type: string
     required: true
-    desc: "Qabul qiluvchining millati."
+    desc: "The recipient's nationality."
   - name: fields.receiver_phone
     type: string
     required: true
-    desc: "Qabul qiluvchining telefon raqami."
+    desc: "The recipient's phone number."
   - name: fields.receiver_last_name
     type: string
     required: true
-    desc: "Qabul qiluvchining familiyasi."
+    desc: "The recipient's last name."
   - name: fields.receiver_first_name
     type: string
     required: true
-    desc: "Qabul qiluvchining ismi."
+    desc: "The recipient's first name."
   - name: fields.email
     type: string
     required: true
-    desc: "Qabul qiluvchining email manzili."
+    desc: "The recipient's email address."
   - name: fields.country_phone_code
     type: string
     required: true
-    desc: "Qabul qiluvchi davlatining telefon kodi (masalan, +7)."
+    desc: "The recipient's country phone code (e.g., +7)."
   - name: fields.tr_type
     type: string
     required: true
-    desc: "O'tkazma turi (masalan, \"Transfer2IBAN\")."
+    desc: "Transfer type (e.g., \"Transfer2IBAN\")."
   - name: fields.reason
     type: string
     required: true
-    desc: "Tranzaksiya sababi (masalan, \"HOME_RENT\")."
+    desc: "Transaction reason (e.g., \"HOME_RENT\")."
   - name: fields.account
     type: string
     required: true
-    desc: "Qabul qiluvchining IBAN raqami."
+    desc: "The recipient's IBAN number."
 ---
 
-Turkiya bank hisoblariga **IBAN** orqali pul o'tkazish uchun
-ishlatiladi. Bu eng ko'p maydon talab qiladigan xizmat turlaridan
-biri, chunki xalqaro o'tkazma qoidalari qabul qiluvchi haqida
-to'liq ma'lumotni talab qiladi.
+Used to transfer money to Turkish bank accounts via **IBAN**. This is one of
+the most field-intensive service types, as international transfer regulations
+require full information about the recipient.
 
-Umumiy so'rov parametrlari [Transfer create](/docs/transfer-create)
-sahifasida tavsiflangan.
+Common request parameters are described on the
+[Transfer create](/docs/transfer-create) page.
 
-## Namuna javob
+## Example Response
 
 ```json
 {
@@ -112,4 +111,4 @@ sahifasida tavsiflangan.
 }
 ```
 
-`cr_currency: "949"` — Turk lirasi (TRY) uchun ISO 4217 raqamli kodi.
+`cr_currency: "949"` — the ISO 4217 numeric code for the Turkish lira (TRY).

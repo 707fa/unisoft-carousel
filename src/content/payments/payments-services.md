@@ -34,32 +34,31 @@ params:
   - name: provider_id
     type: integer
     required: true
-    desc: "paynet.providers javobidan olingan provayder identifikatori."
+    desc: "Provider identifier from the paynet.providers response."
 ---
 
-Tanlangan provayder ostidagi operatsiyalarni qaytaradi. Odatda har
-bir provayderda ikkita xizmat bo'ladi:
+Returns the operations available under the selected provider. Typically,
+each provider has two services:
 
-- **Create xizmati** (ma'lumot / qabul qiluvchini tekshirish) —
-  `min_amount = max_amount = service_price = 0` va `type_id != 1`.
-  To'lovdan oldin qabul qiluvchini tekshirish uchun ishlatiladi.
-- **Confirm xizmati** (to'lovni bajarish) — `min_amount`,
-  `max_amount`, `service_price`dan kamida bittasi musbat, yoki
-  `type_id = 1`.
+- **Create service** (info / recipient check) —
+  `min_amount = max_amount = service_price = 0` and `type_id != 1`.
+  Used to verify the recipient before making a payment.
+- **Confirm service** (execute payment) — at least one of `min_amount`,
+  `max_amount`, or `service_price` is positive, or `type_id = 1`.
 
-## Javob maydonlari
+## Response Fields
 
-| Maydon | Turi | Tavsif |
+| Field | Type | Description |
 |---|---|---|
-| `id` | integer | Xizmat identifikatori |
-| `title_uz` / `title_ru` | string | Xizmat nomi |
-| `type_id` | integer | Xizmat turi |
-| `min_amount` / `max_amount` | integer | Summa chegaralari |
-| `service_price` | number | Xizmat narxi (agar belgilangan bo'lsa) |
-| `fields` | array | To'lov uchun kerakli input maydonlar |
-| `response_fields` | array | Chek/kvitansiyada ko'rsatiladigan maydonlar |
+| `id` | integer | Service identifier |
+| `title_uz` / `title_ru` | string | Service name |
+| `type_id` | integer | Service type |
+| `min_amount` / `max_amount` | integer | Amount limits |
+| `service_price` | number | Service fee (if applicable) |
+| `fields` | array | Input fields required for the payment |
+| `response_fields` | array | Fields displayed on the receipt |
 
-## Namuna javob (qisqartirilgan)
+## Sample Response (abbreviated)
 
 ```json
 {
@@ -103,5 +102,5 @@ bir provayderda ikkita xizmat bo'ladi:
 }
 ```
 
-`fields` massividagi `field_control` qiymati (`PHONE`, `MONEY` va
-h.k.) UI'da qaysi turdagi input yaratish kerakligini bildiradi.
+The `field_control` value in the `fields` array (`PHONE`, `MONEY`,
+etc.) indicates what type of input to render in the UI.

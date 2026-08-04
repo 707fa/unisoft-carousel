@@ -27,21 +27,20 @@ params:
   - name: fields.account
     type: string
     required: true
-    desc: "Qabul qiluvchining karta raqami."
+    desc: "Recipient's card number."
   - name: fields.sender_card
     type: string
     required: true
-    desc: "Jo'natuvchining karta raqami."
+    desc: "Sender's card number."
 ---
 
-MTS orqali kartaga pul o'tkazish. Boshqa xizmatlardan farqli
-o'laroq, bu yerda `fields` ichida **jo'natuvchi kartasi**
-(`sender_card`) ham ko'rsatiladi.
+Transfer to a card via MTS. Unlike other services, here the **sender's card**
+(`sender_card`) is also specified inside `fields`.
 
-Umumiy so'rov parametrlari [Transfer create](/docs/transfer-create)
-sahifasida tavsiflangan.
+Common request parameters are described on the [Transfer create](/docs/transfer-create)
+page.
 
-## Namuna javob
+## Sample response
 
 ```json
 {

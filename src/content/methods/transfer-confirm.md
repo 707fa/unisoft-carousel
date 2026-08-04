@@ -34,28 +34,26 @@ params:
   - name: ext_id
     type: string
     required: true
-    desc: "transfer.create'da ishlatilgan tashqi operatsiya identifikatori."
+    desc: "External operation ID used in transfer.create."
 ---
 
-`transfer.confirm` avval yaratilgan o'tkazmani yakunlaydi va
-tasdiqlaydi. Bu metod mijoz tasdiqlash bosqichini (masalan, 3-D
-Secure yoki tashqi to'lov sahifasi) muvaffaqiyatli tugatgandan
-**keyin** chaqirilishi kerak.
+`transfer.confirm` finalizes and confirms a previously created transfer.
+This method must be called **after** the customer has successfully completed
+the confirmation step (e.g., 3-D Secure or an external payment page).
 
-Tasdiqlangandan so'ng, tizim o'tkazmani qayta ishlaydi va yakuniy
-holatni yangilaydi.
+Once confirmed, the system processes the transfer and updates the final state.
 
-## Qachon ishlatiladi
+## When to use
 
-`transfer.confirm`ni faqat quyidagi holatda chaqiring:
+Only call `transfer.confirm` in the following case:
 
-- `transfer.create` `state = 0` (Created) qaytargan bo'lsa
+- `transfer.create` returned `state = 0` (Created)
 
-Bu metod chekni tasdiqlaydi va mijoz kartasidan mablag'ni yechadi.
+This method confirms the check and debits funds from the customer's card.
 
-## Namuna javob
+## Sample response
 
-Javob tuzilishi `transfer.create` javobi bilan bir xil:
+The response structure is identical to the `transfer.create` response:
 
 ```json
 {
@@ -89,5 +87,5 @@ Javob tuzilishi `transfer.create` javobi bilan bir xil:
 }
 ```
 
-`state: 4` — bu operatsiya muvaffaqiyatli yakunlanganini bildiradi
-([holatlar jadvali](/docs/transfer-state)ga qarang).
+`state: 4` — indicates that the operation completed successfully
+(see [state table](/docs/transfer-state)).

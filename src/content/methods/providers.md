@@ -32,43 +32,40 @@ params:
   - name: jsonrpc
     type: string
     required: true
-    desc: "JSON-RPC protokol versiyasi."
+    desc: "JSON-RPC protocol version."
   - name: id
     type: "string | integer"
     required: true
-    desc: "So'rov identifikatori."
+    desc: "Request identifier."
   - name: method
     type: string
     required: true
-    desc: "Metod nomi — bu holda \"providers\"."
+    desc: "Method name — in this case \"providers\"."
   - name: params
     type: object
     required: true
-    desc: "Bo'sh obyekt — kelajakda ishlatish uchun zaxiralangan."
+    desc: "Empty object — reserved for future use."
 ---
 
-`providers` metodi karuselda ko'rsatiladigan barcha mavjud
-provayderlar ro'yxatini qaytaradi. Har bir provayder — bu qo'llab-
-quvvatlanadigan xizmat, mamlakat yoki to'lov tizimi (masalan, Visa,
-Humo, Uzcard, MTS va h.k.).
+The `providers` method returns a list of all available providers displayed in the carousel. Each provider represents a supported service, country, or payment system (e.g., Visa, Humo, Uzcard, MTS, etc.).
 
-## Bu metod nima uchun kerak
+## Why This Method Is Needed
 
-- Provayderlarni UI'da (karuselda) ko'rsatish
-- Provayder nomlarini bir nechta tilda ko'rsatish
-- Provayder faol yoki nofaolligini tekshirish
+- Displaying providers in the UI (carousel)
+- Showing provider names in multiple languages
+- Checking whether a provider is active or inactive
 
-## Javob maydonlari
+## Response Fields
 
-| Maydon | Turi | Tavsif |
+| Field | Type | Description |
 |---|---|---|
-| `id` | integer | Provayderning noyob identifikatori |
-| `name_uz` | string | Provayder nomi o'zbek tilida |
-| `name_en` | string | Provayder nomi ingliz tilida |
-| `name_ru` | string | Provayder nomi rus tilida |
-| `is_active` | boolean | Provayder faolligini bildiradi |
+| `id` | integer | Unique identifier of the provider |
+| `name_uz` | string | Provider name in Uzbek |
+| `name_en` | string | Provider name in English |
+| `name_ru` | string | Provider name in Russian |
+| `is_active` | boolean | Indicates whether the provider is active |
 
-## Namuna javob
+## Sample Response
 
 ```json
 {

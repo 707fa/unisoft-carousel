@@ -88,8 +88,8 @@ export default function SearchModal({ open, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40" onClick={onClose}>
-      {/* Navbardagi grid-cols-3 tuzilishi bilan mos — o'rtadagi
-          qidiruv qutisi aynan navbar tugmasi turgan joyda chiqadi. */}
+      {/* Matches the navbar's grid-cols-3 layout — the search box
+          appears exactly where the navbar button is positioned. */}
       <div className="grid grid-cols-3 items-start px-4 md:px-6 h-14">
         <div />
         <div
@@ -103,7 +103,7 @@ export default function SearchModal({ open, onClose }) {
                 ref={inputRef}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Docs bo'yicha qidiring yoki savol bering"
+                placeholder="Search the docs or ask a question"
                 className="flex-1 text-[15px] outline-none placeholder:text-gray-400"
               />
               <button
@@ -118,12 +118,12 @@ export default function SearchModal({ open, onClose }) {
               {showingResults ? (
                 results.length === 0 ? (
                   <p className="px-5 py-8 text-center text-[13px] text-gray-400">
-                    Hech narsa topilmadi
+                    Nothing found
                   </p>
                 ) : (
                   <>
                     <p className="px-5 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wide">
-                      Natijalar
+                      Results
                     </p>
                     {results.map((doc) => (
                       <ResultRow key={doc.slug} doc={doc} onSelect={handleSelect} />
@@ -133,7 +133,7 @@ export default function SearchModal({ open, onClose }) {
               ) : (
                 <>
                   <p className="px-5 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wide">
-                    Tavsiya etilgan
+                    Suggested
                   </p>
                   {suggested.map((doc) => (
                     <ResultRow key={doc.slug} doc={doc} onSelect={handleSelect} />

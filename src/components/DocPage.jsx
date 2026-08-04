@@ -41,7 +41,7 @@ export default function DocPage() {
           hasCode ? "lg:grid-cols-[minmax(0,1fr)_420px]" : ""
         }`}
       >
-        {/* Matn ustuni */}
+        {/* Text column */}
         <div>
           <h1 className="text-[28px] font-bold tracking-tight mb-3">
             {doc.title}
@@ -78,14 +78,14 @@ export default function DocPage() {
           {doc.params && (
             <>
               <h2 className="text-[19px] font-semibold mt-8 mb-3">
-                Parametrlar
+                Parameters
               </h2>
               <ParamsTable params={doc.params} />
             </>
           )}
         </div>
 
-        {/* Kod ustuni — faqat codeExamples bo'lsa ko'rinadi */}
+        {/* Code column — only visible when codeExamples is present */}
         {hasCode && (
           <div className="self-start">
             <CodeBlock codeExamples={doc.codeExamples} />

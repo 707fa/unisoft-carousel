@@ -1,6 +1,6 @@
-# Stripe-style Docs — React loyiha
+# Stripe-style Docs — React Project
 
-## Ishga tushirish
+## Getting Started
 
 ```bash
 npm install
@@ -9,44 +9,43 @@ npm run dev        # http://localhost:5173
 
 Production build:
 ```bash
-npm run build       # dist/ papkasiga yig'iladi
-npm run preview      # build natijasini localda ko'rish
+npm run build       # compiled to dist/
+npm run preview      # preview the build locally
 ```
 
-## Loyiha strukturasi
+## Project Structure
 
 ```
 src/
   content/
-    guide/           <- "Boshlash" bo'limi sahifalari
+    guide/           <- "Getting Started" section pages
       intro.md
       auth.md
-    api/              <- "API Reference" bo'limi sahifalari
+    api/              <- "API Reference" section pages
       create-payment.md
       refund.md
   lib/
-    content.js        <- .md fayllarni o'qib, frontmatter'ni parse qiladi
+    content.js        <- reads .md files and parses frontmatter
   components/
-    Navbar.jsx         <- yuqori panel (logo, qidiruv)
-    Sidebar.jsx         <- chap navigatsiya (content.js'dan avtomatik quriladi)
-    DocPage.jsx          <- bitta docs sahifasini render qiladi
-    CodeBlock.jsx         <- o'ng tomondagi kod paneli (tab bilan)
-    ParamsTable.jsx        <- parametrlar jadvali
+    Navbar.jsx         <- top navigation bar (logo, search)
+    Sidebar.jsx         <- left navigation (built automatically from content.js)
+    DocPage.jsx          <- renders a single docs page
+    CodeBlock.jsx         <- right-side code panel (with tabs)
+    ParamsTable.jsx        <- parameters table
   App.jsx                   <- routing (react-router-dom)
   main.jsx                   <- entry point
 ```
 
-## Yangi docs sahifasi qo'shish — ish jarayoni
+## Adding a New Docs Page — Workflow
 
-Yangi sahifa qo'shish uchun **kod yozish shart emas**. Faqat yangi
-`.md` fayl yaratiladi:
+No code is required to add a new page. Simply create a new `.md` file:
 
-1. `src/content/api/` yoki `src/content/guide/` ichiga yangi `.md` fayl qo'ying
-2. Fayl boshiga frontmatter yozing (`---` orasida):
+1. Place a new `.md` file inside `src/content/api/` or `src/content/guide/`
+2. Add frontmatter at the top of the file (between `---` markers):
 
 ```md
 ---
-title: Mijoz yaratish
+title: Create Customer
 order: 3
 method: POST
 endpoint: /v1/customers
@@ -63,49 +62,48 @@ params:
   - name: email
     type: string
     required: true
-    desc: "Mijozning email manzili."
+    desc: "The customer's email address."
 ---
 
-Bu yerga oddiy Markdown matn yoziladi — sarlavhalar, paragraflar,
-ro'yxatlar va h.k. Bu qism sahifaning asosiy tavsif qismi bo'ladi.
+Write regular Markdown text here — headings, paragraphs, lists, etc.
+This section becomes the main description of the page.
 ```
 
-3. Saqlang — Vite avtomatik qayta yuklaydi (hot reload), sidebar'da
-   yangi element o'zi paydo bo'ladi, chunki `Sidebar.jsx`
-   `getNavSections()` orqali barcha `.md` fayllarni avtomatik o'qiydi.
+3. Save — Vite will hot-reload automatically, and the new item will appear
+   in the sidebar, since `Sidebar.jsx` reads all `.md` files automatically
+   via `getNavSections()`.
 
-Yangi **bo'lim** (masalan "Webhooks") qo'shish uchun:
-- `src/content/webhooks/` papkasini yarating, ichiga `.md` fayllar qo'ying
-- `src/lib/content.js` ichidagi `sectionLabels` obyektiga
-  `webhooks: "Webhooklar"` qatorini qo'shing
+To add a new **section** (e.g., "Webhooks"):
+- Create a `src/content/webhooks/` directory and place `.md` files inside it
+- Add a `webhooks: "Webhooks"` entry to the `sectionLabels` object in
+  `src/lib/content.js`
 
-## Nega bu format tanlandi
+## Why This Format
 
-| Yechim | Kimga mos |
+| Solution | Best for |
 |---|---|
-| **Markdown + frontmatter** (shu loyihada) | Kontentni tez-tez yozuvchi/dasturchi bo'lmagan odam yozadigan jamoalar uchun |
-| Kod ichida hardcode (`const PARAMS = [...]`) | Juda kichik, kam o'zgaruvchi docs uchun |
-| Backend/CMS'dan dinamik | Docs soni katta, boshqa jamoa boshqarsa yoki real API'dan avtogeneratsiya kerak bo'lsa |
+| **Markdown + frontmatter** (this project) | Teams where content is frequently written by non-developers |
+| Hardcoded in code (`const PARAMS = [...]`) | Very small, rarely-changed docs |
+| Dynamic from backend/CMS | Large-scale docs, managed by a separate team, or when auto-generation from a real API is needed |
 
-Markdown yondashuvi ikkalasining o'rtasida — kod yozmasdan kontent
-qo'shish imkonini beradi, lekin hech qanday backend/server kerak emas
-(hammasi build vaqtida statik faylga aylanadi).
+The Markdown approach is a middle ground — it allows adding content without
+writing code, yet requires no backend or server (everything is compiled to
+static files at build time).
 
-## Texnologiyalar
+## Technologies
 
-- **Vite** — dev server va build
-- **React Router** — `/docs/:slug` sahifalari orasida navigatsiya
-- **react-markdown + remark-gfm** — Markdown'ni HTML'ga render qilish
-- **js-yaml** — frontmatter'dagi YAML'ni parse qilish
-- **Tailwind CSS** — stilizatsiya
-- **lucide-react** — ikonkalar
+- **Vite** — dev server and build
+- **React Router** — navigation between `/docs/:slug` pages
+- **react-markdown + remark-gfm** — renders Markdown to HTML
+- **js-yaml** — parses the YAML frontmatter
+- **Tailwind CSS** — styling
+- **lucide-react** — icons
 
-## Keyingi qadamlar (production uchun tavsiya)
+## Next Steps (recommended for production)
 
-- Qidiruv: `Navbar`dagi qidiruv qutisini ishlaydigan qilish uchun
-  [Algolia DocSearch](https://docsearch.algolia.com/) yoki oddiy
-  client-side fuzzy search (`fuse.js`) qo'shish mumkin
-- SEO: Vite'ni SSG rejimiga o'tkazish uchun `vite-plugin-ssr` yoki
-  Next.js'ga migratsiya (agar SEO muhim bo'lsa)
-- Dark mode: Tailwind'ning `dark:` klassi + `prefers-color-scheme`
-- Versiyalash: `content/v1/`, `content/v2/` papkalari orqali
+- Search: add [Algolia DocSearch](https://docsearch.algolia.com/) or a simple
+  client-side fuzzy search (`fuse.js`) to make the search box in `Navbar` functional
+- SEO: switch Vite to SSG mode with `vite-plugin-ssr`, or migrate to Next.js
+  (if SEO matters)
+- Dark mode: Tailwind's `dark:` class + `prefers-color-scheme`
+- Versioning: via `content/v1/`, `content/v2/` directories

@@ -34,31 +34,29 @@ params:
   - name: service_code
     type: string
     required: true
-    desc: "Kurs so'ralayotgan xizmatning noyob kodi."
+    desc: "Unique code of the service whose exchange rate is being requested."
 ---
 
-Tanlangan xizmat uchun valyuta ayirboshlash kurslarini qaytaradi.
-`get.rate.v2` shu xizmatga tegishli barcha mavjud konversiya
-kurslarini beradi.
+Returns the currency exchange rates for the selected service. `get.rate.v2` provides all available conversion rates associated with that service.
 
-## Bu metod nima uchun kerak
+## Why This Method Is Needed
 
-- Xizmat kodi bo'yicha ayirboshlash kurslarini olish
-- Asosiy va ikkinchi darajali konversiya kurslarini aniqlash
-- Valyuta konversiya qoidalari asosida tranzaksiya summasini hisoblash
+- Retrieving exchange rates by service code
+- Determining primary and secondary conversion rates
+- Calculating the transaction amount based on currency conversion rules
 
-## Javob maydonlari
+## Response Fields
 
-| Maydon | Turi | Tavsif |
+| Field | Type | Description |
 |---|---|---|
-| `transaction_type` | string | Tranzaksiya turi (`credit` / `debit`) |
-| `is_primary` | boolean | Kurs asosiy hisoblanishini bildiradi |
-| `currency` | string | Manba valyuta (ISO 4217 raqamli kod) |
-| `target_currency` | string | Maqsad valyuta (ISO 4217 raqamli kod) |
-| `operator` | string | Kursni hisoblash operatori (`multiply`, `divide`) |
-| `value` | number | Ayirboshlash kursining qiymati |
+| `transaction_type` | string | Transaction type (`credit` / `debit`) |
+| `is_primary` | boolean | Indicates whether this is the primary rate |
+| `currency` | string | Source currency (ISO 4217 numeric code) |
+| `target_currency` | string | Target currency (ISO 4217 numeric code) |
+| `operator` | string | Operator used to calculate the rate (`multiply`, `divide`) |
+| `value` | number | Exchange rate value |
 
-## Namuna javob
+## Sample Response
 
 ```json
 {
@@ -87,5 +85,4 @@ kurslarini beradi.
 }
 ```
 
-Yakuniy summani hisoblash uchun `value`ni `operator`ga qarab manba
-summasiga ko'paytiring (`multiply`) yoki bo'ling (`divide`).
+To calculate the final amount, multiply or divide the source amount by `value` according to the `operator` field (`multiply` or `divide`).

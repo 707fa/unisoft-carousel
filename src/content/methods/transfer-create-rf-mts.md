@@ -26,23 +26,23 @@ params:
   - name: fields.receiver_description
     type: string
     required: true
-    desc: "Qabul qiluvchining tavsifi (MTS bank tizimidagi identifikator)."
+    desc: "Recipient description (identifier in the MTS bank system)."
 ---
 
-Rossiya **MTS Bank** orqali pul o'tkazish uchun ishlatiladi. Javobda
-qo'shimcha `banks` maydoni qaytadi — bu foydalanuvchiga tegishli
-bank ro'yxatini ko'rsatish uchun ishlatiladi.
+Used to transfer money via Russia's **MTS Bank**. The response includes an
+additional `banks` field — used to display the list of available banks for
+the user.
 
-Umumiy so'rov parametrlari [Transfer create](/docs/transfer-create)
-sahifasida tavsiflangan.
+Common request parameters are described on the
+[Transfer create](/docs/transfer-create) page.
 
-## Qo'shimcha javob maydoni
+## Additional Response Field
 
-| Maydon | Turi | Tavsif |
+| Field | Type | Description |
 |---|---|---|
-| `banks` | array | RF MTS uchun mavjud banklar kodi va nomi ro'yxati |
+| `banks` | array | List of available bank codes and names for RF MTS |
 
-## Namuna javob
+## Example Response
 
 ```json
 {
@@ -77,6 +77,5 @@ sahifasida tavsiflangan.
 }
 ```
 
-Bu xizmatda `form_url` qaytishi mumkin — foydalanuvchi to'lovni
-yakunlash uchun shu URL orqali qo'shimcha sahifaga yo'naltiriladi
-(masalan, QR-kod orqali to'lov).
+This service may return a `form_url` — the user is redirected to an additional
+page via this URL to complete the payment (e.g., payment via QR code).
