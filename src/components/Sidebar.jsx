@@ -8,7 +8,7 @@ export default function Sidebar({ sidebarOpen }) {
     <aside
       className={`${
         sidebarOpen ? "block" : "hidden"
-      } md:block w-64 shrink-0 border-r border-gray-100 px-4 py-6 sticky top-14 self-start h-[calc(100vh-56px)] overflow-y-auto`}
+      } md:block w-64 shrink-0 border-r border-gray-100 px-4 py-6 sticky top-14 self-start h-[calc(100vh-56px)] overflow-y-auto sidebar-scroll`}
     >
       {sections.map((section) => (
         <div key={section.key} className="mb-6">

@@ -10,6 +10,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.sidebar-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.sidebar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 /* Typography for Markdown content (react-markdown output is rendered inside this class) */
 .docs-prose h2 {
   font-size: 19px;
