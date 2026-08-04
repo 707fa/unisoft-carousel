@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Search, Menu, X } from "lucide-react";
 import SearchModal from "./SearchModal";
 
@@ -33,7 +34,7 @@ export default function Navbar({ sidebarOpen, setSidebarOpen }) {
             aria-label="Home — About the project"
           >
             <img src="/logo.png" alt="Unisoft" className="h-8 w-auto" />
-          </div>
+          </Link>
         </div>
 
         {!searchOpen && (

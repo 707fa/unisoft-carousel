@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
-import DocPage from "./components/DocPage";
+import DocStream from "./components/DocStream";
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -16,7 +16,7 @@ export default function App() {
           <div className="flex-1 max-w-[1100px]">
             <Routes>
               <Route path="/" element={<Navigate to="/docs/intro" replace />} />
-              <Route path="/docs/:slug" element={<DocPage />} />
+              <Route path="/docs/:slug" element={<DocStream />} />
             </Routes>
           </div>
         </div>
