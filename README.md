@@ -1,6 +1,6 @@
-# Stripe-style Docs — React loyiha
+# Stripe-style Docs — React project
 
-## Ishga tushirish
+## Getting started
 
 ```bash
 npm install
@@ -9,44 +9,48 @@ npm run dev        # http://localhost:5173
 
 Production build:
 ```bash
-npm run build       # dist/ papkasiga yig'iladi
-npm run preview      # build natijasini localda ko'rish
+npm run build       # bundled into the dist/ folder
+npm run preview      # preview the build result locally
 ```
 
-## Loyiha strukturasi
+## Project structure
 
 ```
 src/
   content/
-    guide/           <- "Boshlash" bo'limi sahifalari
+    overview/         <- "Overview" section pages
       intro.md
+      terms.md
+    connection/       <- "Connection" section pages
+      format.md
       auth.md
-    api/              <- "API Reference" bo'limi sahifalari
-      create-payment.md
-      refund.md
+    methods/          <- "Methods" section pages (JSON-RPC methods)
+    payments/         <- "Paynet payments" section pages
   lib/
-    content.js        <- .md fayllarni o'qib, frontmatter'ni parse qiladi
+    content.js        <- reads .md files and parses their frontmatter
   components/
-    Navbar.jsx         <- yuqori panel (logo, qidiruv)
-    Sidebar.jsx         <- chap navigatsiya (content.js'dan avtomatik quriladi)
-    DocPage.jsx          <- bitta docs sahifasini render qiladi
-    CodeBlock.jsx         <- o'ng tomondagi kod paneli (tab bilan)
-    ParamsTable.jsx        <- parametrlar jadvali
-  App.jsx                   <- routing (react-router-dom)
-  main.jsx                   <- entry point
+    Navbar.jsx         <- top bar (logo, search)
+    Sidebar.jsx         <- left navigation (built automatically from content.js)
+    DocStream.jsx        <- renders docs as one continuous infinite scroll
+    DocArticle.jsx        <- renders a single docs page
+    CodeBlock.jsx          <- right-hand code panel (with tabs)
+    ResponseBlock.jsx       <- sample response panel
+    ParamsTable.jsx          <- parameters table
+  App.jsx                     <- routing (react-router-dom)
+  main.jsx                     <- entry point
 ```
 
-## Yangi docs sahifasi qo'shish — ish jarayoni
+## Adding a new docs page — workflow
 
-Yangi sahifa qo'shish uchun **kod yozish shart emas**. Faqat yangi
-`.md` fayl yaratiladi:
+You **don't need to write any code** to add a new page. Just create a new
+`.md` file:
 
-1. `src/content/api/` yoki `src/content/guide/` ichiga yangi `.md` fayl qo'ying
-2. Fayl boshiga frontmatter yozing (`---` orasida):
+1. Put a new `.md` file inside `src/content/methods/` or another section folder
+2. Add frontmatter at the top of the file (between `---`):
 
 ```md
 ---
-title: Mijoz yaratish
+title: Create customer
 order: 3
 method: POST
 endpoint: /v1/customers
@@ -63,49 +67,49 @@ params:
   - name: email
     type: string
     required: true
-    desc: "Mijozning email manzili."
+    desc: "The customer's email address."
 ---
 
-Bu yerga oddiy Markdown matn yoziladi — sarlavhalar, paragraflar,
-ro'yxatlar va h.k. Bu qism sahifaning asosiy tavsif qismi bo'ladi.
+Write plain Markdown here — headings, paragraphs, lists, etc. This part
+becomes the main description of the page.
 ```
 
-3. Saqlang — Vite avtomatik qayta yuklaydi (hot reload), sidebar'da
-   yangi element o'zi paydo bo'ladi, chunki `Sidebar.jsx`
-   `getNavSections()` orqali barcha `.md` fayllarni avtomatik o'qiydi.
+3. Save it — Vite hot-reloads automatically, and a new item appears in the
+   sidebar on its own, because `Sidebar.jsx` reads all `.md` files
+   automatically via `getNavSections()`.
 
-Yangi **bo'lim** (masalan "Webhooks") qo'shish uchun:
-- `src/content/webhooks/` papkasini yarating, ichiga `.md` fayllar qo'ying
-- `src/lib/content.js` ichidagi `sectionLabels` obyektiga
-  `webhooks: "Webhooklar"` qatorini qo'shing
+To add a new **section** (for example "Webhooks"):
+- Create the `src/content/webhooks/` folder and put `.md` files in it
+- Add a `webhooks: "Webhooks"` line to the `CATEGORY_LABELS` object in
+  `src/lib/content.js`
 
-## Nega bu format tanlandi
+## Why this format was chosen
 
-| Yechim | Kimga mos |
+| Approach | Best for |
 |---|---|
-| **Markdown + frontmatter** (shu loyihada) | Kontentni tez-tez yozuvchi/dasturchi bo'lmagan odam yozadigan jamoalar uchun |
-| Kod ichida hardcode (`const PARAMS = [...]`) | Juda kichik, kam o'zgaruvchi docs uchun |
-| Backend/CMS'dan dinamik | Docs soni katta, boshqa jamoa boshqarsa yoki real API'dan avtogeneratsiya kerak bo'lsa |
+| **Markdown + frontmatter** (this project) | Teams where content is written frequently by non-developers |
+| Hardcoded in code (`const PARAMS = [...]`) | Very small docs that rarely change |
+| Dynamic from a backend/CMS | Large docs managed by another team, or auto-generated from a real API |
 
-Markdown yondashuvi ikkalasining o'rtasida — kod yozmasdan kontent
-qo'shish imkonini beradi, lekin hech qanday backend/server kerak emas
-(hammasi build vaqtida statik faylga aylanadi).
+The Markdown approach sits in between — it lets you add content without
+writing code, but needs no backend/server (everything is compiled into
+static files at build time).
 
-## Texnologiyalar
+## Technologies
 
-- **Vite** — dev server va build
-- **React Router** — `/docs/:slug` sahifalari orasida navigatsiya
-- **react-markdown + remark-gfm** — Markdown'ni HTML'ga render qilish
-- **js-yaml** — frontmatter'dagi YAML'ni parse qilish
-- **Tailwind CSS** — stilizatsiya
-- **lucide-react** — ikonkalar
+- **Vite** — dev server and build
+- **React Router** — navigation between `/docs/:slug` pages
+- **react-markdown + remark-gfm** — render Markdown to HTML
+- **js-yaml** — parse the YAML in the frontmatter
+- **Tailwind CSS** — styling
+- **lucide-react** — icons
 
-## Keyingi qadamlar (production uchun tavsiya)
+## Next steps (recommended for production)
 
-- Qidiruv: `Navbar`dagi qidiruv qutisini ishlaydigan qilish uchun
-  [Algolia DocSearch](https://docsearch.algolia.com/) yoki oddiy
-  client-side fuzzy search (`fuse.js`) qo'shish mumkin
-- SEO: Vite'ni SSG rejimiga o'tkazish uchun `vite-plugin-ssr` yoki
-  Next.js'ga migratsiya (agar SEO muhim bo'lsa)
-- Dark mode: Tailwind'ning `dark:` klassi + `prefers-color-scheme`
-- Versiyalash: `content/v1/`, `content/v2/` papkalari orqali
+- Search: to make the search box in the `Navbar` functional, add
+  [Algolia DocSearch](https://docsearch.algolia.com/) or a simple
+  client-side fuzzy search (`fuse.js`)
+- SEO: switch Vite to SSG mode with `vite-plugin-ssr`, or migrate to
+  Next.js (if SEO matters)
+- Dark mode: Tailwind's `dark:` class + `prefers-color-scheme`
+- Versioning: via `content/v1/`, `content/v2/` folders

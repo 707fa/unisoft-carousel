@@ -34,51 +34,51 @@ params:
   - name: fields.account
     type: string
     required: true
-    desc: "Qabul qiluvchining hisob raqami."
+    desc: "The receiver's account number."
   - name: fields.receiver_phone
     type: string
     required: true
-    desc: "Qabul qiluvchining telefon raqami."
+    desc: "The receiver's phone number."
   - name: fields.receiver_first_name
     type: string
     required: true
-    desc: "Qabul qiluvchining ismi."
+    desc: "The receiver's first name."
   - name: fields.receiver_last_name
     type: string
     required: true
-    desc: "Qabul qiluvchining familiyasi."
+    desc: "The receiver's last name."
   - name: fields.relation
     type: string
     required: true
-    desc: "Jo'natuvchi va qabul qiluvchi orasidagi munosabat kodi."
+    desc: "The relationship code between the sender and receiver."
   - name: fields.source_of_fund
     type: string
     required: true
-    desc: "Mablag' manbai kodi."
+    desc: "The source-of-funds code."
   - name: fields.id_type
     type: string
     required: true
-    desc: "Hujjat turi kodi."
+    desc: "The document type code."
   - name: fields.bank
     type: string
     required: true
-    desc: "Bank kodi."
+    desc: "The bank code."
   - name: fields.transfer_reason
     type: string
     required: true
-    desc: "O'tkazma sababi kodi."
+    desc: "The transfer reason code."
 ---
 
-Janubiy Koreya banklariga pul o'tkazish — eng ko'p tartibga solingan
-(compliance) xizmat turlaridan biri, chunki mablag' manbai, hujjat
-turi va o'tkazma sababi kabi qo'shimcha kodlar talab qilinadi.
+A transfer to South Korean banks — one of the most heavily regulated
+(compliance) service types, because it requires additional codes such as
+the source of funds, document type and transfer reason.
 
-Umumiy so'rov parametrlari [Transfer create](/docs/transfer-create)
-sahifasida tavsiflangan. `relation`, `source_of_fund`, `id_type` va
-`transfer_reason` kodlarining to'liq ro'yxatini hamkorlik shartnomasi
-doirasida so'rang.
+The common request parameters are described on the
+[Transfer create](/docs/transfer-create) page. Request the full list of
+`relation`, `source_of_fund`, `id_type` and `transfer_reason` codes as
+part of the partnership agreement.
 
-## Namuna javob
+## Sample response
 
 ```json
 {

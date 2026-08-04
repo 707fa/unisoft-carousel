@@ -38,39 +38,39 @@ params:
   - name: number
     type: string
     required: true
-    desc: "Karta raqami yoki qabul qiluvchining telefon raqami."
+    desc: "The receiver's card number or phone number."
   - name: service_code
     type: string
     required: true
-    desc: "Noyob xizmat kodi."
+    desc: "The unique service code."
 ---
 
-Transfer boshlashdan **oldin** karta yoki telefon raqami haqidagi
-ma'lumotni oladi. Bu metod **hech qanday validatsiya qilmaydi** — u
-faqat berilgan raqam haqida mavjud ma'lumotni qaytaradi.
+Retrieves information about a card or phone number **before** starting a
+transfer. This method performs **no validation** — it only returns the
+available information about the given number.
 
-## Bu metod nima uchun kerak
+## Why you need this method
 
-- Karta egasining ismini yoki telefon egasini olish
-- Foydalanuvchiga maskalangan karta/telefon raqamini ko'rsatish
-- Raqamga bog'liq hisob ma'lumotlarini ko'rsatish
-- Olingan ma'lumot bilan transfer formasini oldindan to'ldirish
+- Get the cardholder's name or the phone owner
+- Show the user a masked card/phone number
+- Display account details tied to the number
+- Pre-fill the transfer form with the retrieved information
 
-Ushbu metod hech qanday validatsiya yoki tranzaksiya qayta ishlashni
-amalga oshirmaydi — u faqat berilgan xizmat kontekstida raqam haqida
-ma'lumot beruvchi (informational) qiymat qaytaradi.
+This method does not perform any validation or transaction processing — it
+returns an informational value about the number within the context of the
+given service.
 
-## Javob maydonlari
+## Response fields
 
-| Maydon | Turi | Tavsif |
+| Field | Type | Description |
 |---|---|---|
-| `number` | string | Karta yoki telefon raqami |
-| `owner` | string \| null | To'liq ism (agar mavjud bo'lsa) |
-| `is_corporate` | boolean | Karta turi — korporativmi yoki yo'q |
-| `state` | integer | Karta holati |
-| `bank` | string | Kartaga tegishli bank nomi |
+| `number` | string | Card or phone number |
+| `owner` | string \| null | Full name (if available) |
+| `is_corporate` | boolean | Card type — corporate or not |
+| `state` | integer | Card state |
+| `bank` | string | Name of the bank the card belongs to |
 
-## Namuna javob
+## Sample response
 
 ```json
 {

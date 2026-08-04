@@ -26,17 +26,16 @@ params:
   - name: fields.card_number
     type: string
     required: true
-    desc: "Qabul qiluvchining karta raqami."
+    desc: "The receiver's card number."
 ---
 
-Rossiya **TCB Bank** kartalariga pul o'tkazish uchun ishlatiladi.
-Javobda `form_url` orqali qo'shimcha to'lov sahifasiga havola
-qaytishi mumkin.
+Used to transfer money to Russia's **TCB Bank** cards. The response may
+return a link to an additional payment page via `form_url`.
 
-Umumiy so'rov parametrlari [Transfer create](/docs/transfer-create)
-sahifasida tavsiflangan.
+The common request parameters are described on the
+[Transfer create](/docs/transfer-create) page.
 
-## Namuna javob
+## Sample response
 
 ```json
 {

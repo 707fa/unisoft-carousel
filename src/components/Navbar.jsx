@@ -27,7 +27,11 @@ export default function Navbar({ sidebarOpen, setSidebarOpen }) {
           >
             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-          <div className="flex items-center gap-2">
+          <Link
+            to="/docs/intro"
+            className="flex items-center gap-2"
+            aria-label="Home — About the project"
+          >
             <img src="/logo.png" alt="Unisoft" className="h-8 w-auto" />
           </div>
         </div>
@@ -38,7 +42,7 @@ export default function Navbar({ sidebarOpen, setSidebarOpen }) {
             className="hidden md:flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 w-72 mx-auto hover:border-gray-300 transition-colors"
           >
             <Search size={14} className="text-gray-400" />
-            <span className="text-[13px] text-gray-400">Qidirish...</span>
+            <span className="text-[13px] text-gray-400">Search...</span>
             <span className="ml-auto text-[11px] text-gray-400 border border-gray-200 rounded px-1">
               ⌘K
             </span>

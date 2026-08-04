@@ -19,13 +19,13 @@ params:
   - name: ext_id
     type: string
     required: true
-    desc: "Create qadamida ishlatilgan tashqi operatsiya identifikatori."
+    desc: "The external operation identifier used in the Create step."
 ---
 
-`transfer.create` orqali `state: 0` bilan yaratilgan to'lovni
-yakuniy tasdiqlaydi va bajaradi.
+Finalizes and executes a payment created with `state: 0` via
+`transfer.create`.
 
-## Namuna javob
+## Sample response
 
 ```json
 {
@@ -55,4 +55,4 @@ yakuniy tasdiqlaydi va bajaradi.
 }
 ```
 
-`state: 4` — to'lov muvaffaqiyatli yakunlanganini bildiradi.
+`state: 4` means the payment completed successfully.

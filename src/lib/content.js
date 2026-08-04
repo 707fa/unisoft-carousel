@@ -46,12 +46,12 @@ export const allDocs = Object.entries(files)
   .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
 export const CATEGORY_LABELS = {
-  guide: "Boshlash",
+  guide: "Getting started",
   api: "API Reference",
-  overview: "Umumiy ma'lumot",
-  connection: "Ulanish",
-  methods: "Metodlar",
-  payments: "Paynet to'lovlari",
+  overview: "Overview",
+  connection: "Connection",
+  methods: "Methods",
+  payments: "Paynet payments",
 };
 
 export function getDocBySlug(slug) {

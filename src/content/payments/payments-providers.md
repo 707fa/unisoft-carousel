@@ -34,21 +34,21 @@ params:
   - name: category_id
     type: integer
     required: true
-    desc: "paynet.categories javobidan olingan kategoriya identifikatori."
+    desc: "The category identifier taken from the paynet.categories response."
 ---
 
-Tanlangan kategoriya ostidagi merchant (provayder)larni qaytaradi
-— masalan, Beeline, Ucell, UzPaynet va h.k.
+Returns the merchants (providers) under the selected category — for
+example Beeline, Ucell, UzPaynet, etc.
 
-## Javob maydonlari
+## Response fields
 
-| Maydon | Turi | Tavsif |
+| Field | Type | Description |
 |---|---|---|
-| `id` | integer | Provayder identifikatori |
-| `title` | string | To'liq nomi |
-| `title_short` | string | Qisqartirilgan (ko'rsatiladigan) nomi |
+| `id` | integer | Provider identifier |
+| `title` | string | Full name |
+| `title_short` | string | Short (display) name |
 
-## Namuna javob
+## Sample response
 
 ```json
 {

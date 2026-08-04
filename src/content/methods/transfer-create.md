@@ -52,43 +52,42 @@ params:
   - name: ext_id
     type: string
     required: true
-    desc: "Sizning tizimingizdagi operatsiyaning noyob tashqi identifikatori."
+    desc: "A unique external identifier of the operation in your system."
   - name: amount
     type: integer
     required: true
-    desc: "O'tkazma summasi (eng kichik valyuta birligida — tiyin/kopekda)."
+    desc: "Transfer amount (in the minor currency unit — tiyin/kopeck)."
   - name: currency
     type: string
     required: true
-    desc: "ISO 4217 valyuta kodi."
+    desc: "ISO 4217 currency code."
   - name: service_code
     type: string
     required: true
-    desc: "services yoki countries.list javobidan olingan xizmat kodi."
+    desc: "Service code taken from the services or countries.list response."
   - name: sender_id
     type: integer
     required: true
-    desc: "sender.create metodidan qaytgan jo'natuvchi identifikatori."
+    desc: "Sender identifier returned by the sender.create method."
   - name: fields
     type: object
     required: true
-    desc: "Tanlangan xizmatga xos maydonlar (pastga qarang)."
+    desc: "Fields specific to the selected service (see below)."
 ---
 
-`transfer.create` tanlangan xizmat uchun pul o'tkazmasi yoki to'lov
-operatsiyasini yaratadi. Har bir xizmat turlicha input maydonlarini
-talab qilishi mumkin — majburiy va ixtiyoriy maydonlar `services`
-metodi javobidan dinamik ravishda olinishi kerak.
+`transfer.create` creates a money transfer or payment operation for the
+selected service. Each service may require different input fields — the
+required and optional fields must be taken dynamically from the `services`
+method response.
 
-> ⚠️ **Muhim qoida:** `fields` obyekti faqat tanlangan xizmatda
-> aniqlangan parametrlarni o'z ichiga olishi kerak. `services`
-> javobidagi har bir maydon `name` atributiga ega — aynan shu
-> qiymatlar `transfer.create`dagi `params.fields` ichida kalit
-> sifatida ishlatilishi kerak.
+> ⚠️ **Important rule:** the `fields` object must contain only the
+> parameters defined by the selected service. Every field in the
+> `services` response has a `name` attribute — those exact values must be
+> used as keys inside `params.fields` in `transfer.create`.
 
-## Ikki bosqichli jarayon
+## Two-step process
 
-**1-qadam: Xizmat maydonlarini olish**
+**Step 1: Get the service fields**
 
 ```json
 {
@@ -99,7 +98,7 @@ metodi javobidan dinamik ravishda olinishi kerak.
 }
 ```
 
-Javobdagi `fields` massivi qanday maydonlar kerakligini ko'rsatadi:
+The `fields` array in the response indicates which fields are needed:
 
 ```json
 {
@@ -110,26 +109,26 @@ Javobdagi `fields` massivi qanday maydonlar kerakligini ko'rsatadi:
 }
 ```
 
-**2-qadam: Shu maydonlar bilan transfer yaratish** — yuqoridagi kod
-namunasidagi so'rovni yuboring.
+**Step 2: Create the transfer with those fields** — send the request from
+the code sample above.
 
-## Javob maydonlari
+## Response fields
 
-| Maydon | Turi | Tavsif |
+| Field | Type | Description |
 |---|---|---|
-| `ext_id` | string | Operatsiyaning tashqi identifikatori |
-| `state` | integer | Operatsiya holati ([holatlar jadvali](/docs/transfer-state)ga qarang) |
-| `description` | string | Holat tavsifi |
-| `amount` | integer | Summa (tiyin aniqligida) |
-| `currency` | string | Kredit valyutasi |
-| `commission` | float | Hisoblangan komissiya |
-| `cr_amount` / `cr_currency` | integer / string | Qabul qiluvchi valyutasidagi summa va kodi |
-| `form_url` | string \| null | Qo'shimcha to'lov formasi uchun URL (ba'zi xizmatlarda) |
-| `account` | array | Qabul qiluvchi hisob ma'lumotlari |
-| `payment.ref_num` | string | Protsessing markazidagi (Uzcard, Humo, Visa) mos yozuv identifikatori |
-| `id` | string | Operatsiyaning to'lov identifikatori — RRN |
+| `ext_id` | string | External identifier of the operation |
+| `state` | integer | Operation state (see the [state table](/docs/transfer-state)) |
+| `description` | string | State description |
+| `amount` | integer | Amount (with tiyin precision) |
+| `currency` | string | Credit currency |
+| `commission` | float | Calculated commission |
+| `cr_amount` / `cr_currency` | integer / string | Amount in the receiver's currency and its code |
+| `form_url` | string \| null | URL for an additional payment form (for some services) |
+| `account` | array | Receiver account details |
+| `payment.ref_num` | string | The matching reference identifier in the processing center (Uzcard, Humo, Visa) |
+| `id` | string | The operation's payment identifier — RRN |
 
-## Namuna javob
+## Sample response
 
 ```json
 {
@@ -172,11 +171,11 @@ namunasidagi so'rovni yuboring.
 }
 ```
 
-## Xizmat turiga xos variantlar
+## Service-specific variants
 
-`fields` obyektining tarkibi tanlangan xizmatga qarab farq qiladi.
-Quyida eng ko'p ishlatiladigan xizmat turlari uchun alohida
-sahifalar — har birida o'ziga xos `fields` va namuna so'rov keltirilgan:
+The contents of the `fields` object differ depending on the selected
+service. Below are separate pages for the most commonly used service types
+— each with its own `fields` and a sample request:
 
 - [Visa Direct](/docs/transfer-create-visa-direct)
 - [UnionPay](/docs/transfer-create-unionpay)

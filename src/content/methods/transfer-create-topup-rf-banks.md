@@ -29,28 +29,28 @@ params:
   - name: fields.account
     type: string
     required: true
-    desc: "Qabul qiluvchining karta raqami."
+    desc: "The receiver's card number."
   - name: fields.sender_card
     type: string
     required: true
-    desc: "Jo'natuvchining karta raqami."
+    desc: "The sender's card number."
   - name: fields.member_id
     type: string
     required: true
-    desc: "Bankning member_id identifikatori."
+    desc: "The bank's member_id identifier."
   - name: fields.type
     type: string
     required: true
-    desc: "O'tkazma turi — \"sbp\" (Tezkor to'lovlar tizimi) yoki \"card\"."
+    desc: "Transfer type — \"sbp\" (Faster Payments System) or \"card\"."
 ---
 
-Rossiya banklari kartalarini **SBP** (Система быстрых платежей) yoki
-to'g'ridan-to'g'ri karta orqali to'ldirish uchun ishlatiladi.
+Used to top up Russian bank cards via **SBP** (Система быстрых платежей)
+or directly by card.
 
-Umumiy so'rov parametrlari [Transfer create](/docs/transfer-create)
-sahifasida tavsiflangan.
+The common request parameters are described on the
+[Transfer create](/docs/transfer-create) page.
 
-## Namuna javob
+## Sample response
 
 ```json
 {

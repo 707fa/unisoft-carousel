@@ -34,60 +34,58 @@ params:
   - name: sender_codes
     type: array
     required: true
-    desc: "countries.list javobidan olingan service_code qiymatlari massivi."
+    desc: "An array of service_code values taken from the countries.list response."
 ---
 
-`transfer.service` bir yoki bir nechta `service_code` bo'yicha
-xizmatning to'liq konfiguratsiyasini qaytaradi. Transfer yaratishdan
-oldin shu metod chaqirilib, qaysi maydonlar talab qilinishi, summa
-chegaralari va qaysi valyuta ishlatilishi aniqlanadi.
+`transfer.service` returns the full configuration of a service for one or
+more `service_code` values. Call this method before creating a transfer to
+determine which fields are required, the amount limits, and which currency
+is used.
 
-Buni shunday tushuning: *"countries.list'dan olingan service_code'ni
-menga bering, men esa transferni bajarish uchun to'ldirilishi kerak
-bo'lgan hamma narsani aytib beraman."*
+Think of it like this: *"Give me a service_code from countries.list, and
+I'll tell you everything you need to fill in to perform the transfer."*
 
-## Asosiy tushunchalar
+## Key concepts
 
-- **`sender_codes`** — `countries.list`dan olingan service kodlar
-  massivi. Javobda har bir xizmat uchun to'liq konfiguratsiya
-  qaytadi: chegaralar, valyuta, kerakli input maydonlar.
-- **`fields`** — foydalanuvchi transferni bajarishdan oldin
-  to'ldirishi kerak bo'lgan maydonlar ro'yxati. Masalan, `V2S0005`
-  (Uzcard to'ldirish) uchun qabul qiluvchining karta raqami yoki
-  telefon raqami (`account`) kerak bo'ladi.
-- **`is_3ds`** — xizmat 3-D Secure autentifikatsiyasini talab
-  qilishini bildiradi. `true` bo'lsa, jo'natuvchi kartasi qo'shimcha
-  tekshiruvdan o'tadi.
-- **`currency`** — ISO 4217 raqamli formatdagi valyuta kodi. `860` —
-  O'zbek so'mi (UZS).
+- **`sender_codes`** — an array of service codes taken from
+  `countries.list`. The response returns the full configuration for each
+  service: limits, currency, and the required input fields.
+- **`fields`** — the list of fields the user must fill in before
+  performing the transfer. For example, `V2S0005` (Uzcard top-up) requires
+  the receiver's card number or phone number (`account`).
+- **`is_3ds`** — indicates the service requires 3-D Secure
+  authentication. If `true`, the sender's card goes through an additional
+  verification step.
+- **`currency`** — the currency code in ISO 4217 numeric format. `860` is
+  the Uzbek so'm (UZS).
 
-## Javob maydonlari
+## Response fields
 
-| Maydon | Turi | Tavsif |
+| Field | Type | Description |
 |---|---|---|
-| `id` | integer | Ichki xizmat identifikatori |
-| `provider_id` / `provider` | integer / string | Provayder identifikatori va nomi (masalan, `"Uzcard"`) |
-| `name_uz` / `name_ru` / `name_en` | string | Xizmat nomi tillar bo'yicha |
-| `type` | string | `credit` — kartaga pul yuborish, `debit` — kartadan pul yechish |
-| `min_amount` / `max_amount` | integer | Eng kichik valyuta birligidagi (tiyin) chegaralar |
-| `currency` | string | ISO 4217 raqamli valyuta kodi |
-| `code` | string | `sender_codes`da uzatilgan qiymatga mos service kodi |
-| `is_3ds` | boolean | 3-D Secure talab qilinishini bildiradi |
-| `fields` | array | Transferdan oldin foydalanuvchidan olinadigan maydonlar |
-| `response_fields` | array | Bajarilgandan keyin qaytadigan qo'shimcha maydonlar |
+| `id` | integer | Internal service identifier |
+| `provider_id` / `provider` | integer / string | Provider identifier and name (for example `"Uzcard"`) |
+| `name_uz` / `name_ru` / `name_en` | string | Service name by language |
+| `type` | string | `credit` — sending to a card, `debit` — withdrawing from a card |
+| `min_amount` / `max_amount` | integer | Limits in the minor currency unit (tiyin) |
+| `currency` | string | ISO 4217 numeric currency code |
+| `code` | string | Service code matching the value passed in `sender_codes` |
+| `is_3ds` | boolean | Indicates whether 3-D Secure is required |
+| `fields` | array | Fields collected from the user before the transfer |
+| `response_fields` | array | Additional fields returned after completion |
 
-### `fields` massividagi har bir obyekt
+### Each object in the `fields` array
 
-| Maydon | Turi | Tavsif |
+| Field | Type | Description |
 |---|---|---|
-| `name` | string | Transferni yuborishda ishlatiladigan kalit (masalan, `"account"`) |
-| `label_uz` / `label_ru` / `label_en` | string | Ko'rsatiladigan nom (tillar bo'yicha) |
-| `type` | string | Kiritish turi (`"string"`, `"number"` va h.k.) |
-| `is_required` | boolean | Majburiy to'ldirilishi kerakligini bildiradi |
-| `order` | integer | UI'da ko'rsatilish tartibi — kichik son avval chiqadi |
-| `regex` | string | Yuborishdan oldin mos kelishi kerak bo'lgan validatsiya shabloni |
+| `name` | string | The key used when sending the transfer (for example `"account"`) |
+| `label_uz` / `label_ru` / `label_en` | string | The displayed name (by language) |
+| `type` | string | Input type (`"string"`, `"number"`, etc.) |
+| `is_required` | boolean | Indicates whether it is mandatory |
+| `order` | integer | Display order in the UI — the lowest number comes first |
+| `regex` | string | Validation pattern the value must match before sending |
 
-## Namuna javob
+## Sample response
 
 ```json
 {

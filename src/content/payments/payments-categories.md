@@ -30,22 +30,22 @@ codeExamples:
     const { result } = await response.json();
 ---
 
-**Paynet to'lovlari** — Unisoft Carousel'ning yana bir moduli:
-mobil aloqa, kommunal xizmatlar, internet, taksi va boshqa
-provayderlar orqali to'lov qabul qilish uchun ishlatiladi.
+**Paynet payments** — another module of Unisoft Carousel: used to accept
+payments through providers such as mobile operators, utilities, internet,
+taxi and others.
 
-`paynet.categories` provayderlarning mantiqiy guruhlanishini
-qaytaradi (Mobil aloqa, Kommunal xizmatlar, Internet va h.k.).
+`paynet.categories` returns the logical grouping of providers (Mobile,
+Utilities, Internet, etc.).
 
-## Javob maydonlari
+## Response fields
 
-| Maydon | Turi | Tavsif |
+| Field | Type | Description |
 |---|---|---|
-| `id` | integer | Kategoriya identifikatori |
-| `title_uz` / `title_ru` | string | Kategoriya nomi tillar bo'yicha |
-| `is_subcategory` | boolean | Bu kichik kategoriya ekanligini bildiradi |
+| `id` | integer | Category identifier |
+| `title_uz` / `title_ru` | string | Category name by language |
+| `is_subcategory` | boolean | Indicates whether this is a subcategory |
 
-## Namuna javob
+## Sample response
 
 ```json
 {

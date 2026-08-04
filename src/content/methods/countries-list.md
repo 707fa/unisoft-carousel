@@ -32,67 +32,63 @@ params:
   - name: jsonrpc
     type: string
     required: true
-    desc: "JSON-RPC protokol versiyasi."
+    desc: "JSON-RPC protocol version."
   - name: id
     type: "string | integer"
     required: true
-    desc: "So'rov identifikatori."
+    desc: "Request identifier."
   - name: method
     type: string
     required: true
-    desc: "Metod nomi — bu holda \"countries.list\"."
+    desc: "Method name — in this case \"countries.list\"."
   - name: params
     type: object
     required: true
-    desc: "Bo'sh obyekt."
+    desc: "Empty object."
 ---
 
-`countries.list` tizim qo'llab-quvvatlaydigan barcha mamlakatlar va
-to'lov tizimlarini qaytaradi. Har bir mamlakat uchun ikkita savolga
-javob beradi:
+`countries.list` returns all countries and payment systems supported by
+the system. For each country it answers two questions:
 
-- Shu mamlakat kartalaridan pul yechish (**debit**) mumkinmi?
-- Shu mamlakat kartalariga pul yuborish (**credit**) mumkinmi?
+- Can money be withdrawn (**debit**) from cards of this country?
+- Can money be sent (**credit**) to cards of this country?
 
-Va har bir operatsiya uchun — qaysi `service_code`dan foydalanish
-kerakligini ko'rsatadi.
+And for each operation, it indicates which `service_code` to use.
 
-## Debit — kartadan pul yechish
+## Debit — withdrawing from a card
 
-`debit_enabled: true` bo'lsa, shu mamlakatda chiqarilgan kartalardan
-mablag' yechib olish mumkin. Har bir debit yozuvida `service_code`
-bor — shu kodni to'lov API'siga uzatib, yechib olish jarayonini
-boshlaysiz.
+If `debit_enabled: true`, funds can be withdrawn from cards issued in that
+country. Each debit entry has a `service_code` — pass that code to the
+payments API to start the withdrawal process.
 
-## Credit — kartaga pul yuborish
+## Credit — sending to a card
 
-`credit_enabled: true` bo'lsa, shu mamlakat kartalariga pul
-to'ldirish yoki o'tkazish mumkin. Har bir credit yozuvida ham
-`service_code` bor — uni pul yuborish uchun ishlatasiz.
+If `credit_enabled: true`, cards of that country can be topped up or
+transferred to. Each credit entry also has a `service_code` — use it to
+send money.
 
-## Service code nima
+## What a service code is
 
-`service_code` — bitta aniq operatsiyani bildiruvchi noyob
-identifikator. U karta tarmog'i, mamlakat va yo'nalishni (kiruvchi
-yoki chiquvchi) belgilaydi. Shu javobdan olingan `service_code`ni
-haqiqiy transfer endpoint'ini chaqirishda parametr sifatida
-ishlatasiz.
+`service_code` is a unique identifier for one specific operation. It
+defines the card network, the country and the direction (inbound or
+outbound). Use the `service_code` from this response as a parameter when
+calling the actual transfer endpoint.
 
-## Javob maydonlari
+## Response fields
 
-| Maydon | Turi | Tavsif |
+| Field | Type | Description |
 |---|---|---|
-| `id` | string | Mamlakatning noyob identifikatori |
-| `code` | string | Mamlakat yoki valyuta kodi (masalan, `"UZB"`, `"RUS"`) |
-| `name` | string | O'qilishi oson mamlakat/tizim nomi |
-| `debit_enabled` | boolean | Shu mamlakat uchun pul yechish mavjudmi |
-| `credit_enabled` | boolean | Shu mamlakat uchun pul yuborish mavjudmi |
-| `debit` | array | Mavjud debit xizmatlar ro'yxati (bo'sh, agar `debit_enabled` false bo'lsa) |
-| `credit` | array | Mavjud credit xizmatlar ro'yxati |
-| `service_code` | string | Keyingi so'rovlarda ishlatiladigan identifikator (masalan, `"V2S0005"`) |
-| `service_name` | string | Xizmatning o'qilishi oson tavsifi |
+| `id` | string | Unique identifier of the country |
+| `code` | string | Country or currency code (for example `"UZB"`, `"RUS"`) |
+| `name` | string | Human-readable country/system name |
+| `debit_enabled` | boolean | Whether withdrawal is available for this country |
+| `credit_enabled` | boolean | Whether sending is available for this country |
+| `debit` | array | List of available debit services (empty if `debit_enabled` is false) |
+| `credit` | array | List of available credit services |
+| `service_code` | string | Identifier used in subsequent requests (for example `"V2S0005"`) |
+| `service_name` | string | Human-readable description of the service |
 
-## Namuna javob
+## Sample response
 
 ```json
 {

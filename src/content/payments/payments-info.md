@@ -42,22 +42,22 @@ params:
   - name: service_code
     type: string
     required: true
-    desc: "Xizmat kodi."
+    desc: "The service code."
   - name: service_id
     type: integer
     required: true
-    desc: "paynet.services javobidan olingan xizmat identifikatori."
+    desc: "The service identifier taken from the paynet.services response."
   - name: fields
     type: object
     required: true
-    desc: "Xizmatga xos maydonlar (masalan, mijoz identifikatori — clientid)."
+    desc: "Service-specific fields (for example, the client identifier — clientid)."
 ---
 
-To'lovni yaratishdan **oldin** qabul qiluvchi (masalan, telefon
-raqami) haqidagi ma'lumotni tekshirish uchun ishlatiladi — bu Paynet
-guruhidagi "Create xizmati" (receiver-check) hisoblanadi.
+Used to check information about the receiver (for example a phone number)
+**before** creating a payment — this is the "Create service"
+(receiver-check) in the Paynet group.
 
-## Namuna javob
+## Sample response
 
 ```json
 {
@@ -84,6 +84,5 @@ guruhidagi "Create xizmati" (receiver-check) hisoblanadi.
 }
 ```
 
-`response` massividagi har bir element — kvitansiyada
-ko'rsatiladigan bitta qatorni bildiradi (`key`, ko'p tilli `label`,
-va `value`).
+Each element in the `response` array represents a single row shown on the
+receipt (`key`, a multilingual `label`, and a `value`).

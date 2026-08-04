@@ -68,7 +68,7 @@ const DocArticle = forwardRef(function DocArticle({ doc, first }, ref) {
 
           {doc.params && (
             <>
-              <h2 className="text-[19px] font-semibold mt-8 mb-3">Parametrlar</h2>
+              <h2 className="text-[19px] font-semibold mt-8 mb-3">Parameters</h2>
               <ParamsTable params={doc.params} />
             </>
           )}
