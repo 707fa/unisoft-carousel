@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Search, Menu, X } from "lucide-react";
 import SearchModal from "./SearchModal";
 
@@ -27,9 +28,13 @@ export default function Navbar({ sidebarOpen, setSidebarOpen }) {
           >
             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-          <div className="flex items-center gap-2">
+          <Link
+            to="/docs/intro"
+            className="flex items-center gap-2"
+            aria-label="Home — About the project"
+          >
             <img src="/logo.png" alt="Unisoft" className="h-8 w-auto" />
-          </div>
+          </Link>
         </div>
 
         {!searchOpen && (

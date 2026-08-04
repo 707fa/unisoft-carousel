@@ -118,7 +118,7 @@ export default function SearchModal({ open, onClose }) {
               {showingResults ? (
                 results.length === 0 ? (
                   <p className="px-5 py-8 text-center text-[13px] text-gray-400">
-                    Nothing found
+                    No results found
                   </p>
                 ) : (
                   <>
