@@ -26,16 +26,16 @@ params:
   - name: fields.card_number
     type: string
     required: true
-    desc: "The receiver's card number."
+    desc: "The recipient's card number."
 ---
 
-Used to transfer money to Russia's **TCB Bank** cards. The response may
-return a link to an additional payment page via `form_url`.
+Used to transfer money to Russian **TCB Bank** cards. The response may
+include a link to an additional payment page via `form_url`.
 
-The common request parameters are described on the
+Common request parameters are described on the
 [Transfer create](/docs/transfer-create) page.
 
-## Sample response
+## Example Response
 
 ```json
 {

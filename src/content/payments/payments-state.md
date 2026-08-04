@@ -19,13 +19,13 @@ params:
   - name: ext_id
     type: string
     required: true
-    desc: "The external identifier of the payment whose state is being checked."
+    desc: "External identifier of the payment whose status is being checked."
 ---
 
-Used to check the final state of a Paynet payment — its behavior is the
-same as [Transfer State](/docs/transfer-state).
+Used to check the final status of a Paynet payment — behavior is
+identical to [Transfer State](/docs/transfer-state).
 
-## Sample response
+## Sample Response
 
 ```json
 {
@@ -55,5 +55,5 @@ same as [Transfer State](/docs/transfer-state).
 }
 ```
 
-The full list of state codes is available on the
+The complete list of status codes is provided on the
 [Transfer State](/docs/transfer-state) page.

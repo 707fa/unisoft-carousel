@@ -10,7 +10,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Sahifa ochilganda silliq paydo bo'lish */
+.sidebar-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.sidebar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth fade-in animation when a page enters the viewport */
 @keyframes docFadeIn {
   from {
     opacity: 0;
@@ -25,7 +33,7 @@ body {
   animation: docFadeIn 0.28s ease-out;
 }
 
-/* Markdown kontenti uchun tipografiya (react-markdown natijasi shu klass ichida bo'ladi) */
+/* Typography for Markdown content (react-markdown output is rendered inside this class) */
 .docs-prose h2 {
   font-size: 19px;
   font-weight: 600;
@@ -60,6 +68,20 @@ body {
   border-radius: 4px;
   font-size: 13px;
   color: #635bff;
+}
+.docs-prose pre {
+  background: #1a1a2e;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0 1.5rem;
+  overflow-x: auto;
+}
+.docs-prose pre code {
+  background: none;
+  padding: 0;
+  color: #e0def4;
+  font-size: 13px;
+  line-height: 1.6;
 }
 .docs-prose a {
   color: #635bff;

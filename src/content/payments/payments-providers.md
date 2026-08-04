@@ -34,21 +34,21 @@ params:
   - name: category_id
     type: integer
     required: true
-    desc: "The category identifier taken from the paynet.categories response."
+    desc: "Category identifier from the paynet.categories response."
 ---
 
-Returns the merchants (providers) under the selected category — for
-example Beeline, Ucell, UzPaynet, etc.
+Returns the merchant (provider) list under the selected category
+— for example, Beeline, Ucell, UzPaynet, etc.
 
-## Response fields
+## Response Fields
 
 | Field | Type | Description |
 |---|---|---|
 | `id` | integer | Provider identifier |
 | `title` | string | Full name |
-| `title_short` | string | Short (display) name |
+| `title_short` | string | Abbreviated (display) name |
 
-## Sample response
+## Sample Response
 
 ```json
 {

@@ -1,5 +1,5 @@
 ---
-title: Authentication & Digest
+title: Authentication and Digest
 order: 2
 codeExamples:
   curl: |
@@ -30,30 +30,25 @@ codeExamples:
       .update(body)
       .digest('base64');
 
-    // Added to the request headers:
+    // Added to request headers:
     // Header-Sign: {digest}
     // Authorization: Bearer {access_token}
 ---
 
 ## Headers
 
-| Header | Value | Notes |
+| Header | Value | Description |
 |---|---|---|
 | `Authorization` | `Bearer {access_token}` | Token returned by the `login` method |
-| `Content-Type` | `application/json` | Gate only serves JSON requests |
+| `Content-Type` | `application/json` | The gateway only accepts JSON requests |
 | `Accept` | `application/json` | The response is also in JSON format |
-| `Header-Sign` | HMAC digest | Computed for every request as described below |
+| `Header-Sign` | HMAC digest | Computed for each request as described below |
 
-## How to compute the digest
+## Digest Calculation Steps
 
-1. **Secret key** — keep the `secret` used for the HMAC secure and never
-   disclose it to anyone.
-2. **Compute the HMAC** — a digest is computed with SHA-256 from the
-   `secret` and the request body (`request.body`).
-3. **Base64 encode** — the computed digest is converted to Base64.
-4. **Add to the header** — the result is placed in the `Header-Sign`
-   header.
+1. **Secret Key** — Keep the `secret` used for HMAC computation secure and do not share it with anyone.
+2. **HMAC Computation** — A digest is computed using SHA-256 with the `secret` and the request body (`request.body`).
+3. **Base64 Encoding** — The computed digest is encoded in Base64 format.
+4. **Adding to Header** — The result is placed in the `Header-Sign` header.
 
-If the digest is computed incorrectly, the request fails authentication —
-so the request body (`body`) must not be modified after the digest has
-been computed.
+If the digest is computed incorrectly, the request will fail authentication — therefore the request body (`body`) must not be modified after the digest has been computed.

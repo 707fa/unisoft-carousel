@@ -34,49 +34,49 @@ params:
   - name: fields.nationality
     type: string
     required: true
-    desc: "The receiver's nationality."
+    desc: "The recipient's nationality."
   - name: fields.receiver_phone
     type: string
     required: true
-    desc: "The receiver's phone number."
+    desc: "The recipient's phone number."
   - name: fields.receiver_last_name
     type: string
     required: true
-    desc: "The receiver's last name."
+    desc: "The recipient's last name."
   - name: fields.receiver_first_name
     type: string
     required: true
-    desc: "The receiver's first name."
+    desc: "The recipient's first name."
   - name: fields.email
     type: string
     required: true
-    desc: "The receiver's email address."
+    desc: "The recipient's email address."
   - name: fields.country_phone_code
     type: string
     required: true
-    desc: "The receiver country's phone code (for example, +7)."
+    desc: "The recipient's country phone code (e.g., +7)."
   - name: fields.tr_type
     type: string
     required: true
-    desc: "Transfer type (for example, \"Transfer2IBAN\")."
+    desc: "Transfer type (e.g., \"Transfer2IBAN\")."
   - name: fields.reason
     type: string
     required: true
-    desc: "Transaction reason (for example, \"HOME_RENT\")."
+    desc: "Transaction reason (e.g., \"HOME_RENT\")."
   - name: fields.account
     type: string
     required: true
-    desc: "The receiver's IBAN number."
+    desc: "The recipient's IBAN number."
 ---
 
-Used to transfer money to Turkish bank accounts via **IBAN**. This is one
-of the most field-heavy service types, because international transfer rules
-require full information about the receiver.
+Used to transfer money to Turkish bank accounts via **IBAN**. This is one of
+the most field-intensive service types, as international transfer regulations
+require full information about the recipient.
 
-The common request parameters are described on the
+Common request parameters are described on the
 [Transfer create](/docs/transfer-create) page.
 
-## Sample response
+## Example Response
 
 ```json
 {

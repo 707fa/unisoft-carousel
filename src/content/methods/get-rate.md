@@ -34,30 +34,29 @@ params:
   - name: service_code
     type: string
     required: true
-    desc: "The unique code of the service whose rate is requested."
+    desc: "Unique code of the service whose exchange rate is being requested."
 ---
 
-Returns the currency exchange rates for the selected service. `get.rate.v2`
-provides all available conversion rates for that service.
+Returns the currency exchange rates for the selected service. `get.rate.v2` provides all available conversion rates associated with that service.
 
-## Why you need this method
+## Why This Method Is Needed
 
-- Get exchange rates by service code
-- Determine primary and secondary conversion rates
-- Calculate the transaction amount based on the currency conversion rules
+- Retrieving exchange rates by service code
+- Determining primary and secondary conversion rates
+- Calculating the transaction amount based on currency conversion rules
 
-## Response fields
+## Response Fields
 
 | Field | Type | Description |
 |---|---|---|
 | `transaction_type` | string | Transaction type (`credit` / `debit`) |
-| `is_primary` | boolean | Indicates the rate is considered primary |
+| `is_primary` | boolean | Indicates whether this is the primary rate |
 | `currency` | string | Source currency (ISO 4217 numeric code) |
 | `target_currency` | string | Target currency (ISO 4217 numeric code) |
-| `operator` | string | Operator for calculating the rate (`multiply`, `divide`) |
-| `value` | number | The value of the exchange rate |
+| `operator` | string | Operator used to calculate the rate (`multiply`, `divide`) |
+| `value` | number | Exchange rate value |
 
-## Sample response
+## Sample Response
 
 ```json
 {
@@ -86,5 +85,4 @@ provides all available conversion rates for that service.
 }
 ```
 
-To calculate the final amount, multiply (`multiply`) or divide (`divide`)
-the source amount by `value` depending on the `operator`.
+To calculate the final amount, multiply or divide the source amount by `value` according to the `operator` field (`multiply` or `divide`).

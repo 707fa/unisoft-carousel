@@ -47,17 +47,15 @@ params:
     desc: "Empty object — reserved for future use."
 ---
 
-The `providers` method returns the list of all available providers shown
-in the carousel. Each provider is a supported service, country or payment
-system (for example Visa, Humo, Uzcard, MTS, etc.).
+The `providers` method returns a list of all available providers displayed in the carousel. Each provider represents a supported service, country, or payment system (e.g., Visa, Humo, Uzcard, MTS, etc.).
 
-## Why you need this method
+## Why This Method Is Needed
 
-- Show providers in the UI (the carousel)
-- Display provider names in multiple languages
-- Check whether a provider is active or inactive
+- Displaying providers in the UI (carousel)
+- Showing provider names in multiple languages
+- Checking whether a provider is active or inactive
 
-## Response fields
+## Response Fields
 
 | Field | Type | Description |
 |---|---|---|
@@ -67,7 +65,7 @@ system (for example Visa, Humo, Uzcard, MTS, etc.).
 | `name_ru` | string | Provider name in Russian |
 | `is_active` | boolean | Indicates whether the provider is active |
 
-## Sample response
+## Sample Response
 
 ```json
 {

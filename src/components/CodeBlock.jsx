@@ -3,7 +3,7 @@ import { Copy, Check } from "lucide-react";
 
 const LABELS = { curl: "curl", node: "Node.js", python: "Python" };
 
-// codeExamples — markdown frontmatter'dan keladigan { curl, node, python } obyekti
+// codeExamples — { curl, node, python } object coming from markdown frontmatter
 export default function CodeBlock({ codeExamples }) {
   const tabs = Object.keys(codeExamples || {});
   const [active, setActive] = useState(tabs[0]);

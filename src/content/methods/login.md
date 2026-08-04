@@ -32,20 +32,18 @@ params:
   - name: username
     type: string
     required: true
-    desc: "The client's login name."
+    desc: "Client username."
   - name: password
     type: string
     required: true
-    desc: "The client's password."
+    desc: "Client password."
 ---
 
-The `login` method returns the **access_token** used to authorize all
-other requests.
+The `login` method retrieves the **access_token** used to authorize all subsequent requests.
 
 ## Response
 
-`access_token` — used to authorize other requests. The default validity
-period is **1 year (365 days)**.
+`access_token` — used to authorize subsequent requests. The default validity period is **1 year (365 days)**.
 
 ```json
 {
@@ -63,7 +61,7 @@ period is **1 year (365 days)**.
 }
 ```
 
-## Error case
+## Error Case
 
 If the username or password is incorrect:
 

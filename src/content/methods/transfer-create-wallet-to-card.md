@@ -27,18 +27,17 @@ params:
   - name: fields.wallet_id
     type: string
     required: true
-    desc: "The receiver's wallet identifier."
+    desc: "Recipient's wallet identifier."
   - name: fields.debit_ext_id
     type: string
     required: true
-    desc: "The external identifier of the debit operation."
+    desc: "External identifier of the debit operation."
 ---
 
-Used to transfer money from an electronic wallet (**Ucoin wallet**) to a
-card.
+Used to transfer funds from an electronic wallet (**Ucoin wallet**) to a card.
 
-The common request parameters are described on the
-[Transfer create](/docs/transfer-create) page.
+Common request parameters are described on the [Transfer create](/docs/transfer-create)
+page.
 
 ## Sample response
 

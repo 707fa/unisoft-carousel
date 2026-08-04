@@ -30,14 +30,14 @@ codeExamples:
     const { result } = await response.json();
 ---
 
-**Paynet payments** — another module of Unisoft Carousel: used to accept
-payments through providers such as mobile operators, utilities, internet,
-taxi and others.
+**Paynet payments** — another module of Unisoft Carousel:
+used to accept payments via mobile operators, utilities,
+internet services, taxis, and other providers.
 
-`paynet.categories` returns the logical grouping of providers (Mobile,
-Utilities, Internet, etc.).
+`paynet.categories` returns the logical grouping of providers
+(Mobile, Utilities, Internet, etc.).
 
-## Response fields
+## Response Fields
 
 | Field | Type | Description |
 |---|---|---|
@@ -45,7 +45,7 @@ Utilities, Internet, etc.).
 | `title_uz` / `title_ru` | string | Category name by language |
 | `is_subcategory` | boolean | Indicates whether this is a subcategory |
 
-## Sample response
+## Sample Response
 
 ```json
 {

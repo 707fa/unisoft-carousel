@@ -34,24 +34,24 @@ params:
   - name: ext_id
     type: string
     required: true
-    desc: "The external identifier of the operation whose state is being checked."
+    desc: "External identifier of the operation whose status is being checked."
 ---
 
-`transfer.state` retrieves the final state of a transfer. It lets the
-partner system check whether a transaction completed successfully, failed,
-was cancelled, or is still in progress.
+`transfer.state` retrieves the final status of a transfer. It allows a
+partner system to check whether a transaction has completed successfully,
+failed, been cancelled, or is still in progress.
 
-This method is especially useful when a transfer was processed via a
-`form_url` and the final result is not immediately available.
+This method is especially useful when a transfer is processed via `form_url`
+and the final result is not immediately available.
 
-## When it is used
+## When to use
 
-Use `transfer.state` in the following cases:
+Use `transfer.state` in the following situations:
 
-- The transfer was created via `transfer.create`
-- A `form_url` was returned in the response
-- The final state did not arrive via a callback
-- The partner needs to poll the transaction state
+- A transfer was created via `transfer.create`
+- The response included a `form_url`
+- The final state has not arrived via callback
+- The partner needs to poll for the transaction status
 
 ## Sample response
 
@@ -95,6 +95,6 @@ Use `transfer.state` in the following cases:
 | `0` | Created |
 | `4` | Success |
 | `21` | Cancelled |
-| `22` | Cheque expired |
+| `22` | Check expired |
 | `29`, `30` | In progress |
 | `33` | Transaction error |

@@ -1,19 +1,19 @@
 import yaml from "js-yaml";
 
-// Vite'ning import.meta.glob funksiyasi build vaqtida barcha .md
-// fayllarni topib, ularning matnini (raw holda) import qiladi.
-// eager:true — hammasi darhol yuklanadi (kod bo'lib splitlanmaydi).
+// Vite's import.meta.glob function finds all .md files at build time
+// and imports their content as raw text.
+// eager:true — all files are loaded immediately (not code-split).
 const files = import.meta.glob("../content/**/*.md", {
   query: "?raw",
   import: "default",
   eager: true,
 });
 
-// Har bir .md fayl boshida frontmatter bo'ladi:
+// Each .md file begins with frontmatter:
 // ---
 // title: ...
 // ---
-// Qolgan matn tanasi
+// Followed by the body text
 function parseFrontmatter(raw) {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
   if (!match) return { data: {}, body: raw };
@@ -22,24 +22,24 @@ function parseFrontmatter(raw) {
 }
 
 function slugFromPath(path) {
-  // "../content/api/create-payment.md" -> "create-payment"
+  // "../content/api/create-payment.md" → "create-payment"
   const parts = path.split("/");
   return parts[parts.length - 1].replace(/\.md$/, "");
 }
 
 function categoryFromPath(path) {
-  // "../content/api/create-payment.md" -> "api"
+  // "../content/api/create-payment.md" → "api"
   const parts = path.split("/");
   return parts[parts.length - 2];
 }
 
-// Endpoint sahifalaridagi "javob" (response) JSON bloklarini matn tanasidan
-// ajratib olamiz — ular so'rov (request) namunasining ostida, o'ng ustunda
-// alohida ko'rsatiladi. So'rov (method+params) bloklari matnda qoladi.
+// Extracts response JSON blocks from an endpoint page's body text —
+// they are displayed separately in the right column, below the request sample.
+// Request blocks (method+params) remain in the body.
 function extractResponses(rawBody) {
   const fenceRe = /```([A-Za-z0-9]*)[ \t]*\r?\n([\s\S]*?)```/g;
   const responses = [];
-  const cuts = []; // matndan olib tashlanadigan [start, end] oraliqlar
+  const cuts = []; // [start, end] ranges to remove from body text
   let m;
   while ((m = fenceRe.exec(rawBody)) !== null) {
     const lang = (m[1] || "").toLowerCase();
@@ -52,7 +52,7 @@ function extractResponses(rawBody) {
     let cutStart = m.index;
     const cutEnd = m.index + m[0].length;
 
-    // Blokdan oldingi eng yaqin sarlavhani topamiz (label uchun)
+    // Find the nearest heading before the block (used as the response label)
     const before = rawBody.slice(0, m.index);
     const headingRe = /^(#{1,6})[ \t]+(.+)$/gm;
     let heading = null;
@@ -61,11 +61,11 @@ function extractResponses(rawBody) {
       heading = { index: hm.index, end: hm.index + hm[0].length, text: hm[2].trim() };
     }
 
-    let label = "Javob";
+    let label = "Response";
     if (heading) {
       label = heading.text;
-      // Agar sarlavha bilan blok orasida faqat bo'sh joy bo'lsa —
-      // sarlavha shu javobga tegishli, uni ham matndan olib tashlaymiz.
+      // If only whitespace separates the heading from the block,
+      // the heading belongs to this response — remove it from the body too.
       const between = rawBody.slice(heading.end, m.index);
       if (/^\s*$/.test(between)) cutStart = heading.index;
     }
@@ -76,8 +76,7 @@ function extractResponses(rawBody) {
 
   if (!cuts.length) return { body: rawBody, responses };
 
-  // Ajratilgan bloklarni matndan olib tashlaymiz va ortiqcha bo'sh
-  // qatorlarni tozalaymiz.
+  // Remove extracted blocks from the body and collapse excess blank lines.
   cuts.sort((a, b) => a[0] - b[0]);
   let body = "";
   let cursor = 0;
@@ -94,8 +93,8 @@ function extractResponses(rawBody) {
 export const allDocs = Object.entries(files)
   .map(([path, raw]) => {
     const { data, body } = parseFrontmatter(raw);
-    // Faqat endpoint sahifalarida (rpcMethod bor) javobni ajratamiz;
-    // format/auth kabi tushuntirish sahifalarida JSON matn ichida qoladi.
+    // Only extract responses for endpoint pages (those with rpcMethod);
+    // explanation pages (format, auth, etc.) keep their JSON inline.
     const extracted = data.rpcMethod
       ? extractResponses(body)
       : { body, responses: [] };
@@ -110,15 +109,15 @@ export const allDocs = Object.entries(files)
   .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
 export const CATEGORY_LABELS = {
-  guide: "Getting started",
+  guide: "Getting Started",
   api: "API Reference",
   overview: "Overview",
   connection: "Connection",
   methods: "Methods",
-  payments: "Paynet payments",
+  payments: "Paynet Payments",
 };
 
-// Sidebar'dagi bo'limlar tartibi — "Umumiy ma'lumot" eng tepada.
+// Sidebar section order — "Overview" appears at the top.
 const CATEGORY_ORDER = [
   "overview",
   "connection",
@@ -137,7 +136,7 @@ export function getDocBySlug(slug) {
   return allDocs.find((d) => d.slug === slug);
 }
 
-// Sidebar uchun kategoriya bo'yicha guruhlangan ro'yxat
+// Grouped list by category for the Sidebar
 export function getNavSections() {
   const grouped = {};
   for (const doc of allDocs) {
@@ -153,8 +152,7 @@ export function getNavSections() {
     .sort((a, b) => categoryRank(a.key) - categoryRank(b.key));
 }
 
-// Sahifadan-sahifaga o'tish (Oldingi / Keyingi) uchun sidebar tartibidagi
-// yassi ro'yxat.
+// Flat ordered list of all docs for prev/next navigation.
 export function getFlatDocs() {
   return getNavSections().flatMap((s) => s.items);
 }

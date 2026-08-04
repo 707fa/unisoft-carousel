@@ -27,18 +27,18 @@ params:
   - name: fields.account
     type: string
     required: true
-    desc: "The receiver's card number."
+    desc: "Recipient's card number."
   - name: fields.sender_card
     type: string
     required: true
-    desc: "The sender's card number."
+    desc: "Sender's card number."
 ---
 
-A transfer to a card via MTS. Unlike other services, the **sender's card**
-(`sender_card`) is also specified inside `fields` here.
+Transfer to a card via MTS. Unlike other services, here the **sender's card**
+(`sender_card`) is also specified inside `fields`.
 
-The common request parameters are described on the
-[Transfer create](/docs/transfer-create) page.
+Common request parameters are described on the [Transfer create](/docs/transfer-create)
+page.
 
 ## Sample response
 

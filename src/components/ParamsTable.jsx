@@ -1,4 +1,4 @@
-// params — markdown frontmatter'dan keladigan massiv:
+// params — array coming from markdown frontmatter:
 // [{ name, type, required, desc }, ...]
 export default function ParamsTable({ params }) {
   if (!params?.length) return null;

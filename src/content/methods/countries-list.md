@@ -47,48 +47,40 @@ params:
     desc: "Empty object."
 ---
 
-`countries.list` returns all countries and payment systems supported by
-the system. For each country it answers two questions:
+`countries.list` returns all countries and payment systems supported by the platform. For each country it answers two questions:
 
-- Can money be withdrawn (**debit**) from cards of this country?
-- Can money be sent (**credit**) to cards of this country?
+- Is withdrawing funds (**debit**) from cards issued in this country supported?
+- Is sending funds (**credit**) to cards in this country supported?
 
-And for each operation, it indicates which `service_code` to use.
+And for each operation — it indicates which `service_code` to use.
 
-## Debit — withdrawing from a card
+## Debit — Withdrawing Funds from a Card
 
-If `debit_enabled: true`, funds can be withdrawn from cards issued in that
-country. Each debit entry has a `service_code` — pass that code to the
-payments API to start the withdrawal process.
+If `debit_enabled: true`, funds can be withdrawn from cards issued in that country. Each debit entry includes a `service_code` — pass this code to the payment API to initiate the withdrawal.
 
-## Credit — sending to a card
+## Credit — Sending Funds to a Card
 
-If `credit_enabled: true`, cards of that country can be topped up or
-transferred to. Each credit entry also has a `service_code` — use it to
-send money.
+If `credit_enabled: true`, funds can be deposited or transferred to cards in that country. Each credit entry also includes a `service_code` — use it to send funds.
 
-## What a service code is
+## What Is a Service Code
 
-`service_code` is a unique identifier for one specific operation. It
-defines the card network, the country and the direction (inbound or
-outbound). Use the `service_code` from this response as a parameter when
-calling the actual transfer endpoint.
+`service_code` is a unique identifier representing a single specific operation. It encodes the card network, country, and direction (incoming or outgoing). Use the `service_code` obtained from this response as a parameter when calling the actual transfer endpoint.
 
-## Response fields
+## Response Fields
 
 | Field | Type | Description |
 |---|---|---|
 | `id` | string | Unique identifier of the country |
-| `code` | string | Country or currency code (for example `"UZB"`, `"RUS"`) |
+| `code` | string | Country or currency code (e.g., `"UZB"`, `"RUS"`) |
 | `name` | string | Human-readable country/system name |
 | `debit_enabled` | boolean | Whether withdrawal is available for this country |
-| `credit_enabled` | boolean | Whether sending is available for this country |
+| `credit_enabled` | boolean | Whether sending funds is available for this country |
 | `debit` | array | List of available debit services (empty if `debit_enabled` is false) |
 | `credit` | array | List of available credit services |
-| `service_code` | string | Identifier used in subsequent requests (for example `"V2S0005"`) |
+| `service_code` | string | Identifier used in subsequent requests (e.g., `"V2S0005"`) |
 | `service_name` | string | Human-readable description of the service |
 
-## Sample response
+## Sample Response
 
 ```json
 {

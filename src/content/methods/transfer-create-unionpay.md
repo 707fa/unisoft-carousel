@@ -31,36 +31,36 @@ params:
   - name: fields.account
     type: string
     required: true
-    desc: "The receiver's card number."
+    desc: "The recipient's card number."
   - name: fields.receiver_full_name
     type: string
     required: true
-    desc: "The receiver's full name as on official documents."
+    desc: "The recipient's full name as it appears on official documents."
   - name: fields.is_same_person
     type: boolean
     required: true
-    desc: "Whether the sender and receiver are the same person."
+    desc: "Whether the sender and recipient are the same person."
   - name: fields.nationality
     type: string
     required: true
-    desc: "The receiver's nationality as a 3-letter ISO country code (for example UZB)."
+    desc: "The recipient's nationality as a 3-letter ISO country code (e.g., UZB)."
   - name: fields.permanent_address
     type: string
     required: true
-    desc: "The receiver's permanent residential address."
+    desc: "The recipient's permanent residential address."
   - name: fields.permanent_city
     type: string
     required: true
-    desc: "The receiver's permanent city of residence."
+    desc: "The recipient's permanent city of residence."
 ---
 
-To transfer money to **UnionPay** cards, `transfer.create` is called with
-this set of `fields`.
+To transfer money to **UnionPay** cards, call `transfer.create` with this
+set of `fields`.
 
-The common request parameters are described on the
+Common request parameters are described on the
 [Transfer create](/docs/transfer-create) page.
 
-## Sample response
+## Example Response
 
 ```json
 {

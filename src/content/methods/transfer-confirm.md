@@ -34,25 +34,22 @@ params:
   - name: ext_id
     type: string
     required: true
-    desc: "The external operation identifier used in transfer.create."
+    desc: "External operation ID used in transfer.create."
 ---
 
 `transfer.confirm` finalizes and confirms a previously created transfer.
-This method must be called **after** the customer has successfully
-completed the confirmation step (for example, 3-D Secure or an external
-payment page).
+This method must be called **after** the customer has successfully completed
+the confirmation step (e.g., 3-D Secure or an external payment page).
 
-Once confirmed, the system processes the transfer and updates the final
-state.
+Once confirmed, the system processes the transfer and updates the final state.
 
-## When it is used
+## When to use
 
 Only call `transfer.confirm` in the following case:
 
 - `transfer.create` returned `state = 0` (Created)
 
-This method confirms the cheque and withdraws the funds from the
-customer's card.
+This method confirms the check and debits funds from the customer's card.
 
 ## Sample response
 
@@ -90,5 +87,5 @@ The response structure is identical to the `transfer.create` response:
 }
 ```
 
-`state: 4` means the operation completed successfully (see the
-[state table](/docs/transfer-state)).
+`state: 4` — indicates that the operation completed successfully
+(see [state table](/docs/transfer-state)).

@@ -6,11 +6,9 @@ codeExamples:
     POST https://{{host}}/api/v1/jsonrpc
 ---
 
-All requests are sent to a **single endpoint**. Which action is performed
-is determined by the `method` field in the request body — this is the
-**JSON-RPC 2.0** protocol.
+All requests are sent to a **single endpoint**. The operation to perform is determined by the `method` field in the request body — this follows the **JSON-RPC 2.0** protocol.
 
-## Request format
+## Request Format
 
 ```json
 {
@@ -26,11 +24,11 @@ is determined by the `method` field in the request body — this is the
 | Field | Type | Description |
 |---|---|---|
 | `jsonrpc` | string | Always `"2.0"` |
-| `id` | string/integer | Request identifier (a uuid or `company_time` is recommended) |
+| `id` | string/integer | Request identifier (uuid or `company_timestamp` recommended) |
 | `method` | string | Name of the method being called |
 | `params` | object | Parameters specific to the method |
 
-## Successful response
+## Successful Response
 
 ```json
 {
@@ -46,7 +44,7 @@ is determined by the `method` field in the request body — this is the
 }
 ```
 
-## Error response
+## Error Response
 
 ```json
 {
@@ -61,6 +59,4 @@ is determined by the `method` field in the request body — this is the
 }
 ```
 
-When `status: false`, the response contains `error.code` and
-`error.message` fields — `message` is usually returned in the `uz`, `ru`
-and `en` languages.
+When `status: false`, the response includes `error.code` and `error.message` fields — `message` is typically returned in `uz`, `ru`, and `en` languages.

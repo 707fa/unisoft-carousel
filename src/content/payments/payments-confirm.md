@@ -19,13 +19,13 @@ params:
   - name: ext_id
     type: string
     required: true
-    desc: "The external operation identifier used in the Create step."
+    desc: "External operation identifier used in the Create step."
 ---
 
-Finalizes and executes a payment created with `state: 0` via
-`transfer.create`.
+Finalizes and executes a payment that was created with `state: 0`
+via `transfer.create`.
 
-## Sample response
+## Sample Response
 
 ```json
 {
@@ -55,4 +55,4 @@ Finalizes and executes a payment created with `state: 0` via
 }
 ```
 
-`state: 4` means the payment completed successfully.
+`state: 4` — indicates the payment was completed successfully.

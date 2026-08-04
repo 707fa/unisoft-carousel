@@ -3,22 +3,22 @@ import { useParams, useNavigate, useLocation, Navigate } from "react-router-dom"
 import { getDocBySlug, getAdjacentDocs } from "../lib/content";
 import DocArticle from "./DocArticle";
 
-// Hujjatlarni ustma-ust ko'rsatib, uzluksiz (cheksiz) skroll qiladi.
-// Pastga yetganda keyingi sahifa avtomatik qo'shiladi; skroll qaysi
-// sahifaga yetganini kuzatib, URL va sidebar'dagi faol belgini yangilaydi.
+// Renders documents in a stacked layout for continuous (infinite) scroll.
+// Automatically appends the next page when the bottom is reached; tracks
+// which page is in view and updates the URL and the active sidebar marker.
 export default function DocStream() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
   const [slugs, setSlugs] = useState(() => (slug ? [slug] : []));
-  const activeRef = useRef(slug); // hozir "faol" (URL'dagi) sahifa
+  const activeRef = useRef(slug); // currently "active" (URL) page
   const articleRefs = useRef(new Map());
   const sentinelRef = useRef(null);
 
-  // Navigatsiya (sidebar bosish, logo, to'g'ridan-to'g'ri havola) bo'lganda
-  // oqimni shu sahifadan qayta boshlaymiz. Skroll natijasidagi URL o'zgarishi
-  // (state.fromScroll) — bu yerda e'tiborsiz qoldiriladi.
+  // On navigation (sidebar click, logo, direct link), reset the stream
+  // to start from that page. URL changes caused by scrolling
+  // (state.fromScroll) are intentionally ignored here.
   useEffect(() => {
     if (location.state?.fromScroll) {
       activeRef.current = slug;
@@ -31,7 +31,7 @@ export default function DocStream() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, location.key]);
 
-  // Keyingi sahifani qo'shish
+  // Append the next page
   const appendNext = useCallback(() => {
     setSlugs((prev) => {
       const last = prev[prev.length - 1];
@@ -41,7 +41,7 @@ export default function DocStream() {
     });
   }, []);
 
-  // Pastga yetganda (biroz oldinroq) keyingi sahifani yuklaymiz
+  // Load the next page slightly before reaching the bottom
   useEffect(() => {
     const el = sentinelRef.current;
     if (!el) return;
@@ -55,7 +55,7 @@ export default function DocStream() {
     return () => io.disconnect();
   }, [appendNext, slugs.length]);
 
-  // Skroll-kuzatuvchi: ekran tepasidagi sahifani aniqlab, URL'ni yangilaydi
+  // Scroll spy: detects which page is at the top of the viewport and updates the URL
   useEffect(() => {
     const spy = new IntersectionObserver(
       (entries) => {
@@ -70,7 +70,7 @@ export default function DocStream() {
           navigate(`/docs/${s}`, { replace: true, state: { fromScroll: true } });
         }
       },
-      // Faqat ekranning yuqori qismidagi sahifa "faol" hisoblanadi
+      // Only the page in the upper portion of the viewport is considered "active"
       { rootMargin: "-20% 0px -70% 0px", threshold: 0 }
     );
     for (const node of articleRefs.current.values()) {

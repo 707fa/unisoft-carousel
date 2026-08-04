@@ -88,8 +88,8 @@ export default function SearchModal({ open, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40" onClick={onClose}>
-      {/* Navbardagi grid-cols-3 tuzilishi bilan mos — o'rtadagi
-          qidiruv qutisi aynan navbar tugmasi turgan joyda chiqadi. */}
+      {/* Matches the navbar's grid-cols-3 layout — the search box
+          appears exactly where the navbar button is positioned. */}
       <div className="grid grid-cols-3 items-start px-4 md:px-6 h-14">
         <div />
         <div

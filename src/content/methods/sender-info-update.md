@@ -1,5 +1,5 @@
 ---
-title: Sender info & Update
+title: Sender Info and Update
 order: 24
 codeExamples:
   curl: |
@@ -34,33 +34,32 @@ params:
   - name: sender_id
     type: integer
     required: true
-    desc: "The system identifier of an existing sender."
+    desc: "System identifier of an existing sender."
   - name: data
     type: object
     required: false
-    desc: "For sender.update only: an object of fields to update (must not be empty)."
+    desc: "For sender.update only: object containing fields to update (must not be empty)."
 ---
 
 ## Sender info — `sender.info`
 
-Retrieves the personal and passport details of a previously registered
-sender by `sender_id`. This lets the caller verify or display the sender's
-data (phone, passport details, name, date of birth, etc.) without
-resending it.
+Retrieves the personal and passport details of a previously registered sender
+by their `sender_id`. This allows the calling party to verify or display sender
+information (phone number, passport details, name, date of birth, etc.) without
+re-submitting it.
 
 ## Sender update — `sender.update`
 
-Modifies the stored data of an existing sender by `sender_id`. Only the
-fields passed inside the `data` object are updated — fields not included
-remain unchanged.
+Updates the stored details of an existing sender by their `sender_id`. Only the
+fields provided inside the `data` object are updated — fields not included remain
+unchanged.
 
 The `data` object accepts only the following fields:
 
-- `phone`, `series`, `address`, `last_name`, `first_name`, `birth_date`,
-  `birth_place`, `expire_date`, `issuing_date`
+- `phone`, `series`, `address`, `last_name`, `first_name`,
+  `birth_date`, `birth_place`, `expire_date`, `issuing_date`
 
-> ⚠️ Any (unknown) field name outside this list will cause the request to
-> fail.
+> ⚠️ Any unknown field name outside this list will cause the request to fail.
 
-This method is used to correct or update existing data without creating a
-new sender record.
+This method is used to correct or update existing data without creating a new
+sender record.

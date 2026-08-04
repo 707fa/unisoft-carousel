@@ -26,14 +26,13 @@ params:
   - name: fields.wallet_id
     type: string
     required: true
-    desc: "The wallet identifier being paid from."
+    desc: "Identifier of the wallet to charge."
 ---
 
-A withdrawal/payment operation from an electronic wallet (**Ucoin
-wallet**).
+A payment/withdrawal operation from an electronic wallet (**Ucoin wallet**).
 
-The common request parameters are described on the
-[Transfer create](/docs/transfer-create) page.
+Common request parameters are described on the [Transfer create](/docs/transfer-create)
+page.
 
 ## Sample response
 

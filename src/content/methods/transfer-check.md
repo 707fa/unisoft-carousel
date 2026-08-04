@@ -38,39 +38,35 @@ params:
   - name: number
     type: string
     required: true
-    desc: "The receiver's card number or phone number."
+    desc: "Card number or recipient's phone number."
   - name: service_code
     type: string
     required: true
-    desc: "The unique service code."
+    desc: "Unique service code."
 ---
 
-Retrieves information about a card or phone number **before** starting a
-transfer. This method performs **no validation** — it only returns the
-available information about the given number.
+Retrieves information about a card or phone number **before** initiating a transfer. This method **performs no validation** — it simply returns whatever information is available for the given number.
 
-## Why you need this method
+## Why This Method Is Needed
 
-- Get the cardholder's name or the phone owner
-- Show the user a masked card/phone number
-- Display account details tied to the number
-- Pre-fill the transfer form with the retrieved information
+- Retrieving the cardholder's name or the phone number owner
+- Displaying a masked card/phone number to the user
+- Showing account details associated with the number
+- Pre-filling the transfer form with the retrieved data
 
-This method does not perform any validation or transaction processing — it
-returns an informational value about the number within the context of the
-given service.
+This method does not perform any validation or transaction processing — it returns purely informational data about the number in the context of the given service.
 
-## Response fields
+## Response Fields
 
 | Field | Type | Description |
 |---|---|---|
 | `number` | string | Card or phone number |
 | `owner` | string \| null | Full name (if available) |
-| `is_corporate` | boolean | Card type — corporate or not |
-| `state` | integer | Card state |
-| `bank` | string | Name of the bank the card belongs to |
+| `is_corporate` | boolean | Indicates whether the card is corporate |
+| `state` | integer | Card status |
+| `bank` | string | Name of the bank associated with the card |
 
-## Sample response
+## Sample Response
 
 ```json
 {

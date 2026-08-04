@@ -23,7 +23,7 @@ codeExamples:
         }
       }'
   node: |
-    // For Uzcard use service_code: V2S0005, the account field is the same
+    // For Uzcard: service_code is V2S0005, account field is the same
     {
       "ext_id": "uzcard_to_card_test_126789",
       "amount": 100,
@@ -36,22 +36,22 @@ params:
   - name: fields.account
     type: string
     required: true
-    desc: "The receiver's Uzcard or Humo card number."
+    desc: "The recipient's Uzcard or Humo card number."
 ---
 
-Used to transfer money from an account directly to an **Uzcard** or
-**Humo** card. Both have the same structure — only the `service_code` and
-currency differ:
+Used to transfer money directly from an account to an **Uzcard** or **Humo**
+card. Both share the same structure — only the `service_code` and currency
+differ:
 
-| Card system | `service_code` | `currency` |
+| Card System | `service_code` | `currency` |
 |---|---|---|
 | Humo | `V2S0003` | `860` (UZS) |
 | Uzcard | `V2S0005` | `643` |
 
-The common request parameters are described on the
+Common request parameters are described on the
 [Transfer create](/docs/transfer-create) page.
 
-## Sample response
+## Example Response
 
 ```json
 {
@@ -90,5 +90,5 @@ The common request parameters are described on the
 }
 ```
 
-For successful operations, the `owner` field may return the receiver's
-name (for example `"IBROKHIM U."`).
+For successful operations, the `owner` field may return the recipient's name
+(e.g., `"IBROKHIM U."`).

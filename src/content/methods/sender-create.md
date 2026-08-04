@@ -45,23 +45,23 @@ params:
   - name: phone
     type: string
     required: true
-    desc: "The sender's phone number (in international format, for example +998901234567)."
+    desc: "Sender's phone number (in international format, e.g. +998901234567)."
   - name: series
     type: string
     required: true
-    desc: "The sender's passport series and number (for example, AB1234567)."
+    desc: "Sender's passport series and number (e.g. AB1234567)."
   - name: address
     type: string
     required: true
-    desc: "The sender's permanent registered address."
+    desc: "Sender's registered residential address."
   - name: last_name
     type: string
     required: true
-    desc: "The sender's last name (as on the passport)."
+    desc: "Sender's last name (as shown in passport)."
   - name: first_name
     type: string
     required: true
-    desc: "The sender's first name (as on the passport)."
+    desc: "Sender's first name (as shown in passport)."
   - name: birth_date
     type: string
     required: true
@@ -69,7 +69,7 @@ params:
   - name: birth_place
     type: string
     required: true
-    desc: "Place of birth (as shown on the passport)."
+    desc: "Place of birth (as stated in passport)."
   - name: expire_date
     type: string
     required: true
@@ -81,19 +81,18 @@ params:
 ---
 
 `sender.create` registers a new sender in the system by submitting personal
-and passport details (phone, passport series, address, full name, date/place
-of birth, passport issue and expiry dates).
+and passport details (phone number, passport series, address, full name,
+date and place of birth, passport issue and expiry dates).
 
-After a successful registration, the server returns a unique
-**`sender_id`** — used in subsequent methods (for example,
-`transfer.create`) to reference the sender via this identifier instead of
-resending their personal data every time.
+Upon successful registration, the server returns a unique **`sender_id`** —
+this identifier is used in subsequent methods (e.g., `transfer.create`) to
+reference the sender without re-submitting their personal data each time.
 
 ## Response fields
 
 | Field | Type | Description |
 |---|---|---|
-| `message` | string | Status message returned by the server (for example, `"success"`) |
+| `message` | string | Status message returned by the server (e.g., `"success"`) |
 | `sender_id` | integer | Unique identifier of the newly created sender |
 
 ## Sample response

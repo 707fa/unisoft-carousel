@@ -28,7 +28,7 @@ params:
   - name: fields.card_number
     type: string
     required: true
-    desc: "The card number."
+    desc: "Card number."
   - name: fields.expire
     type: string
     required: true
@@ -36,15 +36,15 @@ params:
   - name: fields.receiver_id
     type: string
     required: true
-    desc: "The receiver's identifier (for example, a phone number)."
+    desc: "Recipient identifier (e.g., phone number)."
 ---
 
-A withdrawal (debit) operation from an **Uzcard** card via OTP
-confirmation. This service also requires the card's expiry date
-(`expire`) — needed for 3-D Secure or OTP verification.
+A debit operation on an **Uzcard** card confirmed via OTP. This service
+also requires the card expiry date (`expire`) — needed for 3-D Secure
+or OTP verification.
 
-The common request parameters are described on the
-[Transfer create](/docs/transfer-create) page.
+Common request parameters are described on the [Transfer create](/docs/transfer-create)
+page.
 
 ## Sample response
 
@@ -77,6 +77,6 @@ The common request parameters are described on the
 }
 ```
 
-> In this example `state: 33` is an error case (`transaction error`, for
-> example insufficient funds). All state codes are listed on the
+> In this example `state: 33` indicates an error state (`transaction error`,
+> e.g., insufficient funds). All state codes are listed on the
 > [Transfer State](/docs/transfer-state) page.

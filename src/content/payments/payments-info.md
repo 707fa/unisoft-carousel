@@ -42,22 +42,22 @@ params:
   - name: service_code
     type: string
     required: true
-    desc: "The service code."
+    desc: "Service code."
   - name: service_id
     type: integer
     required: true
-    desc: "The service identifier taken from the paynet.services response."
+    desc: "Service identifier from the paynet.services response."
   - name: fields
     type: object
     required: true
-    desc: "Service-specific fields (for example, the client identifier — clientid)."
+    desc: "Service-specific fields (e.g., the recipient identifier — clientid)."
 ---
 
-Used to check information about the receiver (for example a phone number)
-**before** creating a payment — this is the "Create service"
-(receiver-check) in the Paynet group.
+Used to verify recipient information (e.g., a phone number) **before**
+creating a payment — this is the Paynet group's Create service
+(receiver check).
 
-## Sample response
+## Sample Response
 
 ```json
 {
@@ -84,5 +84,5 @@ Used to check information about the receiver (for example a phone number)
 }
 ```
 
-Each element in the `response` array represents a single row shown on the
-receipt (`key`, a multilingual `label`, and a `value`).
+Each element in the `response` array represents a single line on the
+receipt (`key`, multilingual `label`, and `value`).

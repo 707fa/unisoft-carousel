@@ -52,11 +52,11 @@ params:
   - name: ext_id
     type: string
     required: true
-    desc: "A unique external identifier of the operation in your system."
+    desc: "The unique external identifier for the operation in your system."
   - name: amount
     type: integer
     required: true
-    desc: "Transfer amount (in the minor currency unit — tiyin/kopeck)."
+    desc: "Transfer amount (in the smallest currency unit — tiyin/kopek)."
   - name: currency
     type: string
     required: true
@@ -64,7 +64,7 @@ params:
   - name: service_code
     type: string
     required: true
-    desc: "Service code taken from the services or countries.list response."
+    desc: "Service code obtained from the services or countries.list response."
   - name: sender_id
     type: integer
     required: true
@@ -72,22 +72,22 @@ params:
   - name: fields
     type: object
     required: true
-    desc: "Fields specific to the selected service (see below)."
+    desc: "Service-specific fields for the selected service (see below)."
 ---
 
 `transfer.create` creates a money transfer or payment operation for the
-selected service. Each service may require different input fields — the
-required and optional fields must be taken dynamically from the `services`
-method response.
+selected service. Each service may require different input fields —
+mandatory and optional fields must be dynamically retrieved from the
+`services` method response.
 
-> ⚠️ **Important rule:** the `fields` object must contain only the
-> parameters defined by the selected service. Every field in the
-> `services` response has a `name` attribute — those exact values must be
-> used as keys inside `params.fields` in `transfer.create`.
+> ⚠️ **Important rule:** The `fields` object must only contain parameters
+> defined for the selected service. Each field in the `services` response
+> has a `name` attribute — these values must be used as keys inside
+> `params.fields` in `transfer.create`.
 
-## Two-step process
+## Two-Step Process
 
-**Step 1: Get the service fields**
+**Step 1: Retrieve service fields**
 
 ```json
 {
@@ -98,7 +98,7 @@ method response.
 }
 ```
 
-The `fields` array in the response indicates which fields are needed:
+The `fields` array in the response indicates which fields are required:
 
 ```json
 {
@@ -109,26 +109,26 @@ The `fields` array in the response indicates which fields are needed:
 }
 ```
 
-**Step 2: Create the transfer with those fields** — send the request from
-the code sample above.
+**Step 2: Create the transfer with those fields** — send the request shown
+in the code example above.
 
-## Response fields
+## Response Fields
 
 | Field | Type | Description |
 |---|---|---|
 | `ext_id` | string | External identifier of the operation |
-| `state` | integer | Operation state (see the [state table](/docs/transfer-state)) |
-| `description` | string | State description |
-| `amount` | integer | Amount (with tiyin precision) |
+| `state` | integer | Operation status (see [status table](/docs/transfer-state)) |
+| `description` | string | Status description |
+| `amount` | integer | Amount (in tiyin precision) |
 | `currency` | string | Credit currency |
 | `commission` | float | Calculated commission |
-| `cr_amount` / `cr_currency` | integer / string | Amount in the receiver's currency and its code |
-| `form_url` | string \| null | URL for an additional payment form (for some services) |
-| `account` | array | Receiver account details |
-| `payment.ref_num` | string | The matching reference identifier in the processing center (Uzcard, Humo, Visa) |
-| `id` | string | The operation's payment identifier — RRN |
+| `cr_amount` / `cr_currency` | integer / string | Amount and code in the recipient's currency |
+| `form_url` | string \| null | URL for an additional payment form (for certain services) |
+| `account` | array | Recipient account information |
+| `payment.ref_num` | string | Reference identifier at the processing center (Uzcard, Humo, Visa) |
+| `id` | string | Payment identifier for the operation — RRN |
 
-## Sample response
+## Example Response
 
 ```json
 {
@@ -171,11 +171,11 @@ the code sample above.
 }
 ```
 
-## Service-specific variants
+## Service-Specific Variants
 
-The contents of the `fields` object differ depending on the selected
-service. Below are separate pages for the most commonly used service types
-— each with its own `fields` and a sample request:
+The content of the `fields` object varies depending on the selected service.
+Below are separate pages for the most commonly used service types — each
+includes its own `fields` and a sample request:
 
 - [Visa Direct](/docs/transfer-create-visa-direct)
 - [UnionPay](/docs/transfer-create-unionpay)

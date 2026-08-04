@@ -28,26 +28,26 @@ params:
   - name: fields.account
     type: string
     required: true
-    desc: "The receiver's card or phone number."
+    desc: "The recipient's card or phone number."
   - name: fields.first_name
     type: string
     required: true
-    desc: "The receiver's first name."
+    desc: "The recipient's first name."
   - name: fields.last_name
     type: string
     required: true
-    desc: "The receiver's last name."
+    desc: "The recipient's last name."
 ---
 
-To send money to Visa cards via the **Visa Direct** service,
-`transfer.create` is called with this set of `fields`.
+To send money to Visa cards via the **Visa Direct** service, call
+`transfer.create` with this set of `fields`.
 
-The common request parameters (`ext_id`, `amount`, `currency`,
+Common request parameters (`ext_id`, `amount`, `currency`,
 `service_code`, `sender_id`) are described on the
-[Transfer create](/docs/transfer-create) page — only the Visa
-Direct-specific `fields` are shown here.
+[Transfer create](/docs/transfer-create) page — only the `fields`
+specific to Visa Direct are shown here.
 
-## Sample response
+## Example Response
 
 ```json
 {
@@ -83,5 +83,5 @@ Direct-specific `fields` are shown here.
 ```
 
 The remaining response fields (`rate`, `commission`, `payment`, `merchant`,
-etc.) follow the same format as on the
-[Transfer create](/docs/transfer-create) page.
+etc.) follow the same format as on the [Transfer create](/docs/transfer-create)
+page.

@@ -27,37 +27,37 @@ params:
   - name: ext_id
     type: string
     required: true
-    desc: "A unique external operation identifier."
+    desc: "Unique external operation identifier."
   - name: currency
     type: string
     required: true
-    desc: "The currency code."
+    desc: "Currency code."
   - name: service_code
     type: string
     required: true
-    desc: "The service code."
+    desc: "Service code."
   - name: service_id
     type: integer
     required: true
-    desc: "The service identifier taken from the paynet.services response."
+    desc: "Service identifier from the paynet.services response."
   - name: sender_id
     type: integer
     required: true
-    desc: "The sender identifier taken from sender.create."
+    desc: "Sender identifier obtained from sender.create."
   - name: fields
     type: object
     required: true
-    desc: "Service-specific fields — the amount field is sent as a plain amount, not in tiyin."
+    desc: "Service-specific fields — the amount field is sent as a plain sum, not in tiyins."
 ---
 
-In the Paynet group, `transfer.create` is also used to create a payment —
-the difference is that an additional `service_id` parameter is required
-here.
+The `transfer.create` method is also used to create a payment in the
+Paynet group — the difference is that an additional `service_id`
+parameter is required here.
 
-> ⚠️ `fields.amount` here is **not in tiyin** — it is sent as a plain
-> amount (see the note: `// Not tiyins`).
+> ⚠️ `fields.amount` here is **not in tiyins** — it is sent as a plain
+> sum (see comment: `// Not tiyins`).
 
-## Sample response
+## Sample Response
 
 ```json
 {
@@ -87,5 +87,5 @@ here.
 }
 ```
 
-Once `state: 0` is returned, call the
-[Confirm](/docs/payments-confirm) method to finalize the payment.
+Once `state: 0` is returned, call the [Confirm](/docs/payments-confirm)
+method to finalize the payment.

@@ -34,20 +34,19 @@ params:
   - name: provider_id
     type: integer
     required: true
-    desc: "The provider identifier taken from the paynet.providers response."
+    desc: "Provider identifier from the paynet.providers response."
 ---
 
-Returns the operations under the selected provider. Usually each provider
-has two services:
+Returns the operations available under the selected provider. Typically,
+each provider has two services:
 
-- **Create service** (info / receiver check) —
-  `min_amount = max_amount = service_price = 0` and `type_id != 1`. Used to
-  check the receiver before a payment.
-- **Confirm service** (perform the payment) — at least one of
-  `min_amount`, `max_amount`, `service_price` is positive, or
-  `type_id = 1`.
+- **Create service** (info / recipient check) —
+  `min_amount = max_amount = service_price = 0` and `type_id != 1`.
+  Used to verify the recipient before making a payment.
+- **Confirm service** (execute payment) — at least one of `min_amount`,
+  `max_amount`, or `service_price` is positive, or `type_id = 1`.
 
-## Response fields
+## Response Fields
 
 | Field | Type | Description |
 |---|---|---|
@@ -55,11 +54,11 @@ has two services:
 | `title_uz` / `title_ru` | string | Service name |
 | `type_id` | integer | Service type |
 | `min_amount` / `max_amount` | integer | Amount limits |
-| `service_price` | number | Service price (if set) |
+| `service_price` | number | Service fee (if applicable) |
 | `fields` | array | Input fields required for the payment |
-| `response_fields` | array | Fields shown on the cheque/receipt |
+| `response_fields` | array | Fields displayed on the receipt |
 
-## Sample response (shortened)
+## Sample Response (abbreviated)
 
 ```json
 {
@@ -103,5 +102,5 @@ has two services:
 }
 ```
 
-The `field_control` value in the `fields` array (`PHONE`, `MONEY`, etc.)
-indicates which type of input to build in the UI.
+The `field_control` value in the `fields` array (`PHONE`, `MONEY`,
+etc.) indicates what type of input to render in the UI.

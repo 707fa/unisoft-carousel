@@ -46,23 +46,20 @@ params:
   - name: provider_id
     type: integer
     required: true
-    desc: "Identifier of the provider whose services are requested."
+    desc: "Identifier of the provider whose services are being requested."
 ---
 
-The `services` method returns the list of services available for the
-selected provider. Each service is a specific operation that can be
-performed for that provider: withdrawing money from a card, a transfer,
-or a payment.
+The `services` method returns a list of available services for the selected provider. Each service represents a specific operation supported by that provider: card withdrawal, transfer, or payment.
 
-## Why you need this method
+## Why This Method Is Needed
 
-- Show the available services after a provider is selected
-- Display service names and descriptions in multiple languages
-- Check amount limits and currency
-- Dynamically build the input form based on the required fields
-- Determine whether 3-D Secure is required
+- Displaying available services after a provider is selected
+- Showing service names and descriptions in multiple languages
+- Checking amount limits and currency
+- Dynamically building the input form based on required fields
+- Determining whether 3-D Secure is required
 
-## Response fields
+## Response Fields
 
 | Field | Type | Description |
 |---|---|---|
@@ -70,14 +67,14 @@ or a payment.
 | `name_uz` / `name_en` / `name_ru` | string | Service name by language |
 | `type` | string | Service type (`debit`, `credit`, `payment`) |
 | `description` | string | Service description |
-| `min_amount` / `max_amount` | integer | Allowed minimum/maximum amount (in the minor unit — tiyin/kopeck) |
+| `min_amount` / `max_amount` | integer | Allowed minimum/maximum amount (in tiyin/kopek) |
 | `currency` | string | ISO 4217 currency code |
 | `code` | string | Internal service code |
 | `is_3ds` | boolean | Indicates whether 3-D Secure is required |
 | `fields` | array | List of input fields required for the request |
 | `response_fields` | array | Fields returned in the service response |
 
-## Sample response
+## Sample Response
 
 ```json
 {
@@ -118,6 +115,4 @@ or a payment.
 }
 ```
 
-Each field in the `fields` array defines how to build an input via its
-`name`, `type`, `is_required` and, if needed, `regex` — which lets the
-frontend construct the form automatically.
+Each field in the `fields` array defines how to build an input using `name`, `type`, `is_required`, and optionally `regex` — allowing the frontend to construct the form dynamically.

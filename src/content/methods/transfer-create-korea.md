@@ -34,49 +34,48 @@ params:
   - name: fields.account
     type: string
     required: true
-    desc: "The receiver's account number."
+    desc: "Recipient's account number."
   - name: fields.receiver_phone
     type: string
     required: true
-    desc: "The receiver's phone number."
+    desc: "Recipient's phone number."
   - name: fields.receiver_first_name
     type: string
     required: true
-    desc: "The receiver's first name."
+    desc: "Recipient's first name."
   - name: fields.receiver_last_name
     type: string
     required: true
-    desc: "The receiver's last name."
+    desc: "Recipient's last name."
   - name: fields.relation
     type: string
     required: true
-    desc: "The relationship code between the sender and receiver."
+    desc: "Relationship code between sender and recipient."
   - name: fields.source_of_fund
     type: string
     required: true
-    desc: "The source-of-funds code."
+    desc: "Source of funds code."
   - name: fields.id_type
     type: string
     required: true
-    desc: "The document type code."
+    desc: "Document type code."
   - name: fields.bank
     type: string
     required: true
-    desc: "The bank code."
+    desc: "Bank code."
   - name: fields.transfer_reason
     type: string
     required: true
-    desc: "The transfer reason code."
+    desc: "Transfer reason code."
 ---
 
-A transfer to South Korean banks — one of the most heavily regulated
-(compliance) service types, because it requires additional codes such as
-the source of funds, document type and transfer reason.
+Transfers to South Korean banks are one of the most compliance-heavy service
+types, as they require additional codes such as source of funds, document type,
+and transfer reason.
 
-The common request parameters are described on the
-[Transfer create](/docs/transfer-create) page. Request the full list of
-`relation`, `source_of_fund`, `id_type` and `transfer_reason` codes as
-part of the partnership agreement.
+Common request parameters are described on the [Transfer create](/docs/transfer-create)
+page. Request the full list of valid `relation`, `source_of_fund`, `id_type`,
+and `transfer_reason` codes under your partnership agreement.
 
 ## Sample response
 

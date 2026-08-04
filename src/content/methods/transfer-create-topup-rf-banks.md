@@ -29,26 +29,26 @@ params:
   - name: fields.account
     type: string
     required: true
-    desc: "The receiver's card number."
+    desc: "Recipient's card number."
   - name: fields.sender_card
     type: string
     required: true
-    desc: "The sender's card number."
+    desc: "Sender's card number."
   - name: fields.member_id
     type: string
     required: true
-    desc: "The bank's member_id identifier."
+    desc: "Bank member ID identifier."
   - name: fields.type
     type: string
     required: true
     desc: "Transfer type — \"sbp\" (Faster Payments System) or \"card\"."
 ---
 
-Used to top up Russian bank cards via **SBP** (Система быстрых платежей)
-or directly by card.
+Used to top up Russian bank cards via **SBP** (Faster Payments System) or
+direct card transfer.
 
-The common request parameters are described on the
-[Transfer create](/docs/transfer-create) page.
+Common request parameters are described on the [Transfer create](/docs/transfer-create)
+page.
 
 ## Sample response
 

@@ -1,35 +1,35 @@
 ---
-title: Terms & concepts
+title: Terms and Concepts
 order: 2
 ---
 
 | Term | Definition |
 |---|---|
 | Client | A partner authorized to use Unisoft Gate |
-| User | The partner's customer (referred to as "User" by Unisoft) |
+| User | A partner's customer (referred to as "User" within Unisoft) |
 | Request | A request for data |
-| Response | A response to a request |
-| Registry | A service that logs every sensitive piece of data |
+| Response | A reply to a request |
+| Registry | A service that logs every confidential data entry |
 | Uzcard | Uzcard Online (Svgate) |
-| Humo | The processing center of the Central Bank of Uzbekistan |
-| Visa | The Visa processing center |
-| Transfer | A peer-to-peer operation (money transfer) |
-| Payment | A payment or debit operation for services |
-| Exchange Conversion | Currency conversion at the Universalbank JSC rate |
+| Humo | Processing center affiliated with the Central Bank of Uzbekistan |
+| Visa | Visa processing center |
+| Transfer | Peer-to-peer operation (money transfer) |
+| Payment | Payment for services or a debit operation |
+| Exchange Conversion | Currency conversion at the Universalbank JSC exchange rate |
 | CBU | Central Bank of Uzbekistan |
-| Sender | The sender (debit) |
-| Receiver | The receiver (credit) |
-| Cheque | A payment cheque awaiting the receiver |
-| EPOS | An electronic POS terminal holding `merchant_id`/`terminal_id` |
+| Sender | The sending party (debit) |
+| Receiver | The receiving party (credit) |
+| Cheque | A payment receipt awaiting the receiver |
+| EPOS | Electronic POS terminal that stores `merchant_id`/`terminal_id` |
 
-## Data types
+## Data Types
 
 | Name | Type | Description |
 |---|---|---|
-| `number` | string | Card number, 16 characters |
-| `amount` | integer | Amount — must contain no fractions or decimal point |
+| `number` | string | Card number, 16 digits |
+| `amount` | integer | Amount — must be provided without decimals or a decimal point |
 | `message` | object/string | Message text |
-| `host` | object | Information about the host |
+| `host` | object | Host information |
 | `error` | object | Error object |
 | `result` | object | Result object |
 | `code` | integer | Error code |
