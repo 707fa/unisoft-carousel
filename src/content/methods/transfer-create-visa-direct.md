@@ -28,26 +28,26 @@ params:
   - name: fields.account
     type: string
     required: true
-    desc: "Qabul qiluvchining karta yoki telefon raqami."
+    desc: "The receiver's card or phone number."
   - name: fields.first_name
     type: string
     required: true
-    desc: "Qabul qiluvchining ismi."
+    desc: "The receiver's first name."
   - name: fields.last_name
     type: string
     required: true
-    desc: "Qabul qiluvchining familiyasi."
+    desc: "The receiver's last name."
 ---
 
-**Visa Direct** xizmati orqali Visa kartalariga pul yuborish uchun
-`transfer.create` shu `fields` to'plami bilan chaqiriladi.
+To send money to Visa cards via the **Visa Direct** service,
+`transfer.create` is called with this set of `fields`.
 
-Umumiy so'rov parametrlari (`ext_id`, `amount`, `currency`,
-`service_code`, `sender_id`) [Transfer create](/docs/transfer-create)
-sahifasida tavsiflangan — bu yerda faqat Visa Direct'ga xos
-`fields` ko'rsatilgan.
+The common request parameters (`ext_id`, `amount`, `currency`,
+`service_code`, `sender_id`) are described on the
+[Transfer create](/docs/transfer-create) page — only the Visa
+Direct-specific `fields` are shown here.
 
-## Namuna javob
+## Sample response
 
 ```json
 {
@@ -82,6 +82,6 @@ sahifasida tavsiflangan — bu yerda faqat Visa Direct'ga xos
 }
 ```
 
-Qolgan javob maydonlari (`rate`, `commission`, `payment`, `merchant`
-va h.k.) [Transfer create](/docs/transfer-create) sahifasidagi bilan
-bir xil formatda.
+The remaining response fields (`rate`, `commission`, `payment`, `merchant`,
+etc.) follow the same format as on the
+[Transfer create](/docs/transfer-create) page.

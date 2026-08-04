@@ -38,7 +38,7 @@ export default function CodeBlock({ codeExamples }) {
         <button
           onClick={handleCopy}
           className="text-white/40 hover:text-white/80 transition-colors p-1"
-          aria-label="Nusxalash"
+          aria-label="Copy"
         >
           {copied ? <Check size={14} /> : <Copy size={14} />}
         </button>

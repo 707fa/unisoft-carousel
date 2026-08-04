@@ -32,20 +32,20 @@ params:
   - name: username
     type: string
     required: true
-    desc: "Klient login nomi."
+    desc: "The client's login name."
   - name: password
     type: string
     required: true
-    desc: "Klient paroli."
+    desc: "The client's password."
 ---
 
-`login` metodi orqali boshqa barcha so'rovlarni avtorizatsiya qilish
-uchun ishlatiladigan **access_token** olinadi.
+The `login` method returns the **access_token** used to authorize all
+other requests.
 
-## Javob
+## Response
 
-`access_token` — boshqa so'rovlarni avtorizatsiya qilish uchun
-ishlatiladi. Standart amal qilish muddati — **1 yil (365 kun)**.
+`access_token` — used to authorize other requests. The default validity
+period is **1 year (365 days)**.
 
 ```json
 {
@@ -63,9 +63,9 @@ ishlatiladi. Standart amal qilish muddati — **1 yil (365 kun)**.
 }
 ```
 
-## Xatolik holati
+## Error case
 
-Login yoki parol noto'g'ri bo'lsa:
+If the username or password is incorrect:
 
 ```json
 {

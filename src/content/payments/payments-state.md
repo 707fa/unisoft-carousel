@@ -19,14 +19,13 @@ params:
   - name: ext_id
     type: string
     required: true
-    desc: "Holati tekshirilayotgan to'lovning tashqi identifikatori."
+    desc: "The external identifier of the payment whose state is being checked."
 ---
 
-Paynet to'lovining yakuniy holatini tekshirish uchun ishlatiladi —
-xatti-harakati [Transfer State](/docs/transfer-state)dagi bilan bir
-xil.
+Used to check the final state of a Paynet payment — its behavior is the
+same as [Transfer State](/docs/transfer-state).
 
-## Namuna javob
+## Sample response
 
 ```json
 {
@@ -56,5 +55,5 @@ xil.
 }
 ```
 
-Holat kodlari to'liq ro'yxati [Transfer State](/docs/transfer-state)
-sahifasida keltirilgan.
+The full list of state codes is available on the
+[Transfer State](/docs/transfer-state) page.

@@ -31,36 +31,36 @@ params:
   - name: fields.account
     type: string
     required: true
-    desc: "Qabul qiluvchining karta raqami."
+    desc: "The receiver's card number."
   - name: fields.receiver_full_name
     type: string
     required: true
-    desc: "Qabul qiluvchining rasmiy hujjatlardagi to'liq ismi."
+    desc: "The receiver's full name as on official documents."
   - name: fields.is_same_person
     type: boolean
     required: true
-    desc: "Jo'natuvchi va qabul qiluvchi bir xil shaxsmi."
+    desc: "Whether the sender and receiver are the same person."
   - name: fields.nationality
     type: string
     required: true
-    desc: "Qabul qiluvchining 3 harfli ISO davlat kodidagi millati (masalan, UZB)."
+    desc: "The receiver's nationality as a 3-letter ISO country code (for example UZB)."
   - name: fields.permanent_address
     type: string
     required: true
-    desc: "Qabul qiluvchining doimiy yashash manzili."
+    desc: "The receiver's permanent residential address."
   - name: fields.permanent_city
     type: string
     required: true
-    desc: "Qabul qiluvchining doimiy yashash shahri."
+    desc: "The receiver's permanent city of residence."
 ---
 
-**UnionPay** kartalariga pul o'tkazish uchun `transfer.create` shu
-`fields` to'plami bilan chaqiriladi.
+To transfer money to **UnionPay** cards, `transfer.create` is called with
+this set of `fields`.
 
-Umumiy so'rov parametrlari [Transfer create](/docs/transfer-create)
-sahifasida tavsiflangan.
+The common request parameters are described on the
+[Transfer create](/docs/transfer-create) page.
 
-## Namuna javob
+## Sample response
 
 ```json
 {

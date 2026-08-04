@@ -23,7 +23,7 @@ codeExamples:
         }
       }'
   node: |
-    // Uzcard uchun service_code: V2S0005, account maydoni bir xil
+    // For Uzcard use service_code: V2S0005, the account field is the same
     {
       "ext_id": "uzcard_to_card_test_126789",
       "amount": 100,
@@ -36,22 +36,22 @@ params:
   - name: fields.account
     type: string
     required: true
-    desc: "Qabul qiluvchining Uzcard yoki Humo karta raqami."
+    desc: "The receiver's Uzcard or Humo card number."
 ---
 
-Hisobdan (Account) to'g'ridan-to'g'ri **Uzcard** yoki **Humo**
-kartasiga pul o'tkazish uchun ishlatiladi. Ikkalasi ham bir xil
-tuzilishga ega — faqat `service_code` va valyuta farq qiladi:
+Used to transfer money from an account directly to an **Uzcard** or
+**Humo** card. Both have the same structure — only the `service_code` and
+currency differ:
 
-| Karta tizimi | `service_code` | `currency` |
+| Card system | `service_code` | `currency` |
 |---|---|---|
 | Humo | `V2S0003` | `860` (UZS) |
 | Uzcard | `V2S0005` | `643` |
 
-Umumiy so'rov parametrlari [Transfer create](/docs/transfer-create)
-sahifasida tavsiflangan.
+The common request parameters are described on the
+[Transfer create](/docs/transfer-create) page.
 
-## Namuna javob
+## Sample response
 
 ```json
 {
@@ -90,5 +90,5 @@ sahifasida tavsiflangan.
 }
 ```
 
-Muvaffaqiyatli operatsiyalarda `owner` maydonida qabul qiluvchining
-ismi (masalan, `"IBROKHIM U."`) qaytishi mumkin.
+For successful operations, the `owner` field may return the receiver's
+name (for example `"IBROKHIM U."`).
