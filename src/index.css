@@ -10,6 +10,21 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Sahifa ochilganda silliq paydo bo'lish */
+@keyframes docFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.doc-enter {
+  animation: docFadeIn 0.28s ease-out;
+}
+
 /* Markdown kontenti uchun tipografiya (react-markdown natijasi shu klass ichida bo'ladi) */
 .docs-prose h2 {
   font-size: 19px;
