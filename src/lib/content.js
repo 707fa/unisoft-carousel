@@ -137,26 +137,64 @@ export function getDocBySlug(slug) {
   return allDocs.find((d) => d.slug === slug);
 }
 
-// Sidebar uchun kategoriya bo'yicha guruhlangan ro'yxat
+// Sidebar'da ichma-ich ko'rsatiladigan sahifalar uchun qisqartirilgan nom:
+// "Transfer create — Turkey" -> "Turkey" (ota sahifa nomi takrorlanmaydi).
+function navTitle(doc, parent) {
+  if (!parent) return doc.title;
+  const short = doc.title.replace(/^\s*(.+?)\s*[—–-]\s*/, (full, prefix) =>
+    prefix.toLowerCase() === parent.title.toLowerCase() ? "" : full,
+  );
+  return short || doc.title;
+}
+
+// Sidebar uchun kategoriya bo'yicha guruhlangan ro'yxat.
+// Frontmatter'dagi `parent: <slug>` maydoni sahifani o'sha slug ostiga
+// ichki (yig'iladigan) element qilib joylashtiradi.
 export function getNavSections() {
   const grouped = {};
   for (const doc of allDocs) {
     if (!grouped[doc.category]) grouped[doc.category] = [];
     grouped[doc.category].push(doc);
   }
+
   return Object.entries(grouped)
-    .map(([key, items]) => ({
-      key,
-      title: CATEGORY_LABELS[key] || key,
-      items,
-    }))
+    .map(([key, docs]) => {
+      const items = [];
+      const bySlug = new Map();
+
+      for (const doc of docs) {
+        if (doc.parent) continue;
+        const item = { ...doc, children: [] };
+        bySlug.set(doc.slug, item);
+        items.push(item);
+      }
+
+      for (const doc of docs) {
+        if (!doc.parent) continue;
+        const parent = bySlug.get(doc.parent);
+        // Ota sahifa topilmasa — element oddiy (yassi) holda qoladi.
+        if (!parent) {
+          items.push({ ...doc, children: [] });
+          continue;
+        }
+        parent.children.push({ ...doc, children: [], navTitle: navTitle(doc, parent) });
+      }
+
+      return {
+        key,
+        title: CATEGORY_LABELS[key] || key,
+        items,
+      };
+    })
     .sort((a, b) => categoryRank(a.key) - categoryRank(b.key));
 }
 
 // Sahifadan-sahifaga o'tish (Oldingi / Keyingi) uchun sidebar tartibidagi
-// yassi ro'yxat.
+// yassi ro'yxat — ichki elementlar otasidan keyin keladi.
 export function getFlatDocs() {
-  return getNavSections().flatMap((s) => s.items);
+  return getNavSections().flatMap((s) =>
+    s.items.flatMap((item) => [item, ...(item.children ?? [])]),
+  );
 }
 
 export function getAdjacentDocs(slug) {

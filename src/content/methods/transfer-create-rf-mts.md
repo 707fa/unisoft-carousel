@@ -1,4 +1,5 @@
 ---
+parent: transfer-create
 title: Transfer create — RF MTS
 order: 12
 rpcMethod: transfer.create

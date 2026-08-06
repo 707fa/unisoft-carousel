@@ -1,4 +1,5 @@
 ---
+parent: transfer-create
 title: Transfer create — Uzcard payment
 order: 15
 rpcMethod: transfer.create

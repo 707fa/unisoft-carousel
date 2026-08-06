@@ -1,4 +1,5 @@
 ---
+parent: transfer-create
 title: Transfer create — Uzcard / Humo A2C
 order: 11
 rpcMethod: transfer.create

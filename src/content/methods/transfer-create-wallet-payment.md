@@ -1,4 +1,5 @@
 ---
+parent: transfer-create
 title: Transfer create — Wallet payment
 order: 18
 rpcMethod: transfer.create
