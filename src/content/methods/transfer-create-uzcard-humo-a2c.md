@@ -1,7 +1,7 @@
 ---
 parent: transfer-create
 title: Transfer create — Uzcard / Humo A2C
-order: 11
+order: 13
 rpcMethod: transfer.create
 codeExamples:
   curl: |

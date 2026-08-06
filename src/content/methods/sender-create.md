@@ -1,6 +1,6 @@
 ---
 title: Sender create
-order: 23
+order: 8
 rpcMethod: sender.create
 codeExamples:
   curl: |

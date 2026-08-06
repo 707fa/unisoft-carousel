@@ -1,6 +1,6 @@
 ---
 title: Transfer State
-order: 22
+order: 24
 rpcMethod: transfer.state
 codeExamples:
   curl: |

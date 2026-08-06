@@ -1,7 +1,7 @@
 ---
 parent: transfer-create
 title: Transfer create — RF MTS
-order: 12
+order: 14
 rpcMethod: transfer.create
 codeExamples:
   curl: |
