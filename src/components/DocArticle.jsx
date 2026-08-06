@@ -6,13 +6,20 @@ import { getNavSections } from "../lib/content";
 import CodeBlock from "./CodeBlock";
 import ResponseBlock from "./ResponseBlock";
 import ParamsTable from "./ParamsTable";
+import PageActions from "./PageActions";
 
 // A single document (page) — multiple instances stack vertically to form
 // a continuous (infinite) scroll. `first` marks the first page in the stream
 // (no divider line is rendered above it).
 const DocArticle = forwardRef(function DocArticle({ doc, first }, ref) {
+  // Sahifa sidebar'da ichki element bo'lishi ham mumkin — shuning uchun
+  // bo'limni qidirishda `children` ham tekshiriladi.
   const section = getNavSections().find((s) =>
-    s.items.some((i) => i.slug === doc.slug)
+    s.items.some(
+      (i) =>
+        i.slug === doc.slug ||
+        (i.children ?? []).some((child) => child.slug === doc.slug)
+    )
   );
 
   const hasCode = doc.codeExamples && Object.keys(doc.codeExamples).length > 0;
@@ -25,11 +32,14 @@ const DocArticle = forwardRef(function DocArticle({ doc, first }, ref) {
       data-slug={doc.slug}
       className={`px-4 md:px-8 ${first ? "pt-8" : "pt-14 mt-14 border-t border-gray-100"} pb-8`}
     >
-      <div className="flex items-center gap-1.5 text-[13px] text-gray-400 mb-4">
+      <div className="flex items-center gap-1.5 text-[13px] text-gray-400 mb-3">
         <span>{section?.title}</span>
         <ChevronRight size={13} />
         <span className="text-gray-700">{doc.title}</span>
       </div>
+
+      {/* Sahifani to'liq nusxalash (Markdown) va YAML ko'rinishida ochish */}
+      <PageActions doc={doc} />
 
       <div
         className={`grid grid-cols-1 gap-10 ${

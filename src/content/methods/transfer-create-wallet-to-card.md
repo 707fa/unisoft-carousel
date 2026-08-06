@@ -1,6 +1,7 @@
 ---
+parent: transfer-create
 title: Transfer create — Wallet to Card
-order: 17
+order: 19
 rpcMethod: transfer.create
 codeExamples:
   curl: |

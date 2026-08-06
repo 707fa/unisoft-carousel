@@ -1,6 +1,6 @@
 ---
 title: Transfer create
-order: 8
+order: 10
 rpcMethod: transfer.create
 codeExamples:
   curl: |

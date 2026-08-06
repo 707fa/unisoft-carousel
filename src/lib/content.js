@@ -136,25 +136,63 @@ export function getDocBySlug(slug) {
   return allDocs.find((d) => d.slug === slug);
 }
 
-// Grouped list by category for the Sidebar
+// Short label for nested sidebar items:
+// "Transfer create — Turkey" -> "Turkey" (parent name isn't repeated).
+function navTitle(doc, parent) {
+  if (!parent) return doc.title;
+  const short = doc.title.replace(/^\s*(.+?)\s*[—–-]\s*/, (full, prefix) =>
+    prefix.toLowerCase() === parent.title.toLowerCase() ? "" : full,
+  );
+  return short || doc.title;
+}
+
+// Grouped list by category for the Sidebar. A `parent: <slug>` field in the
+// frontmatter nests a page under that slug as a collapsible child item.
 export function getNavSections() {
   const grouped = {};
   for (const doc of allDocs) {
     if (!grouped[doc.category]) grouped[doc.category] = [];
     grouped[doc.category].push(doc);
   }
+
   return Object.entries(grouped)
-    .map(([key, items]) => ({
-      key,
-      title: CATEGORY_LABELS[key] || key,
-      items,
-    }))
+    .map(([key, docs]) => {
+      const items = [];
+      const bySlug = new Map();
+
+      for (const doc of docs) {
+        if (doc.parent) continue;
+        const item = { ...doc, children: [] };
+        bySlug.set(doc.slug, item);
+        items.push(item);
+      }
+
+      for (const doc of docs) {
+        if (!doc.parent) continue;
+        const parent = bySlug.get(doc.parent);
+        // Ota sahifa topilmasa — element oddiy (yassi) holda qoladi.
+        if (!parent) {
+          items.push({ ...doc, children: [] });
+          continue;
+        }
+        parent.children.push({ ...doc, children: [], navTitle: navTitle(doc, parent) });
+      }
+
+      return {
+        key,
+        title: CATEGORY_LABELS[key] || key,
+        items,
+      };
+    })
     .sort((a, b) => categoryRank(a.key) - categoryRank(b.key));
 }
 
-// Flat ordered list of all docs for prev/next navigation.
+// Flat ordered list of all docs for prev/next navigation — nested items
+// follow immediately after their parent.
 export function getFlatDocs() {
-  return getNavSections().flatMap((s) => s.items);
+  return getNavSections().flatMap((s) =>
+    s.items.flatMap((item) => [item, ...(item.children ?? [])]),
+  );
 }
 
 export function getAdjacentDocs(slug) {

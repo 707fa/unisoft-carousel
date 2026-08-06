@@ -1,6 +1,6 @@
 ---
 title: Transfer Confirm
-order: 21
+order: 23
 rpcMethod: transfer.confirm
 codeExamples:
   curl: |

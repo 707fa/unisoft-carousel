@@ -1,6 +1,7 @@
 ---
+parent: transfer-create
 title: Transfer create — RF TCB
-order: 14
+order: 16
 rpcMethod: transfer.create
 codeExamples:
   curl: |

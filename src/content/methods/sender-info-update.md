@@ -1,6 +1,6 @@
 ---
 title: Sender Info and Update
-order: 24
+order: 9
 codeExamples:
   curl: |
     # Sender info

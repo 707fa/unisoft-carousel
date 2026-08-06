@@ -1,6 +1,7 @@
 ---
+parent: transfer-create
 title: Transfer create — Turkey
-order: 13
+order: 15
 rpcMethod: transfer.create
 codeExamples:
   curl: |

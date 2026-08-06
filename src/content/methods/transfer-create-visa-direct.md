@@ -1,6 +1,7 @@
 ---
+parent: transfer-create
 title: Transfer create — Visa Direct
-order: 9
+order: 11
 rpcMethod: transfer.create
 codeExamples:
   curl: |
