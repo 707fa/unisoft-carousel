@@ -83,8 +83,8 @@ function docToYaml(doc) {
     }));
   }
 
-  // lineWidth: -1 — uzun satrlar bo'linmaydi, ko'p qatorli matn `|` bloki
-  // sifatida chiqadi va markdown/JSON namunalari o'zgarmaydi.
+  // lineWidth: -1 — long lines aren't wrapped, so multi-line text is
+  // emitted as a `|` block and the markdown/JSON samples stay intact.
   return yaml.dump(data, { lineWidth: -1, noRefs: true });
 }
 

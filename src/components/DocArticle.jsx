@@ -12,8 +12,8 @@ import PageActions from "./PageActions";
 // a continuous (infinite) scroll. `first` marks the first page in the stream
 // (no divider line is rendered above it).
 const DocArticle = forwardRef(function DocArticle({ doc, first }, ref) {
-  // Sahifa sidebar'da ichki element bo'lishi ham mumkin — shuning uchun
-  // bo'limni qidirishda `children` ham tekshiriladi.
+  // A page can also be a nested sidebar item, so the section lookup
+  // checks `children` too.
   const section = getNavSections().find((s) =>
     s.items.some(
       (i) =>

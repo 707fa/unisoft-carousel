@@ -9,8 +9,8 @@ const linkClass = (isActive) =>
       : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
   }`;
 
-// Ichki ro'yxati bor element uchun — havola bilan strelkani birlashtiruvchi
-// qator: fon va matn rangi ikkalasiga umumiy bo'ladi.
+// For items with a nested list — a row combining the link and the arrow:
+// background and text color are shared by both.
 const groupRowClass = (isActive) =>
   `relative flex items-center rounded-md transition-colors ${
     isActive
@@ -39,14 +39,14 @@ export default function Sidebar({ sidebarOpen }) {
   const location = useLocation();
   const asideRef = useRef(null);
 
-  // Ichki sahifalari bor bo'limlar (masalan "Transfer create") yig'ilgan
-  // holda turadi — strelka bosilganda ochiladi.
+  // Sections with nested pages (e.g. "Transfer create") stay collapsed —
+  // the arrow expands them.
   const [openGroups, setOpenGroups] = useState({});
 
   const currentSlug = location.pathname.replace(/^\/docs\//, "");
 
-  // Ochiq sahifa qaysidir guruhning ichida bo'lsa — o'sha guruh avtomatik
-  // ochiladi (havola bo'yicha kirilganda ham ko'rinib turadi).
+  // If the open page belongs to a group, expand that group automatically
+  // (so it's still visible when reached via a direct link).
   useEffect(() => {
     for (const section of sections) {
       for (const item of section.items) {
@@ -60,8 +60,8 @@ export default function Sidebar({ sidebarOpen }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSlug]);
 
-  // Faol havolani sidebar ichida ko'rinadigan joyga surib qo'yamiz
-  // (skroll bilan sahifa o'zgarganda ham yo'qolib qolmaydi).
+  // Scroll the active link into view within the sidebar (so it stays
+  // visible even after a scroll-driven page change).
   useEffect(() => {
     const active = asideRef.current?.querySelector('[data-active="true"]');
     if (active) active.scrollIntoView({ block: "nearest" });
@@ -99,8 +99,8 @@ export default function Sidebar({ sidebarOpen }) {
 
               return (
                 <li key={item.slug}>
-                  {/* Havola va strelka bitta plashka ichida — fon, rang va
-                      chap chiziq ikkalasiga umumiy. */}
+                  {/* Link and arrow share one row — background, color, and
+                      the left accent bar apply to both. */}
                   <div className={groupRowClass(isActive)}>
                     <NavLink
                       to={`/docs/${item.slug}`}
@@ -115,7 +115,7 @@ export default function Sidebar({ sidebarOpen }) {
                       type="button"
                       onClick={() => toggleGroup(item.slug)}
                       aria-expanded={isOpen}
-                      aria-label={`${item.title} — ${isOpen ? "yopish" : "ochish"}`}
+                      aria-label={`${isOpen ? "Collapse" : "Expand"} ${item.title}`}
                       className={`shrink-0 self-stretch flex items-center pl-1 pr-2.5 ${
                         isActive ? "text-brand" : "text-gray-400"
                       }`}
