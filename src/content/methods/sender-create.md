@@ -1,30 +1,30 @@
 ---
 title: Sender create
-order: 8
+order: 23
 rpcMethod: sender.create
 codeExamples:
   curl: |
     curl --location 'https://{{host}}/api/v1/jsonrpc' \
-      --header 'Authorization: Bearer {{access_token}}' \
-      --header 'Content-Type: application/json' \
-      --data '{
+    --header 'Authorization: Bearer {{access_token}}' \
+    --header 'Content-Type: application/json' \
+    --data '{
         "jsonrpc": "2.0",
         "id": 2,
         "method": "sender.create",
         "params": {
-          "sender": {
-            "phone": "99890***86708",
-            "series": "AC0**288",
-            "address": "5 th Avenue 1 34096 Fatih Istanbul",
-            "last_name": "NARZULLAYEV",
-            "first_name": "SHAsXBOZ",
-            "birth_date": "2002-02-17",
-            "birth_place": "Qarshi",
-            "expire_date": "2028.02.03",
-            "issuing_date": "2018.02.04"
-          }
+            "sender": {
+                "phone": "99890***86708",
+                "series": "AC0**288",
+                "address": "5 th Avenue 1 34096 Fatih Istanbul",
+                "last_name": "NARZULLAYEV",
+                "birth_date": "2002-02-17",
+                "first_name": "SHAsXBOZ",
+                "birth_place": "Qarshi",
+                "expire_date": "2028.02.03",
+                "issuing_date": "2018.02.04"
+            }
         }
-      }'
+    }'
   node: |
     const response = await fetch(`https://${host}/api/v1/jsonrpc`, {
       method: 'POST',
@@ -36,76 +36,112 @@ codeExamples:
         jsonrpc: '2.0',
         id: 2,
         method: 'sender.create',
-        params: { sender: senderData },
+        params: {
+          sender: {
+            phone: '99890***86708',
+            series: 'AC0**288',
+            address: '5 th Avenue 1 34096 Fatih Istanbul',
+            last_name: 'NARZULLAYEV',
+            birth_date: '2002-02-17',
+            first_name: 'SHAsXBOZ',
+            birth_place: 'Qarshi',
+            expire_date: '2028.02.03',
+            issuing_date: '2018.02.04',
+          },
+        },
       }),
     });
     const { result } = await response.json();
-    // result.sender_id — used in subsequent requests
+    // result.sender_id
 params:
+  - name: jsonrpc
+    type: String
+    required: true
+    desc: "JSON-RPC protocol version."
+  - name: id
+    type: "String | Integer"
+    required: true
+    desc: "Request identifier."
+  - name: method
+    type: String
+    required: true
+    desc: "sender.create"
+  - name: params
+    type: Object
+    required: true
+    desc: "Object containing the parameters passed to the method."
+  - name: sender
+    type: Integer
+    required: true
+    desc: "Sender's identifier (ID) in the system — used to link to an existing sender, if applicable."
   - name: phone
-    type: string
+    type: String
     required: true
     desc: "Sender's phone number (in international format, e.g. +998901234567)."
   - name: series
-    type: string
+    type: String
     required: true
     desc: "Sender's passport series and number (e.g. AB1234567)."
   - name: address
-    type: string
+    type: String
     required: true
-    desc: "Sender's registered residential address."
+    desc: "Sender's permanent residential address (registration address)."
   - name: last_name
-    type: string
+    type: String
     required: true
-    desc: "Sender's last name (as shown in passport)."
+    desc: "Sender's last name (as shown in the passport)."
   - name: first_name
-    type: string
+    type: String
     required: true
-    desc: "Sender's first name (as shown in passport)."
+    desc: "Sender's first name (as shown in the passport)."
   - name: birth_date
-    type: string
+    type: String
     required: true
-    desc: "Date of birth (in YYYY-MM-DD format)."
+    desc: "Sender's date of birth (format: YYYY-MM-DD)."
   - name: birth_place
-    type: string
+    type: String
     required: true
-    desc: "Place of birth (as stated in passport)."
+    desc: "Sender's place of birth (as indicated in the passport)."
   - name: expire_date
-    type: string
+    type: String
     required: true
-    desc: "Passport expiry date (YYYY-MM-DD)."
+    desc: "Expiration date of the sender's passport (format: YYYY-MM-DD)."
   - name: issuing_date
-    type: string
+    type: String
     required: true
-    desc: "Passport issue date (YYYY-MM-DD)."
+    desc: "Date the sender's passport was issued (format: YYYY-MM-DD)."
 ---
 
-`sender.create` registers a new sender in the system by submitting personal
-and passport details (phone number, passport series, address, full name,
-date and place of birth, passport issue and expiry dates).
+The `sender.create` method registers a new sender in the system by submitting
+their personal and passport identification details (phone number, passport
+series, address, full name, birth date and place, and passport issue/expiry
+dates). Upon successful registration, the server returns a unique `sender_id`,
+which must be used to reference this sender in subsequent methods
+(e.g. `transfer.create`) instead of resending the sender's personal details each
+time.
 
-Upon successful registration, the server returns a unique **`sender_id`** —
-this identifier is used in subsequent methods (e.g., `transfer.create`) to
-reference the sender without re-submitting their personal data each time.
-
-## Response fields
+## Sample responses
 
 | Field | Type | Description |
 |---|---|---|
-| `message` | string | Status message returned by the server (e.g., `"success"`) |
-| `sender_id` | integer | Unique identifier of the newly created sender |
+| `message` | String | Status message returned by the server (e.g. `"success"`) |
+| `sender_id` | Integer | Unique identifier assigned to the newly created sender in the system |
 
-## Sample response
+### Response
 
 ```json
 {
-  "jsonrpc": "2.0",
-  "result": {
-    "message": "success",
-    "sender_id": 54198
-  },
-  "id": 2,
-  "status": true,
-  "origin": "sender.create"
+    "jsonrpc": "2.0",
+    "result": {
+        "message": "success",
+        "sender_id": 54198
+    },
+    "id": 2,
+    "status": true,
+    "origin": "sender.create",
+    "host": {
+        "host": "Unipos_v2",
+        "timestamp": "2026-07-03 10:08:58.646353"
+    }
 }
 ```

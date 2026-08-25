@@ -5,16 +5,16 @@ rpcMethod: get.rate.v2
 codeExamples:
   curl: |
     curl --location 'https://{{host}}/api/v1/jsonrpc' \
-      --header 'Authorization: Bearer {{access_token}}' \
-      --header 'Content-Type: application/json' \
-      --data '{
+    --header 'Authorization: Bearer {{access_token}}' \
+    --header 'Content-Type: application/json' \
+    --data '{
         "jsonrpc": "2.0",
         "id": 1,
         "method": "get.rate.v2",
         "params": {
-          "service_code": "V2S0007"
+            "service_code": "V2S0007"
         }
-      }'
+    }'
   node: |
     const response = await fetch(`https://${host}/api/v1/jsonrpc`, {
       method: 'POST',
@@ -31,58 +31,81 @@ codeExamples:
     });
     const { result } = await response.json();
 params:
-  - name: service_code
-    type: string
+  - name: jsonrpc
+    type: String
     required: true
-    desc: "Unique code of the service whose exchange rate is being requested."
+    desc: "JSON-RPC protocol version."
+  - name: id
+    type: "String | Integer"
+    required: true
+    desc: "Request identifier."
+  - name: method
+    type: String
+    required: true
+    desc: "get.rate.v2"
+  - name: params
+    type: Object
+    required: true
+    desc: "Object."
+  - name: service_code
+    type: Integer
+    required: true
+    desc: "Unique service code."
 ---
 
-Returns the currency exchange rates for the selected service. `get.rate.v2` provides all available conversion rates associated with that service.
+This method is used to retrieve exchange rates for a specific service.
+The `get.rate.v2` method returns all available currency conversion rates
+applicable to the selected service.
 
-## Why This Method Is Needed
+This method allows the client application to:
 
-- Retrieving exchange rates by service code
-- Determining primary and secondary conversion rates
-- Calculating the transaction amount based on currency conversion rules
+- Retrieve exchange rates for a service by its code
+- Determine primary and secondary conversion rates
+- Calculate transaction amounts based on currency conversion rules
 
-## Response Fields
+Returns a list of rates including source currency, target currency, operator,
+and rate value.
+
+## Sample responses
 
 | Field | Type | Description |
 |---|---|---|
-| `transaction_type` | string | Transaction type (`credit` / `debit`) |
-| `is_primary` | boolean | Indicates whether this is the primary rate |
-| `currency` | string | Source currency (ISO 4217 numeric code) |
-| `target_currency` | string | Target currency (ISO 4217 numeric code) |
-| `operator` | string | Operator used to calculate the rate (`multiply`, `divide`) |
-| `value` | number | Exchange rate value |
+| `transaction_type` | String | Transaction type (`credit` / `debit`) |
+| `is_primary` | Boolean | Indicates whether the rate is primary |
+| `currency` | String | Source currency (ISO 4217 numeric code) |
+| `target_currency` | String | Target currency (ISO 4217 numeric code) |
+| `operator` | String | Rate calculation operator (`multiply`, `divide`) |
+| `value` | Number | Exchange rate value |
 
-## Sample Response
+### Response
 
 ```json
 {
-  "jsonrpc": "2.0",
-  "result": [
-    {
-      "transaction_type": "credit",
-      "is_primary": true,
-      "currency": "972",
-      "target_currency": "860",
-      "operator": "multiply",
-      "value": 1343.35
-    },
-    {
-      "transaction_type": "credit",
-      "is_primary": true,
-      "currency": "972",
-      "target_currency": "643",
-      "operator": "multiply",
-      "value": 8.58
+    "jsonrpc": "2.0",
+    "result": [
+        {
+            "transaction_type": "credit",
+            "is_primary": true,
+            "currency": "972",
+            "target_currency": "860",
+            "operator": "multiply",
+            "value": 1343.35
+        },
+        {
+            "transaction_type": "credit",
+            "is_primary": true,
+            "currency": "972",
+            "target_currency": "643",
+            "operator": "multiply",
+            "value": 8.58
+        }
+    ],
+    "id": 1,
+    "status": true,
+    "origin": "get.rate.v2",
+    "host": {
+        "host": "Unipos_v2",
+        "timestamp": "2026-01-19 09:34:18.740931"
     }
-  ],
-  "id": 1,
-  "status": true,
-  "origin": "get.rate.v2"
 }
 ```
-
-To calculate the final amount, multiply or divide the source amount by `value` according to the `operator` field (`multiply` or `divide`).

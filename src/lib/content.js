@@ -115,6 +115,7 @@ export const CATEGORY_LABELS = {
   connection: "Connection",
   methods: "Methods",
   payments: "Paynet Payments",
+  "transfers-v2": "Transfers V2 (beta)",
 };
 
 // Sidebar section order — "Overview" appears at the top.
@@ -193,6 +194,12 @@ export function getFlatDocs() {
   return getNavSections().flatMap((s) =>
     s.items.flatMap((item) => [item, ...(item.children ?? [])]),
   );
+}
+
+// Slug of the very first page in the sidebar — used for "/" and the logo link
+// so the landing page follows the nav order instead of a hardcoded slug.
+export function getFirstDocSlug() {
+  return getFlatDocs()[0]?.slug ?? "";
 }
 
 export function getAdjacentDocs(slug) {

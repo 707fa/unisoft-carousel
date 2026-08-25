@@ -3,10 +3,19 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ChevronRight } from "lucide-react";
 import { getNavSections } from "../lib/content";
-import CodeBlock from "./CodeBlock";
-import ResponseBlock from "./ResponseBlock";
+import ApiConsole from "./ApiConsole";
 import ParamsTable from "./ParamsTable";
 import PageActions from "./PageActions";
+
+// Wide markdown tables scroll inside their own container instead of pushing
+// the whole page sideways on narrow viewports.
+const MARKDOWN_COMPONENTS = {
+  table: ({ node, ...props }) => (
+    <div className="docs-table-scroll">
+      <table {...props} />
+    </div>
+  ),
+};
 
 // A single document (page) — multiple instances stack vertically to form
 // a continuous (infinite) scroll. `first` marks the first page in the stream
@@ -23,32 +32,35 @@ const DocArticle = forwardRef(function DocArticle({ doc, first }, ref) {
   );
 
   const hasCode = doc.codeExamples && Object.keys(doc.codeExamples).length > 0;
-  const responses = doc.responses || [];
-  const hasAside = hasCode || responses.length > 0;
+  const hasAside = hasCode || (doc.responses ?? []).length > 0;
 
   return (
     <article
       ref={ref}
       data-slug={doc.slug}
-      className={`px-4 md:px-8 ${first ? "pt-8" : "pt-14 mt-14 border-t border-gray-100"} pb-8`}
+      className={`px-4 md:px-6 lg:px-8 ${first ? "pt-8" : "pt-14 mt-14 border-t border-gray-100"} pb-8`}
     >
       <div className="flex items-center gap-1.5 text-[13px] text-gray-400 mb-3">
         <span>{section?.title}</span>
-        <ChevronRight size={13} />
+        <ChevronRight size={13} aria-hidden />
         <span className="text-gray-700">{doc.title}</span>
       </div>
 
-      {/* Sahifani to'liq nusxalash (Markdown) va YAML ko'rinishida ochish */}
+      {/* Copy the whole page as Markdown, or open it as YAML */}
       <PageActions doc={doc} />
 
+      {/* The console takes every pixel the prose column does not need: prose is
+          capped at a readable measure, the console absorbs the rest. */}
       <div
-        className={`grid grid-cols-1 gap-10 ${
-          hasAside ? "lg:grid-cols-[minmax(0,1fr)_420px]" : ""
+        className={`grid grid-cols-1 gap-8 xl:gap-10 ${
+          hasAside
+            ? "xl:grid-cols-[minmax(0,1fr)_minmax(26rem,42%)] 2xl:grid-cols-[minmax(0,46rem)_minmax(0,1fr)]"
+            : "max-w-[900px]"
         }`}
       >
         {/* Text column */}
-        <div>
-          <h1 className="text-[28px] font-bold tracking-tight mb-3">
+        <div className="min-w-0">
+          <h1 className="text-[28px] font-bold tracking-tight mb-3 text-balance">
             {doc.title}
           </h1>
 
@@ -62,7 +74,7 @@ const DocArticle = forwardRef(function DocArticle({ doc, first }, ref) {
           )}
 
           {doc.rpcMethod && (
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex flex-wrap items-center gap-2 mb-6">
               <span className="text-[11px] font-bold px-2 py-1 rounded text-white bg-brand">
                 JSON-RPC
               </span>
@@ -73,7 +85,9 @@ const DocArticle = forwardRef(function DocArticle({ doc, first }, ref) {
           )}
 
           <div className="docs-prose">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{doc.body}</ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm]} components={MARKDOWN_COMPONENTS}>
+              {doc.body}
+            </ReactMarkdown>
           </div>
 
           {doc.params && (
@@ -84,13 +98,10 @@ const DocArticle = forwardRef(function DocArticle({ doc, first }, ref) {
           )}
         </div>
 
-        {/* Right column — request (top) and response (bottom) stacked */}
+        {/* Right column — the request/response console for this endpoint */}
         {hasAside && (
-          <div className="lg:sticky lg:top-20 self-start space-y-4">
-            {hasCode && <CodeBlock codeExamples={doc.codeExamples} />}
-            {responses.map((r, i) => (
-              <ResponseBlock key={i} label={r.label} code={r.code} />
-            ))}
+          <div className="min-w-0 self-start xl:sticky xl:top-[4.75rem]">
+            <ApiConsole doc={doc} />
           </div>
         )}
       </div>

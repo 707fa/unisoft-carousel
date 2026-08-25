@@ -1,54 +1,127 @@
 ---
-title: Authentication and Digest
+title: Authorization and Digest
 order: 2
 codeExamples:
   curl: |
     curl --location 'https://{{host}}/api/v1/jsonrpc' \
-      --header 'Header-Login: {{username}}' \
-      --header 'Header-Sign: {{digest}}' \
-      --header 'Content-Type: application/json' \
-      --header 'Authorization: Bearer {{access_token}}' \
-      --data '{
+    --header 'Header-Login: {{username}}' \
+    --header 'Header-Sign: {{digest}}' \
+    --header 'Content-Type: application/json' \
+    --header 'Authorization: Bearer {{access_token}}' \
+    --data '{
         "jsonrpc": "2.0",
         "id": 111,
         "method": "transfer.create",
         "params": {
-          "ext_id": "12",
-          "number": "8600xxxx",
-          "amount": 100000,
-          "currency": 643
+            "ext_id": "12",
+            "number": "8600xxxx",
+            "amount": 100000,
+            "currency": 643
         }
-      }'
+    }'
   node: |
-    const crypto = require('crypto');
+    // Postman Pre-request code snippet
+    crypto = require('crypto-js')
 
-    const secret = process.env.UNISOFT_SECRET;
-    const body = JSON.stringify(requestPayload);
+    // Retrieve the secret from the environment
+    var secret = 'secret_very_very!';
 
-    const digest = crypto
-      .createHmac('sha256', secret)
-      .update(body)
-      .digest('base64');
+    var resolvedBody = pm.request.body.raw;
 
-    // Added to request headers:
-    // Header-Sign: {digest}
-    // Authorization: Bearer {access_token}
+    // Generate the HMAC using SHA-256
+    var encrypted = crypto.HmacSHA256(resolvedBody, secret);
+
+    var digest = crypto.enc.Base64.stringify(encrypted);
+
+    // Set the digest as an environment variable (or another collection
+    // variable if needed)
+    pm.collectionVariables.set('digest', digest);
 ---
 
-## Headers
+## C.1.1 Authorization
+
+Authorization client must send on header as:
 
 | Header | Value | Description |
 |---|---|---|
-| `Authorization` | `Bearer {access_token}` | Token returned by the `login` method |
-| `Content-Type` | `application/json` | The gateway only accepts JSON requests |
-| `Accept` | `application/json` | The response is also in JSON format |
-| `Header-Sign` | HMAC digest | Computed for each request as described below |
+| `Authorization` | `Bearer {{access_token}}` | Access-Token will be returned by the `login` method |
+| `Content-type` | `application/json` | Gate serves for only JSON request |
+| `Accept` | `application/json` | If the client sends a valid request, Gate response will be in JSON format |
 
-## Digest Calculation Steps
+## C1.2 Generating Digest procedure explanation
 
-1. **Secret Key** — Keep the `secret` used for HMAC computation secure and do not share it with anyone.
-2. **HMAC Computation** — A digest is computed using SHA-256 with the `secret` and the request body (`request.body`).
-3. **Base64 Encoding** — The computed digest is encoded in Base64 format.
-4. **Adding to Header** — The result is placed in the `Header-Sign` header.
+**1. `secret`** — the `secret` variable represents the secret key used for HMAC
+calculation. It should be kept confidential and securely managed to ensure the
+security of the authentication process.
 
-If the digest is computed incorrectly, the request will fail authentication — therefore the request body (`body`) must not be modified after the digest has been computed.
+```python
+secret = b"secret_must_be_saved_secretly_!!!"
+```
+
+**2. HMAC Digest Calculation** — the `hmac.new()` function computes the HMAC
+digest using the provided secret key (`secret`), the request body
+(`request.body`), and the SHA-256 hash function (`hashlib.sha256`). This process
+generates a unique digest based on the combination of the secret key and the
+message content.
+
+```python
+hmac_digest = hmac.new(secret, request.body, hashlib.sha256)
+```
+
+**3. Base64 Encoding** — the resulting digest is then encoded in base64 format
+using `base64.b64encode()` to ensure compatibility with various data
+transmission protocols and systems.
+
+```python
+digest_base64 = base64.b64encode(hmac_digest.digest()).decode()
+```
+
+**4. Set digest to Header of Request** — finally, the calculated digest
+(`digest_base64`) must be added to the header as the key
+`Header-Sign: {{digest_base64}}`. Ensure that the secret key is securely managed
+and not exposed to unauthorized parties. Additionally, consider integrating this
+HMAC digest calculation mechanism into your service for secure message
+authentication and integrity verification.
+
+## Additional
+
+**1. Postman Pre-request code snippet**
+
+```js
+crypto = require('crypto-js')
+
+// Retrieve the secret from the environment
+var secret = 'secret_very_very!';
+
+var resolvedBody = pm.request.body.raw;
+
+// Generate the HMAC using SHA-256
+var encrypted = crypto.HmacSHA256(resolvedBody, secret);
+
+var digest = crypto.enc.Base64.stringify(encrypted);
+
+// Set the digest as an environment variable (or another collection variable if
+// needed)
+pm.collectionVariables.set('digest', digest);
+```
+
+**2. The final request code snippet should be as below:**
+
+```bash
+curl --location 'https://{{host}}/api/v1/jsonrpc' \
+--header 'Header-Login: {{username}}' \
+--header 'Header-Sign: {{digest}}' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer {{access_token}}' \
+--data '{
+    "jsonrpc": "2.0",
+    "id": 111,
+    "method": "transfer.create",
+    "params": {
+        "ext_id": "12",
+        "number": "8600xxxx",
+        "amount": 100000,
+        "currency": 643
+    }
+}'
+```

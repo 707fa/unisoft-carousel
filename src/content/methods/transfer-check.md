@@ -5,17 +5,17 @@ rpcMethod: transfer.check
 codeExamples:
   curl: |
     curl --location 'https://{{host}}/api/v1/jsonrpc' \
-      --header 'Authorization: Bearer {{access_token}}' \
-      --header 'Content-Type: application/json' \
-      --data '{
+    --header 'Authorization: Bearer {{access_token}}' \
+    --header 'Content-Type: application/json' \
+    --data '{
         "jsonrpc": "2.0",
         "id": 1,
         "method": "transfer.check",
         "params": {
-          "number": "9105205279986",
-          "service_code": "V2S0016"
+            "number": "9105205279986",
+            "service_code": "V2S0016"
         }
-      }'
+    }'
   node: |
     const response = await fetch(`https://${host}/api/v1/jsonrpc`, {
       method: 'POST',
@@ -35,51 +35,77 @@ codeExamples:
     });
     const { result } = await response.json();
 params:
-  - name: number
-    type: string
+  - name: jsonrpc
+    type: String
     required: true
-    desc: "Card number or recipient's phone number."
+    desc: "JSON-RPC protocol version."
+  - name: id
+    type: "String | Integer"
+    required: true
+    desc: "Request identifier."
+  - name: method
+    type: String
+    required: true
+    desc: "transfer.check"
+  - name: params
+    type: Object
+    required: true
+    desc: "Object."
+  - name: number
+    type: Integer
+    required: true
+    desc: "Card number or receiver phone number."
   - name: service_code
-    type: string
+    type: String
     required: true
     desc: "Unique service code."
 ---
 
-Retrieves information about a card or phone number **before** initiating a transfer. This method **performs no validation** — it simply returns whatever information is available for the given number.
+Retrieves and displays information about a card or phone number before
+initiating a transfer. This method does not validate — it simply returns
+available information about the provided number.
 
-## Why This Method Is Needed
+This method is used to retrieve information about a card or phone number
+associated with a specific service before creating a transfer. The client
+application can use this method to:
 
-- Retrieving the cardholder's name or the phone number owner
-- Displaying a masked card/phone number to the user
-- Showing account details associated with the number
-- Pre-filling the transfer form with the retrieved data
+- Retrieve the card holder's name or phone owner
+- Display masked card/phone number to the user
+- Show account details linked to the number
+- Pre-fill transfer form with retrieved data
 
-This method does not perform any validation or transaction processing — it returns purely informational data about the number in the context of the given service.
+> This method does **not** perform any validation or transaction processing — it
+> only returns informational data about the provided number within the context
+> of the given service.
 
-## Response Fields
+## Sample responses
 
 | Field | Type | Description |
 |---|---|---|
-| `number` | string | Card or phone number |
-| `owner` | string \| null | Full name (if available) |
-| `is_corporate` | boolean | Indicates whether the card is corporate |
-| `state` | integer | Card status |
-| `bank` | string | Name of the bank associated with the card |
+| `number` | String | Card number or phone number |
+| `owner` | Boolean | Full name |
+| `is_corporate` | String | Card type |
+| `state` | String | Card status |
+| `bank` | String | Card bank |
 
-## Sample Response
+### Response
 
 ```json
 {
-  "jsonrpc": "2.0",
-  "result": {
-    "number": "902333614",
-    "owner": null,
-    "is_corporate": false,
-    "state": 0,
-    "bank": "МАХМУДЧОН А. М."
-  },
-  "id": 1,
-  "status": true,
-  "origin": "transfer.check"
+    "jsonrpc": "2.0",
+    "result": {
+        "number": "902333614",
+        "owner": null,
+        "is_corporate": false,
+        "state": 0,
+        "bank": "МАХМУДЧОН А. М."
+    },
+    "id": 1,
+    "status": true,
+    "origin": "transfer.check",
+    "host": {
+        "host": "Unipos_v2",
+        "timestamp": "2026-04-07 10:16:12.624738"
+    }
 }
 ```

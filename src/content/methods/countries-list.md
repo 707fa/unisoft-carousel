@@ -5,14 +5,14 @@ rpcMethod: countries.list
 codeExamples:
   curl: |
     curl --location 'https://{{host}}/api/v1/jsonrpc' \
-      --header 'Authorization: Bearer {{access_token}}' \
-      --header 'Content-Type: application/json' \
-      --data '{
+    --header 'Authorization: Bearer {{access_token}}' \
+    --header 'Content-Type: application/json' \
+    --data '{
         "jsonrpc": "2.0",
         "id": 1,
         "method": "countries.list",
         "params": {}
-      }'
+    }'
   node: |
     const response = await fetch(`https://${host}/api/v1/jsonrpc`, {
       method: 'POST',
@@ -30,103 +30,187 @@ codeExamples:
     const { result } = await response.json();
 params:
   - name: jsonrpc
-    type: string
+    type: String
     required: true
     desc: "JSON-RPC protocol version."
   - name: id
-    type: "string | integer"
+    type: "String | Integer"
     required: true
     desc: "Request identifier."
   - name: method
-    type: string
+    type: String
     required: true
-    desc: "Method name — in this case \"countries.list\"."
+    desc: "countries.list"
   - name: params
-    type: object
+    type: Object
     required: true
-    desc: "Empty object."
+    desc: "Object."
 ---
 
-`countries.list` returns all countries and payment systems supported by the platform. For each country it answers two questions:
+`countries.list` returns all countries and payment schemes the system supports.
+For each country it tells you two things:
 
-- Is withdrawing funds (**debit**) from cards issued in this country supported?
-- Is sending funds (**credit**) to cards in this country supported?
+- Can you withdraw money from cards of this country?
+- Can you send money to cards of this country?
 
-And for each operation — it indicates which `service_code` to use.
+And for each operation — which service code to use.
 
-## Debit — Withdrawing Funds from a Card
+## Debit — withdrawing money from a card
 
-If `debit_enabled: true`, funds can be withdrawn from cards issued in that country. Each debit entry includes a `service_code` — pass this code to the payment API to initiate the withdrawal.
+When a country has `"debit_enabled": true`, it means you can pull funds out of
+cards issued in that country. Each debit entry has a `service_code` — you pass
+that code to the payment API to start the withdrawal.
 
-## Credit — Sending Funds to a Card
+## Credit — sending money to a card
 
-If `credit_enabled: true`, funds can be deposited or transferred to cards in that country. Each credit entry also includes a `service_code` — use it to send funds.
+When a country has `"credit_enabled": true`, it means you can top up or transfer
+money into cards of that country. Each credit entry has a `service_code` — you
+pass it to the payment API to send money.
 
-## What Is a Service Code
+## Service code
 
-`service_code` is a unique identifier representing a single specific operation. It encodes the card network, country, and direction (incoming or outgoing). Use the `service_code` obtained from this response as a parameter when calling the actual transfer endpoint.
+A `service_code` is a unique identifier for one specific operation. It defines
+the card network, the country, and the direction (in or out). You take the
+`service_code` from this response and use it as a parameter when calling the
+actual transfer endpoint.
 
-## Response Fields
+## Sample responses
 
 | Field | Type | Description |
 |---|---|---|
-| `id` | string | Unique identifier of the country |
-| `code` | string | Country or currency code (e.g., `"UZB"`, `"RUS"`) |
-| `name` | string | Human-readable country/system name |
-| `debit_enabled` | boolean | Whether withdrawal is available for this country |
-| `credit_enabled` | boolean | Whether sending funds is available for this country |
-| `debit` | array | List of available debit services (empty if `debit_enabled` is false) |
-| `credit` | array | List of available credit services |
-| `service_code` | string | Identifier used in subsequent requests (e.g., `"V2S0005"`) |
-| `service_name` | string | Human-readable description of the service |
+| `id` | String | Unique country identifier |
+| `code` | String | Country or currency code (e.g. `"UZB"`, `"RUS"`) |
+| `name` | String | Human-readable country or scheme name |
+| `debit_enabled` | Boolean | Whether fund withdrawal (debit) is available for this country |
+| `credit_enabled` | Boolean | Whether fund deposit (credit) is available for this country |
+| `debit` | Array | List of available debit services. Empty array if `debit_enabled` is false |
+| `credit` | Array | List of available credit services. Empty array if `credit_enabled` is false |
+| `service_code` | String | Unique service identifier used in subsequent API calls (e.g. `"V2S0005"`) |
+| `service_name` | String | Human-readable description of the service |
 
-## Sample Response
+### Response
 
 ```json
 {
-  "jsonrpc": "2.0",
-  "result": [
-    {
-      "id": 4,
-      "code": "RUS",
-      "name": "Russia",
-      "debit_enabled": true,
-      "credit_enabled": true,
-      "debit": [
+    "jsonrpc": "2.0",
+    "result": [
         {
-          "service_code": "V2S0006",
-          "service_name": "AFT Withdrawal Service for RF Cards"
-        }
-      ],
-      "credit": [
+            "id": 2,
+            "code": "KGZ",
+            "name": "Kyrgyzstan",
+            "debit_enabled": false,
+            "credit_enabled": true,
+            "debit": [],
+            "credit": [
+                {
+                    "service_code": "V2S0002",
+                    "service_name": "Qirg'iziston kartalarini toldirish"
+                }
+            ]
+        },
         {
-          "service_code": "V2S0011",
-          "service_name": "Account to RF cards"
-        }
-      ]
-    },
-    {
-      "id": 1,
-      "code": "UZB",
-      "name": "UZBEKISTAN",
-      "debit_enabled": true,
-      "credit_enabled": true,
-      "debit": [
+            "id": 4,
+            "code": "RUS",
+            "name": "Russia",
+            "debit_enabled": true,
+            "credit_enabled": true,
+            "debit": [
+                {
+                    "service_code": "V2S0006",
+                    "service_name": "AFT Withdrawal Service for RF Cards"
+                },
+                {
+                    "service_code": "V2S0008",
+                    "service_name": "AFT Withdrawal Service for RF Cards"
+                }
+            ],
+            "credit": [
+                {
+                    "service_code": "V2S0011",
+                    "service_name": "Account to RF cards"
+                }
+            ]
+        },
         {
-          "service_code": "V2S0009",
-          "service_name": "Withdrawing money from Uzcard cards via OTP verification"
-        }
-      ],
-      "credit": [
+            "id": 3,
+            "code": "TJK",
+            "name": "Tajikistan",
+            "debit_enabled": false,
+            "credit_enabled": true,
+            "debit": [],
+            "credit": [
+                {
+                    "service_code": "V2S0007",
+                    "service_name": "Card top-up for Tajikistan cards"
+                }
+            ]
+        },
         {
-          "service_code": "V2S0005",
-          "service_name": "Uzcard Account to card"
+            "id": 5,
+            "code": "TRY",
+            "name": "TURKEY",
+            "debit_enabled": false,
+            "credit_enabled": true,
+            "debit": [],
+            "credit": [
+                {
+                    "service_code": "V2S0001",
+                    "service_name": "Turkiya IBAN xisob raqamlarini toldirish"
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "code": "USD",
+            "name": "VISA",
+            "debit_enabled": false,
+            "credit_enabled": true,
+            "debit": [],
+            "credit": [
+                {
+                    "service_code": "V2S0010",
+                    "service_name": "Card top-up for VISA cards"
+                }
+            ]
+        },
+        {
+            "id": 1,
+            "code": "UZB",
+            "name": "UZBEKISTAN",
+            "debit_enabled": true,
+            "credit_enabled": true,
+            "debit": [
+                {
+                    "service_code": "V2S0009",
+                    "service_name": "Withdrawing money from Uzcard cards via OTP verification"
+                },
+                {
+                    "service_code": "V2S0015",
+                    "service_name": "Withdrawing money from Wallet"
+                }
+            ],
+            "credit": [
+                {
+                    "service_code": "V2S0003",
+                    "service_name": "HUMO Account to card"
+                },
+                {
+                    "service_code": "V2S0005",
+                    "service_name": "Uzcard Account to card"
+                },
+                {
+                    "service_code": "V2S0014",
+                    "service_name": "Ucoin Account to wallet"
+                }
+            ]
         }
-      ]
+    ],
+    "id": 1,
+    "status": true,
+    "origin": "countries.list",
+    "host": {
+        "host": "Unipos_v2",
+        "timestamp": "2026-03-25 14:56:05.189666"
     }
-  ],
-  "id": 1,
-  "status": true,
-  "origin": "countries.list"
 }
 ```

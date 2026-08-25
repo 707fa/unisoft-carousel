@@ -4,10 +4,17 @@
 
 html {
   scroll-behavior: smooth;
+  /* A stable gutter keeps the sticky console from shifting a few pixels when a
+     short page turns the page scrollbar on or off. */
+  scrollbar-gutter: stable;
 }
 
 body {
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* The console and wide tables scroll inside themselves; nothing may push the
+     page sideways. */
+  overflow-x: clip;
 }
 
 .sidebar-scroll {
@@ -16,6 +23,32 @@ body {
 }
 .sidebar-scroll::-webkit-scrollbar {
   display: none;
+}
+
+/* Slim scrollbars inside the dark console panes */
+.doc-console pre {
+  scrollbar-width: thin;
+  scrollbar-color: #39435a transparent;
+}
+.doc-console pre::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.doc-console pre::-webkit-scrollbar-thumb {
+  background: #39435a;
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+.doc-console pre::-webkit-scrollbar-thumb:hover {
+  background: #4a5670;
+  background-clip: content-box;
+}
+.doc-console pre::-webkit-scrollbar-corner {
+  background: transparent;
+}
+.doc-console ::selection {
+  background: rgba(139, 131, 255, 0.32);
 }
 
 /* Smooth fade-in animation when a page enters the viewport */
@@ -32,25 +65,38 @@ body {
 .doc-enter {
   animation: docFadeIn 0.28s ease-out;
 }
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .doc-enter {
+    animation: none;
+  }
+}
 
 /* Typography for Markdown content (react-markdown output is rendered inside this class) */
 .docs-prose h2 {
   font-size: 19px;
   font-weight: 600;
+  letter-spacing: -0.01em;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
+  text-wrap: balance;
 }
 .docs-prose h3 {
   font-size: 16px;
   font-weight: 600;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
+  text-wrap: balance;
 }
 .docs-prose p {
   font-size: 15px;
   line-height: 1.7;
   color: #374151;
   margin-bottom: 1rem;
+  max-width: 70ch;
+  text-wrap: pretty;
 }
 .docs-prose ul {
   list-style: disc;
@@ -58,6 +104,7 @@ body {
   margin-bottom: 1rem;
   font-size: 14px;
   color: #374151;
+  max-width: 70ch;
 }
 .docs-prose li {
   margin-bottom: 0.35rem;
@@ -67,11 +114,12 @@ body {
   padding: 0.15rem 0.4rem;
   border-radius: 4px;
   font-size: 13px;
-  color: #635bff;
+  color: #4f46e5;
+  overflow-wrap: break-word;
 }
 .docs-prose pre {
-  background: #1a1a2e;
-  border-radius: 8px;
+  background: #12161d;
+  border-radius: 10px;
   padding: 1rem 1.25rem;
   margin: 1rem 0 1.5rem;
   overflow-x: auto;
@@ -79,18 +127,29 @@ body {
 .docs-prose pre code {
   background: none;
   padding: 0;
-  color: #e0def4;
+  color: #ccd4e0;
   font-size: 13px;
   line-height: 1.6;
 }
 .docs-prose a {
-  color: #635bff;
+  color: #4f46e5;
   text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: from-font;
+  text-decoration-skip-ink: auto;
+}
+.docs-prose a:hover {
+  color: #3730a3;
+}
+
+/* Tables can be wider than the prose column, so they scroll on their own */
+.docs-table-scroll {
+  overflow-x: auto;
+  margin: 1rem 0 1.5rem;
 }
 .docs-prose table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1rem 0 1.5rem;
   font-size: 14px;
 }
 .docs-prose th,
@@ -105,6 +164,7 @@ body {
   background: #f9fafb;
   font-weight: 600;
   color: #111827;
+  white-space: nowrap;
 }
 .docs-prose tr:nth-child(even) td {
   background: #fafafa;

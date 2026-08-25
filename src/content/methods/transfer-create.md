@@ -1,28 +1,28 @@
 ---
 title: Transfer create
-order: 10
+order: 8
 rpcMethod: transfer.create
 codeExamples:
   curl: |
     curl --location 'https://{{host}}/api/v1/jsonrpc' \
-      --header 'Authorization: Bearer {{access_token}}' \
-      --header 'Content-Type: application/json' \
-      --data '{
+    --header 'Authorization: Bearer {{access_token}}' \
+    --header 'Content-Type: application/json' \
+    --data '{
         "jsonrpc": "2.0",
         "id": "{{$randomUUID}}",
         "method": "transfer.create",
         "params": {
-          "ext_id": "{{ext_id}}",
-          "amount": 1000000,
-          "currency": "643",
-          "service_code": "V2S0006",
-          "sender_id": 1,
-          "fields": {
-            "to_card_number": "5058***0320789",
-            "ref_id": "123345678"
-          }
+            "ext_id": "{{ext_id}}",
+            "amount": 1000000,
+            "currency": "643",
+            "service_code": "V2S0006",
+            "sender_id": 1,
+            "fields": {
+                "to_card_number": "5058***0320789",
+                "ref_id": "123345678"
+            }
         }
-      }'
+    }'
   node: |
     const response = await fetch(`https://${host}/api/v1/jsonrpc`, {
       method: 'POST',
@@ -49,143 +49,219 @@ codeExamples:
     });
     const { result } = await response.json();
 params:
+  - name: jsonrpc
+    type: String
+    required: true
+    desc: "JSON-RPC protocol version."
+  - name: id
+    type: "String | Integer"
+    required: true
+    desc: "Request identifier."
+  - name: method
+    type: String
+    required: true
+    desc: "transfer.create"
+  - name: params
+    type: Object
+    required: true
+    desc: "Transfer parameters."
   - name: ext_id
-    type: string
+    type: String
     required: true
-    desc: "The unique external identifier for the operation in your system."
+    desc: "External unique operation ID."
   - name: amount
-    type: integer
+    type: Integer
     required: true
-    desc: "Transfer amount (in the smallest currency unit — tiyin/kopek)."
+    desc: "Transfer amount (in minor units)."
   - name: currency
-    type: string
+    type: String
     required: true
-    desc: "ISO 4217 currency code."
+    desc: "Currency code (ISO 4217)."
   - name: service_code
-    type: string
+    type: String
     required: true
-    desc: "Service code obtained from the services or countries.list response."
+    desc: "Service code from services."
   - name: sender_id
-    type: integer
+    type: Integer
     required: true
-    desc: "Sender identifier returned by the sender.create method."
+    desc: "The sender_id returned by sender.create, used to identify the sender in transfer.create."
   - name: fields
-    type: object
+    type: Object
     required: true
-    desc: "Service-specific fields for the selected service (see below)."
+    desc: "Service-specific fields."
 ---
 
-`transfer.create` creates a money transfer or payment operation for the
-selected service. Each service may require different input fields —
-mandatory and optional fields must be dynamically retrieved from the
-`services` method response.
+The `transfer.create` method is used to create a money transfer or payment
+operation for a selected service.
 
-> ⚠️ **Important rule:** The `fields` object must only contain parameters
-> defined for the selected service. Each field in the `services` response
-> has a `name` attribute — these values must be used as keys inside
-> `params.fields` in `transfer.create`.
+Each service may require a different set of input fields.
+The required and optional fields must be obtained dynamically from the
+[`services`](/docs/services) method response.
 
-## Two-Step Process
+> ⚠️ The `fields` object must contain **only** the parameters defined in the
+> selected service.
 
-**Step 1: Retrieve service fields**
+## Important Rule
+
+The content of `params.fields` depends on the selected service. The list of
+allowed and required fields is returned by the `services` method.
+
+Each field in the `services` response contains a `name` attribute. These `name`
+values must be used as keys inside `params.fields` in `transfer.create`.
+
+## params.fields
+
+`fields` is a dynamic object.
+
+Its structure depends on the selected service and must be built using the
+`fields[].name` values returned by the `services` method.
+
+### Step 1: Get service fields
+
+Request:
 
 ```json
 {
-  "jsonrpc": "2.0",
-  "id": 1,
-  "method": "services",
-  "params": { "provider_id": 8 }
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "services",
+    "params": {
+        "provider_id": 8
+    }
 }
 ```
 
-The `fields` array in the response indicates which fields are required:
+Response (fragment):
 
 ```json
 {
-  "fields": [
-    { "name": "to_card_number", "is_required": true },
-    { "name": "ref_id", "is_required": false }
-  ]
+    "fields": [
+        {
+            "name": "to_card_number",
+            "is_required": true
+        },
+        {
+            "name": "ref_id",
+            "is_required": false
+        }
+    ]
 }
 ```
 
-**Step 2: Create the transfer with those fields** — send the request shown
-in the code example above.
+### Step 2: Create transfer using service fields
 
-## Response Fields
+```json
+{
+    "jsonrpc": "2.0",
+    "id": "{{$randomUUID}}",
+    "method": "transfer.create",
+    "params": {
+        "ext_id": "{{ext_id}}",
+        "amount": 1000000,
+        "currency": "643",
+        "service_code": "V2S0006",
+        "sender_id": 1,
+        "fields": {
+            "to_card_number": "5058***0320789",
+            "ref_id": "123345678"
+        }
+    }
+}
+```
+
+## Sample responses
 
 | Field | Type | Description |
 |---|---|---|
-| `ext_id` | string | External identifier of the operation |
-| `state` | integer | Operation status (see [status table](/docs/transfer-state)) |
-| `description` | string | Status description |
-| `amount` | integer | Amount (in tiyin precision) |
-| `currency` | string | Credit currency |
-| `commission` | float | Calculated commission |
-| `cr_amount` / `cr_currency` | integer / string | Amount and code in the recipient's currency |
-| `form_url` | string \| null | URL for an additional payment form (for certain services) |
-| `account` | array | Recipient account information |
-| `payment.ref_num` | string | Reference identifier at the processing center (Uzcard, Humo, Visa) |
-| `id` | string | Payment identifier for the operation — RRN |
+| `ext_id` | String | External id of operation |
+| `state` | Integer | State of operation |
+| `number` | String | Receiver card number |
+| `description` | String | Operation state description |
+| `amount` | Integer | Amount in UZS with precision tiyin |
+| `currency` | Integer | Credit currency |
+| `commission` | Float | Calculated commission |
+| `account` | List | Receiver account information |
+| `ref_num` | String | Reference id of payment in PC (Uzcard, Humo, Visa) |
+| `id` | String | Payment id of operation — RRN |
 
-## Example Response
+### Response
 
 ```json
 {
-  "jsonrpc": "2.0",
-  "result": {
-    "ext_id": "kg_test_102",
-    "state": 0,
-    "description": "Created",
-    "amount": 1000000,
-    "currency": "643",
-    "commission": 10000,
-    "cr_amount": null,
-    "cr_currency": null,
-    "form_url": "https://online.transcapital.com/cdr/payment/A0SkPAE",
-    "account": [
-      {
-        "name": "card",
-        "title": { "en": "Card of a receiver" },
-        "number": ""
-      },
-      {
-        "name": "owner",
-        "title": { "en": "Receiver" },
-        "value": null
-      }
-    ],
-    "payment": {
-      "ref_num": "UO-MT-C-011926111635-33536be2-fdc5-4",
-      "id": null
+    "jsonrpc": "2.0",
+    "result": {
+        "ext_id": "kg_test_102",
+        "state": 0,
+        "description": "Created",
+        "amount": 1000000,
+        "currency": "643",
+        "commission": 10000,
+        "cr_amount": null,
+        "cr_currency": null,
+        "form_url": "https://online.transcapital.com/cdr/payment/A0SkPAE",
+        "account": [
+            {
+                "name": "card",
+                "title": {
+                    "ru": "Карта получателя",
+                    "en": "Card of a receiver",
+                    "uz": "Qabul qiluvchi kartasi"
+                },
+                "number": ""
+            },
+            {
+                "name": "owner",
+                "title": {
+                    "ru": "Получатель",
+                    "en": "Receiver",
+                    "uz": "Qabul qiluvchi"
+                },
+                "value": null
+            }
+        ],
+        "payment": {
+            "ref_num": "UO-MT-C-011926111635-33536be2-fdc5-4",
+            "id": null
+        },
+        "merchant": {
+            "organization": "Universal",
+            "epos": {
+                "merchant": "-",
+                "terminal": "P23318112725ID",
+                "account": "-"
+            },
+            "type": {
+                "ru": "Пополнения карта ",
+                "en": "Top-up card",
+                "uz": "Karta xisobini to'ldirish"
+            }
+        }
     },
-    "merchant": {
-      "organization": "Universal",
-      "epos": { "merchant": "-", "terminal": "P23318112725ID", "account": "-" },
-      "type": { "en": "Top-up card" }
+    "id": 1,
+    "status": true,
+    "origin": "transfer.create",
+    "host": {
+        "host": "Unipos_v2",
+        "timestamp": "2026-01-19 11:16:35.946961"
     }
-  },
-  "id": 1,
-  "status": true,
-  "origin": "transfer.create"
 }
 ```
 
-## Service-Specific Variants
+## Service-specific variants
 
 The content of the `fields` object varies depending on the selected service.
-Below are separate pages for the most commonly used service types — each
-includes its own `fields` and a sample request:
+Below are the separate pages for each documented service type — each one
+includes its own `fields` table, request sample and response sample:
 
-- [Visa Direct](/docs/transfer-create-visa-direct)
-- [UnionPay](/docs/transfer-create-unionpay)
-- [Uzcard / Humo A2C](/docs/transfer-create-uzcard-humo-a2c)
-- [RF MTS](/docs/transfer-create-rf-mts)
-- [Turkey](/docs/transfer-create-turkey)
-- [RF TCB](/docs/transfer-create-rf-tcb)
-- [Uzcard payment](/docs/transfer-create-uzcard-payment)
-- [MTS to Card](/docs/transfer-create-mts-to-card)
-- [Wallet to Card](/docs/transfer-create-wallet-to-card)
-- [Wallet payment](/docs/transfer-create-wallet-payment)
-- [Korea](/docs/transfer-create-korea)
-- [Top-up RF banks card](/docs/transfer-create-topup-rf-banks)
+- [8.1 Transfer Create Visa Direct](/docs/transfer-create-visa-direct)
+- [8.2 / 8.12 Transfer Create UnionPay](/docs/transfer-create-unionpay)
+- [8.3 Transfer Create Uzcard Humo A2C](/docs/transfer-create-uzcard-humo-a2c)
+- [8.4 Transfer Create RF MTS](/docs/transfer-create-rf-mts)
+- [8.5 Transfer Create Turkey](/docs/transfer-create-turkey)
+- [8.6 Transfer Create RF TCB](/docs/transfer-create-rf-tcb)
+- [8.7 Transfer Create Uzcard payment](/docs/transfer-create-uzcard-payment)
+- [8.8 Transfer Create MTS TO Card](/docs/transfer-create-mts-to-card)
+- [8.9 Transfer Create Wallet to Card](/docs/transfer-create-wallet-to-card)
+- [8.10 Transfer Create Wallet Payment](/docs/transfer-create-wallet-payment)
+- [8.11 Transfer Create Korea](/docs/transfer-create-korea)
+- [8.13 Transfer Create Top-up RF banks card](/docs/transfer-create-topup-rf-banks)

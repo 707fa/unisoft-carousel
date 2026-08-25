@@ -5,16 +5,16 @@ rpcMethod: services
 codeExamples:
   curl: |
     curl --location 'https://{{host}}/api/v1/jsonrpc' \
-      --header 'Authorization: Bearer {{access_token}}' \
-      --header 'Content-Type: application/json' \
-      --data '{
+    --header 'Authorization: Bearer {{access_token}}' \
+    --header 'Content-Type: application/json' \
+    --data '{
         "jsonrpc": "2.0",
         "id": 1,
         "method": "services",
         "params": {
-          "provider_id": 8
+            "provider_id": 8
         }
-      }'
+    }'
   node: |
     const response = await fetch(`https://${host}/api/v1/jsonrpc`, {
       method: 'POST',
@@ -32,87 +32,129 @@ codeExamples:
     const { result } = await response.json();
 params:
   - name: jsonrpc
-    type: string
+    type: String
     required: true
     desc: "JSON-RPC protocol version."
   - name: id
-    type: "string | integer"
+    type: "String | Integer"
     required: true
     desc: "Request identifier."
   - name: method
-    type: string
+    type: String
     required: true
-    desc: "Method name — in this case \"services\"."
+    desc: "Method name."
+  - name: params
+    type: Object
+    required: true
+    desc: "Empty object (reserved for future use)."
   - name: provider_id
-    type: integer
+    type: Integer
     required: true
-    desc: "Identifier of the provider whose services are being requested."
+    desc: "Unique identifier of the provider."
 ---
 
-The `services` method returns a list of available services for the selected provider. Each service represents a specific operation supported by that provider: card withdrawal, transfer, or payment.
+The `services` method is used to retrieve the list of services available for a
+specific provider.
 
-## Why This Method Is Needed
+Each service represents a concrete operation that can be performed for the
+selected provider, such as:
 
-- Displaying available services after a provider is selected
-- Showing service names and descriptions in multiple languages
-- Checking amount limits and currency
-- Dynamically building the input form based on required fields
-- Determining whether 3-D Secure is required
+- Card debit (withdrawal)
+- Transfer
+- Payment
 
-## Response Fields
+This method allows the client application to:
+
+- Display available services after selecting a provider
+- Show service names and descriptions in multiple languages
+- Validate amount limits and currency
+- Dynamically build input forms based on required fields
+- Understand whether 3-D Secure is required
+
+Returns the full list of services for the selected provider, including
+multilingual names and activity status.
+
+## Sample responses Services
 
 | Field | Type | Description |
 |---|---|---|
-| `id` | integer | Unique identifier of the service |
-| `name_uz` / `name_en` / `name_ru` | string | Service name by language |
-| `type` | string | Service type (`debit`, `credit`, `payment`) |
-| `description` | string | Service description |
-| `min_amount` / `max_amount` | integer | Allowed minimum/maximum amount (in tiyin/kopek) |
-| `currency` | string | ISO 4217 currency code |
-| `code` | string | Internal service code |
-| `is_3ds` | boolean | Indicates whether 3-D Secure is required |
-| `fields` | array | List of input fields required for the request |
-| `response_fields` | array | Fields returned in the service response |
+| `id` | Integer | Provider unique identifier |
+| `name_uz` | String | Service name in Uzbek |
+| `name_en` | String | Service name in English |
+| `name_ru` | String | Service name in Russian |
+| `type` | String | Service type (`debit`, `credit`, `payment`) |
+| `description` | String | Service description |
+| `min_amount` | Integer | Minimum allowed amount (in minor units) |
+| `max_amount` | Integer | Maximum allowed amount (in minor units) |
+| `currency` | String | Currency code (ISO 4217) |
+| `code` | String | Internal service code |
+| `is_3ds` | Boolean | Indicates whether 3-D Secure is required |
+| `fields` | Array | List of required input fields |
+| `response_fields` | Array | Fields returned in service response |
 
-## Sample Response
+### Response
 
 ```json
 {
-  "jsonrpc": "2.0",
-  "result": {
-    "id": 8,
-    "provider": "TCB",
-    "services": [
-      {
-        "id": 6,
-        "name_uz": "RF kartalaridan AFT orqali pul yechish",
-        "name_en": "AFT Withdrawal Service for RF Cards",
-        "type": "debit",
-        "min_amount": 100,
-        "max_amount": 10000000,
-        "currency": "643",
-        "code": "V2S0006",
-        "is_3ds": false,
-        "fields": [
-          {
-            "id": 17,
-            "name": "to_card_number",
-            "label_en": "Receiver card",
-            "type": "string",
-            "is_required": true,
-            "regex": "^[0-9]{16}$"
-          }
-        ],
-        "response_fields": [
-          { "field_name": "form_url", "label_en": "Form URL" }
+    "jsonrpc": "2.0",
+    "result": {
+        "id": 8,
+        "provider": "TCB",
+        "services": [
+            {
+                "id": 6,
+                "name_uz": "RF kartalaridan AFT orqali pul yechish",
+                "name_ru": "Сервис списания средств по AFT с карт РФ",
+                "name_en": "AFT Withdrawal Service for RF Cards",
+                "type": "debit",
+                "description": "AFT Withdrawal Service for RF Cards",
+                "min_amount": 100,
+                "max_amount": 10000000,
+                "currency": "643",
+                "code": "V2S0006",
+                "is_3ds": false,
+                "fields": [
+                    {
+                        "id": 17,
+                        "name": "to_card_number",
+                        "label_uz": "qabul qluvchi kartasi",
+                        "label_ru": "Карта получателя",
+                        "label_en": "Receiver card",
+                        "type": "string",
+                        "is_required": true,
+                        "order": 0,
+                        "regex": "^[0-9]{16}$"
+                    },
+                    {
+                        "id": 16,
+                        "name": "ref_id",
+                        "label_uz": "Karta tokeni",
+                        "label_ru": "Токен карты",
+                        "label_en": "Card token",
+                        "type": "string",
+                        "is_required": false,
+                        "order": 0,
+                        "regex": "^[0-9]+$"
+                    }
+                ],
+                "response_fields": [
+                    {
+                        "field_name": "form_url",
+                        "order": 0,
+                        "label_ru": "URL-адрес формы",
+                        "label_uz": "Formaning URL manzili",
+                        "label_en": "Formaning URL manzili"
+                    }
+                ]
+            }
         ]
-      }
-    ]
-  },
-  "id": 1,
-  "status": true,
-  "origin": "services"
+    },
+    "id": 1,
+    "status": true,
+    "origin": "services",
+    "host": {
+        "host": "Unipos_v2",
+        "timestamp": "2026-01-19 16:17:59.880489"
+    }
 }
 ```
-
-Each field in the `fields` array defines how to build an input using `name`, `type`, `is_required`, and optionally `regex` — allowing the frontend to construct the form dynamically.

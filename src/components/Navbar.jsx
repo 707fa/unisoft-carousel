@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, Menu, X } from "lucide-react";
 import SearchModal from "./SearchModal";
+import { getFirstDocSlug } from "../lib/content";
 
 
 export default function Navbar({ sidebarOpen, setSidebarOpen }) {
@@ -29,9 +30,9 @@ export default function Navbar({ sidebarOpen, setSidebarOpen }) {
             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
           <Link
-            to="/docs/intro"
+            to={`/docs/${getFirstDocSlug()}`}
             className="flex items-center gap-2"
-            aria-label="Home — About the project"
+            aria-label="Home"
           >
             <img src="/logo.png" alt="Unisoft" className="h-8 w-auto" />
           </Link>

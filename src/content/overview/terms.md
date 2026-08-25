@@ -3,33 +3,27 @@ title: Terms and Concepts
 order: 2
 ---
 
+## B. Terms and Definitions
+
 | Term | Definition |
 |---|---|
-| Client | A partner authorized to use Unisoft Gate |
-| User | A partner's customer (referred to as "User" within Unisoft) |
-| Request | A request for data |
-| Response | A reply to a request |
-| Registry | A service that logs every confidential data entry |
+| Client | Partner that allowed to use Unisoft Gate |
+| User | Partners clients are preferred as User for Unisoft |
+| Request | Request for some data |
+| Response | Respond to the request |
+| Database | Database which interacts with Gate |
+| Registry | Registry service that registers every sensitivity data |
 | Uzcard | Uzcard Online (Svgate) |
-| Humo | Processing center affiliated with the Central Bank of Uzbekistan |
-| Visa | Visa processing center |
-| Transfer | Peer-to-peer operation (money transfer) |
-| Payment | Payment for services or a debit operation |
-| Exchange Conversion | Currency conversion at the Universalbank JSC exchange rate |
-| CBU | Central Bank of Uzbekistan |
-| Sender | The sending party (debit) |
-| Receiver | The receiving party (credit) |
-| Cheque | A payment receipt awaiting the receiver |
-| EPOS | Electronic POS terminal that stores `merchant_id`/`terminal_id` |
+| Humo | Humo — processing centre owned by the Central Bank of Uzbekistan |
+| Visa | Visa Processing centre |
+| Transfer | Peer to Peer operation |
+| Payment | Payment for services or debit operation in some cases |
+| Exchange Conversion | Conversion of currency according to Universalbank JSC |
+| CBU | Central Bank of Uzbekistan (in some reference used as CB) |
+| Sender | Sender debit |
+| Receiver | Receiver credit |
+| Cheque | Cheque that made for a receiver which is waiting for payment from sender |
+| EPOS | Electron POS terminal which contains `merchant_id`/`terminal_id` |
 
-## Data Types
-
-| Name | Type | Description |
-|---|---|---|
-| `number` | string | Card number, 16 digits |
-| `amount` | integer | Amount — must be provided without decimals or a decimal point |
-| `message` | object/string | Message text |
-| `host` | object | Host information |
-| `error` | object | Error object |
-| `result` | object | Result object |
-| `code` | integer | Error code |
+The `D. Data types` table lives with the request/response format on the
+[Format](/docs/format) page.
